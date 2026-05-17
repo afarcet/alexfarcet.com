@@ -1,1218 +1,646 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music — Alex Farcet</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <style>
-        /* ========================
-           COSMIC OVERRIDE - DARK THEME
-           ======================== */
-        body {
-            background: #0a0a1a;
-            color: #e0e0e0;
-            overflow-x: hidden;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SlotMusic — Alex Farcet</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
 
-        /* Override styles.css light theme */
-        .side-nav .nav-link {
-            color: #888 !important;
-        }
-        .side-nav .nav-link:hover,
-        .side-nav .nav-link-active {
-            color: #ffffff !important;
-        }
-        header a {
-            color: #ffffff !important;
-            text-decoration: none !important;
-        }
-        .site-title {
-            color: #ffffff !important;
-        }
-        .logo-small {
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            margin-right: 10px;
-            vertical-align: middle;
-        }
-        footer, footer * {
-            color: #555 !important;
-        }
+/* === GRUNGY BASEMENT === */
+body{
+  background:#1a1611;
+  color:#d4c9a8;
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+  position:relative;
+}
+/* Film grain overlay */
+body::after{
+  content:'';position:fixed;top:0;left:0;right:0;bottom:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9999;opacity:0.4;
+}
+/* Dust motes */
+.dust{position:fixed;width:3px;height:3px;background:rgba(212,201,168,0.3);border-radius:50%;pointer-events:none;z-index:1}
+.dust:nth-child(1){top:15%;left:20%;animation:drift1 18s infinite linear}
+.dust:nth-child(2){top:45%;left:70%;animation:drift2 22s infinite linear}
+.dust:nth-child(3){top:70%;left:40%;animation:drift1 15s infinite linear reverse}
+.dust:nth-child(4){top:25%;left:80%;animation:drift2 20s infinite linear reverse}
+.dust:nth-child(5){top:60%;left:15%;animation:drift1 25s infinite linear}
+@keyframes drift1{0%{transform:translate(0,0) scale(1);opacity:0.3}25%{opacity:0.6}50%{transform:translate(60px,-40px) scale(1.5);opacity:0.2}75%{opacity:0.5}100%{transform:translate(-20px,30px) scale(0.8);opacity:0.3}}
+@keyframes drift2{0%{transform:translate(0,0);opacity:0.2}50%{transform:translate(-50px,60px);opacity:0.5}100%{transform:translate(30px,-20px);opacity:0.2}}
 
-        /* ========================
-           SPACE BACKGROUND
-           ======================== */
-        .cosmos-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 30%, #0d1b2a 60%, #0a0a1a 100%);
-            background-size: 400% 400%;
-            animation: driftSpace 30s ease infinite;
-        }
+/* === LAYOUT === */
+.page-wrap{max-width:900px;margin:0 auto;padding:40px 24px 60px;position:relative;z-index:2}
+nav.side-nav{display:flex;gap:16px;margin-bottom:40px;flex-wrap:wrap}
+nav.side-nav .nav-link{color:#665e4a;font-size:0.75rem;text-decoration:none;transition:color 0.3s}
+nav.side-nav .nav-link:hover{color:#d4c9a8}
+nav.side-nav .nav-link-active{color:#d4c9a8}
+.top-header{margin-bottom:60px}
+.top-header a{display:flex;align-items:center;gap:12px;text-decoration:none;color:#d4c9a8}
+.top-header .logo-small{width:36px;height:36px;object-fit:contain;border-radius:50%;filter:sepia(0.3)}
+.top-header .site-title{font-family:'Special Elite',serif;font-size:1.1rem;letter-spacing:0.05em}
 
-        @keyframes driftSpace {
-            0% { background-position: 0% 0%; }
-            25% { background-position: 100% 50%; }
-            50% { background-position: 50% 100%; }
-            75% { background-position: 0% 50%; }
-            100% { background-position: 0% 0%; }
-        }
+/* === TAGLINE === */
+.tagline{
+  font-family:'Special Elite',serif;
+  font-size:1.8rem;
+  color:#d4c9a8;
+  text-align:center;
+  margin-bottom:56px;
+  line-height:1.4;
+  text-shadow:0 2px 8px rgba(0,0,0,0.5);
+}
+.tagline .no{color:#8b4049;text-decoration:line-through;text-decoration-thickness:2px}
+.tagline .yes{color:#c9a84d;font-style:italic}
 
-        /* Stars layer */
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-        .stars::before, .stars::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.8), transparent),
-                radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.6), transparent),
-                radial-gradient(1.5px 1.5px at 50% 10%, rgba(255,255,255,0.9), transparent),
-                radial-gradient(1px 1px at 70% 40%, rgba(0,245,255,0.5), transparent),
-                radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,0.7), transparent),
-                radial-gradient(1.5px 1.5px at 15% 85%, rgba(255,45,120,0.4), transparent),
-                radial-gradient(1px 1px at 45% 45%, rgba(255,255,255,0.5), transparent),
-                radial-gradient(1px 1px at 80% 15%, rgba(123,47,255,0.5), transparent),
-                radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.6), transparent),
-                radial-gradient(1px 1px at 25% 35%, rgba(255,215,0,0.4), transparent),
-                radial-gradient(1px 1px at 85% 55%, rgba(255,255,255,0.5), transparent),
-                radial-gradient(1.5px 1.5px at 5% 50%, rgba(255,255,255,0.8), transparent),
-                radial-gradient(1px 1px at 55% 90%, rgba(0,245,255,0.4), transparent),
-                radial-gradient(1px 1px at 35% 15%, rgba(255,255,255,0.6), transparent),
-                radial-gradient(1px 1px at 75% 65%, rgba(255,45,120,0.3), transparent);
-            animation: twinkle 8s ease-in-out infinite alternate;
-        }
-        .stars::after {
-            background-image:
-                radial-gradient(1px 1px at 20% 70%, rgba(255,255,255,0.7), transparent),
-                radial-gradient(1.5px 1.5px at 40% 30%, rgba(255,255,255,0.5), transparent),
-                radial-gradient(1px 1px at 65% 85%, rgba(123,47,255,0.4), transparent),
-                radial-gradient(1px 1px at 88% 25%, rgba(255,255,255,0.8), transparent),
-                radial-gradient(1px 1px at 12% 40%, rgba(0,245,255,0.3), transparent),
-                radial-gradient(1px 1px at 52% 55%, rgba(255,255,255,0.6), transparent),
-                radial-gradient(1px 1px at 78% 92%, rgba(255,215,0,0.4), transparent),
-                radial-gradient(1px 1px at 33% 78%, rgba(255,255,255,0.5), transparent),
-                radial-gradient(1.5px 1.5px at 95% 45%, rgba(255,45,120,0.3), transparent),
-                radial-gradient(1px 1px at 8% 95%, rgba(255,255,255,0.7), transparent);
-            animation: twinkle 6s ease-in-out infinite alternate-reverse;
-        }
+/* === THE MACHINE === */
+.machine{
+  position:relative;
+  background:linear-gradient(170deg,#2a2318 0%,#1e1a12 40%,#15120d 100%);
+  border:3px solid #3d3528;
+  border-radius:12px;
+  padding:40px 32px 36px;
+  margin:0 auto 48px;
+  max-width:680px;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.03),
+    inset 0 -2px 0 rgba(0,0,0,0.3),
+    0 0 0 1px rgba(0,0,0,0.4);
+  /* scratched metal look */
+  background-image:
+    repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(255,255,255,0.008) 40px,rgba(255,255,255,0.008) 41px),
+    repeating-linear-gradient(0deg,transparent,transparent 60px,rgba(255,255,255,0.005) 60px,rgba(255,255,255,0.005) 61px);
+}
+.machine::before{
+  content:'SLOTMUSIC';
+  position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+  font-family:'Special Elite',serif;font-size:0.7rem;letter-spacing:0.4em;
+  color:#665e4a;background:#1a1611;padding:0 16px;
+  text-transform:uppercase;
+}
+/* Worn sticker */
+.machine::after{
+  content:'Mk.I';position:absolute;bottom:8px;right:16px;
+  font-family:'Special Elite',serif;font-size:0.6rem;color:#3d3528;
+  transform:rotate(-3deg);
+}
 
-        @keyframes twinkle {
-            0% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
+/* === REELS === */
+.reels{display:flex;gap:12px;justify-content:center;margin-bottom:28px;padding-right:60px}
+.reel-col{flex:1;max-width:160px;text-align:center}
+.reel-label{
+  font-family:'Special Elite',serif;font-size:0.65rem;
+  text-transform:uppercase;letter-spacing:0.2em;
+  color:#665e4a;margin-bottom:8px;
+}
+.reel-window{
+  background:#0d0b08;
+  border:2px solid #3d3528;
+  border-radius:6px;
+  height:64px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 4px 12px rgba(0,0,0,0.8),inset 0 -2px 4px rgba(0,0,0,0.4);
+  overflow:hidden;
+  position:relative;
+}
+.reel-window::before,.reel-window::after{
+  content:'';position:absolute;left:0;right:0;height:12px;z-index:2;
+}
+.reel-window::before{top:0;background:linear-gradient(to bottom,#0d0b08,transparent)}
+.reel-window::after{bottom:0;background:linear-gradient(to top,#0d0b08,transparent)}
+.reel-val{
+  font-family:'Special Elite',serif;
+  font-size:1.05rem;
+  color:#c9a84d;
+  text-shadow:0 0 8px rgba(201,168,77,0.4);
+  transition:none;
+  position:relative;z-index:1;
+}
+.reel-window.spin .reel-val{animation:reelBlur 0.15s infinite;color:#888060}
+.reel-window.land .reel-val{animation:reelLand 0.3s ease-out;color:#c9a84d}
+@keyframes reelBlur{0%{transform:translateY(-8px);opacity:0.4}50%{transform:translateY(0);opacity:0.8}100%{transform:translateY(8px);opacity:0.4}}
+@keyframes reelLand{0%{transform:translateY(-6px)}60%{transform:translateY(2px)}100%{transform:translateY(0)}}
 
-        /* ========================
-           FLOATING DECORATIONS
-           ======================== */
-        .floater {
-            position: fixed;
-            pointer-events: none;
-            opacity: 0.08;
-            z-index: -1;
-        }
-        .floater-vinyl {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 3px solid #FF2D78;
-            top: 15%;
-            right: 8%;
-            animation: floatSlow 12s ease-in-out infinite;
-        }
-        .floater-vinyl::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #FF2D78;
-        }
-        .floater-note1 {
-            font-size: 40px;
-            top: 40%;
-            left: 5%;
-            animation: floatSlow 15s ease-in-out infinite reverse;
-            color: #00F5FF;
-        }
-        .floater-note2 {
-            font-size: 30px;
-            bottom: 20%;
-            right: 12%;
-            animation: floatSlow 10s ease-in-out infinite;
-            color: #7B2FFF;
-        }
-        .floater-diamond {
-            width: 20px;
-            height: 20px;
-            background: #FFD700;
-            transform: rotate(45deg);
-            top: 65%;
-            left: 10%;
-            animation: floatSlow 18s ease-in-out infinite;
-        }
-        .floater-ring {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 2px solid #FF6B35;
-            bottom: 35%;
-            left: 85%;
-            animation: floatSlow 14s ease-in-out infinite reverse;
-        }
+/* === LEVER === */
+.lever-track{
+  position:absolute;
+  right:20px;
+  top:40px;
+  bottom:36px;
+  width:36px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.lever-slot{
+  width:8px;
+  flex:1;
+  background:#0d0b08;
+  border:1px solid #3d3528;
+  border-radius:4px;
+  position:relative;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,0.8);
+}
+.lever-handle{
+  width:32px;height:32px;
+  background:radial-gradient(circle at 40% 35%,#8b7355,#5a4a35 60%,#3d3020);
+  border:2px solid #5a4a35;
+  border-radius:50%;
+  cursor:grab;
+  position:absolute;
+  top:0;left:50%;transform:translateX(-50%);
+  box-shadow:0 2px 8px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.1);
+  transition:top 0.15s ease-in;
+  z-index:3;
+}
+.lever-handle:hover{box-shadow:0 2px 12px rgba(201,168,77,0.3),inset 0 1px 0 rgba(255,255,255,0.1);border-color:#c9a84d}
+.lever-handle:active{cursor:grabbing}
+.lever-handle.pulled{top:calc(100% - 32px);transition:top 0.3s ease-in}
+.lever-handle.released{top:0;transition:top 0.5s cubic-bezier(0.175,0.885,0.32,1.275)}
+.lever-base{
+  width:16px;height:12px;
+  background:#3d3528;border-radius:0 0 6px 6px;
+  margin-top:-1px;
+}
 
-        @keyframes floatSlow {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-20px) rotate(3deg); }
-            66% { transform: translateY(10px) rotate(-2deg); }
-        }
+/* === SONG RESULT === */
+.result{
+  max-width:680px;margin:0 auto 48px;
+  opacity:0;transform:translateY(20px) scale(0.97);
+  transition:opacity 0.5s ease,transform 0.5s ease;
+  pointer-events:none;
+}
+.result.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.result-card{
+  background:linear-gradient(145deg,#252015,#1e1a12);
+  border:1px solid #3d3528;
+  border-radius:8px;
+  padding:32px;
+  display:flex;gap:24px;align-items:center;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
+}
+.result-art{
+  width:120px;height:120px;min-width:120px;
+  border-radius:6px;overflow:hidden;
+  box-shadow:0 4px 16px rgba(0,0,0,0.5);
+  position:relative;
+}
+.result-art-bg{width:100%;height:100%;position:relative}
+/* Vinyl grooves overlay */
+.result-art::after{
+  content:'';position:absolute;top:50%;left:50%;
+  width:80px;height:80px;border-radius:50%;
+  transform:translate(-50%,-50%);
+  border:1px solid rgba(255,255,255,0.06);
+  box-shadow:0 0 0 8px rgba(255,255,255,0.03),0 0 0 16px rgba(255,255,255,0.02),0 0 0 24px rgba(255,255,255,0.01);
+}
+.result-info{flex:1;min-width:0}
+.result-song{font-family:'Special Elite',serif;font-size:1.3rem;color:#d4c9a8;margin-bottom:4px;line-height:1.3}
+.result-artist{font-size:0.9rem;color:#8b8060;margin-bottom:2px}
+.result-album{font-size:0.8rem;color:#665e4a;font-style:italic;margin-bottom:16px}
+.result-links{display:flex;gap:12px;flex-wrap:wrap}
+.result-links a{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:0.75rem;color:#8b8060;text-decoration:none;
+  padding:6px 14px;border:1px solid #3d3528;border-radius:20px;
+  transition:all 0.2s;
+}
+.result-links a:hover{color:#c9a84d;border-color:#665e4a;background:rgba(201,168,77,0.05)}
+.result-links svg{width:14px;height:14px;fill:currentColor}
+.result-again{text-align:center;margin-top:16px}
+.result-again button{
+  background:none;border:1px dashed #3d3528;color:#665e4a;
+  font-family:'Special Elite',serif;font-size:0.8rem;
+  padding:8px 20px;border-radius:20px;cursor:pointer;
+  transition:all 0.2s;
+}
+.result-again button:hover{color:#c9a84d;border-color:#665e4a}
 
-        /* ========================
-           MAIN CONTENT
-           ======================== */
-        .music-page {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px 80px;
-            position: relative;
-        }
+/* === COLLECTION === */
+.collection{max-width:680px;margin:0 auto 60px}
+.coll-toggle{
+  background:none;border:none;color:#665e4a;
+  font-family:'Special Elite',serif;font-size:0.85rem;
+  cursor:pointer;padding:8px 0;width:100%;text-align:left;
+  transition:color 0.2s;
+}
+.coll-toggle:hover{color:#d4c9a8}
+.coll-toggle .arr{display:inline-block;transition:transform 0.3s;margin-right:8px;font-size:0.7rem}
+.coll-toggle.open .arr{transform:rotate(90deg)}
+.coll-body{max-height:0;overflow:hidden;transition:max-height 0.5s ease}
+.coll-body.open{max-height:8000px}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0}
+.pill{
+  background:none;border:1px solid #3d3528;color:#665e4a;
+  font-size:0.7rem;padding:4px 12px;border-radius:12px;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:all 0.2s;
+}
+.pill:hover,.pill.on{color:#c9a84d;border-color:#665e4a}
+.coll-item{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:8px 0;border-bottom:1px solid #1e1a12;font-size:0.8rem;
+}
+.coll-item-song{color:#8b8060}
+.coll-item-artist{color:#665e4a;font-size:0.75rem;text-align:right;min-width:100px}
 
-        .cosmic-title {
-            font-family: 'Cormorant', serif;
-            font-size: clamp(3rem, 8vw, 5.5rem);
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #FF2D78, #7B2FFF, #00F5FF, #FFD700);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradientShift 6s ease infinite;
-            text-shadow: none;
-        }
+/* === FOOTER === */
+.page-footer{
+  text-align:center;padding-top:24px;
+  border-top:1px solid #252015;max-width:680px;margin:0 auto;
+}
+.page-footer p{font-size:0.7rem;color:#3d3528;margin-bottom:4px}
+.page-footer p:first-child{font-family:'Special Elite',serif;font-size:0.8rem;color:#665e4a}
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .cosmic-subtitle {
-            text-align: center;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.85rem;
-            color: #666;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            margin-bottom: 50px;
-        }
-
-        /* ========================
-           INTRO TEXT
-           ======================== */
-        .intro-text {
-            max-width: 600px;
-            margin: 0 auto 60px;
-            text-align: center;
-            font-family: 'Cormorant', serif;
-            font-size: 1.25rem;
-            line-height: 1.8;
-            color: #bbb;
-        }
-        .intro-text p {
-            margin-bottom: 1.2em;
-        }
-        .intro-text .intro-highlight {
-            color: #e0e0e0;
-            font-style: italic;
-        }
-
-        /* ========================
-           SLOT MACHINE CABINET
-           ======================== */
-        .cabinet {
-            background: linear-gradient(180deg, #1a1a2e 0%, #16162a 50%, #0f0f1e 100%);
-            border-radius: 20px;
-            padding: 40px 30px;
-            margin: 0 auto 50px;
-            max-width: 700px;
-            position: relative;
-            border: 1px solid rgba(123, 47, 255, 0.3);
-            box-shadow:
-                0 0 30px rgba(123, 47, 255, 0.15),
-                0 0 60px rgba(255, 45, 120, 0.08),
-                0 0 100px rgba(0, 245, 255, 0.05),
-                inset 0 1px 0 rgba(255,255,255,0.05);
-        }
-        .cabinet::before {
-            content: "";
-            position: absolute;
-            top: -1px;
-            left: 20%;
-            right: 20%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #00F5FF, transparent);
-            border-radius: 2px;
-        }
-
-        /* Chrome trim */
-        .cabinet-trim {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.03);
-            pointer-events: none;
-        }
-
-        /* ========================
-           REELS
-           ======================== */
-        .reels-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 35px;
-        }
-
-        .reel {
-            text-align: center;
-        }
-        .reel-label {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: #666;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        .reel-window {
-            background: linear-gradient(180deg, #0a0a14 0%, #111122 50%, #0a0a14 100%);
-            border-radius: 12px;
-            padding: 18px 10px;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255,255,255,0.08);
-            box-shadow:
-                inset 0 2px 8px rgba(0,0,0,0.5),
-                0 1px 0 rgba(255,255,255,0.03);
-            position: relative;
-            overflow: hidden;
-        }
-        .reel-window::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 30%;
-            background: linear-gradient(180deg, rgba(0,0,0,0.4), transparent);
-            pointer-events: none;
-        }
-        .reel-window::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 30%;
-            background: linear-gradient(0deg, rgba(0,0,0,0.4), transparent);
-            pointer-events: none;
-        }
-
-        .reel-value {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        /* Reel color coding */
-        .reel-value[data-category="vibe"] { background: rgba(123, 47, 255, 0.25); border: 1px solid rgba(123, 47, 255, 0.4); }
-        .reel-value[data-category="roots"] { background: rgba(0, 245, 255, 0.15); border: 1px solid rgba(0, 245, 255, 0.3); }
-        .reel-value[data-category="texture"] { background: rgba(255, 45, 120, 0.2); border: 1px solid rgba(255, 45, 120, 0.35); }
-
-        /* Spinning state */
-        .reel-window.spinning .reel-value {
-            filter: blur(4px);
-            animation: reelFlicker 0.1s steps(1) infinite;
-        }
-        .reel-window.stopped .reel-value {
-            animation: reelLand 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes reelFlicker {
-            0% { opacity: 0.8; transform: translateY(-2px); }
-            50% { opacity: 1; transform: translateY(2px); }
-            100% { opacity: 0.8; transform: translateY(-1px); }
-        }
-        @keyframes reelLand {
-            0% { transform: translateY(-8px); opacity: 0.5; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-
-        /* ========================
-           SPIN BUTTON
-           ======================== */
-        .spin-btn-container {
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        .spin-btn {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #fff;
-            background: linear-gradient(135deg, #7B2FFF 0%, #FF2D78 100%);
-            border: none;
-            border-radius: 50px;
-            padding: 18px 50px;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.3s ease;
-            box-shadow:
-                0 4px 20px rgba(123, 47, 255, 0.4),
-                0 0 40px rgba(255, 45, 120, 0.2);
-        }
-        .spin-btn:hover:not(:disabled) {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow:
-                0 6px 30px rgba(123, 47, 255, 0.5),
-                0 0 60px rgba(255, 45, 120, 0.3),
-                0 0 80px rgba(0, 245, 255, 0.1);
-        }
-        .spin-btn:active:not(:disabled) {
-            transform: translateY(1px) scale(0.98);
-            box-shadow:
-                0 2px 10px rgba(123, 47, 255, 0.3);
-        }
-        .spin-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            animation: btnPulse 1s ease-in-out infinite;
-        }
-        .spin-btn::before {
-            content: "";
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border-radius: 52px;
-            background: linear-gradient(135deg, #00F5FF, #7B2FFF, #FF2D78, #FFD700);
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .spin-btn:hover:not(:disabled)::before {
-            opacity: 1;
-            animation: borderRotate 3s linear infinite;
-        }
-
-        @keyframes btnPulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 0.8; }
-        }
-        @keyframes borderRotate {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-
-        /* ========================
-           SONG REVEAL CARD
-           ======================== */
-        .song-card {
-            max-width: 500px;
-            margin: 40px auto 0;
-            background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(15, 15, 30, 0.95));
-            border-radius: 16px;
-            padding: 30px;
-            border: 1px solid rgba(255,255,255,0.08);
-            box-shadow:
-                0 10px 40px rgba(0,0,0,0.4),
-                0 0 30px rgba(123, 47, 255, 0.1);
-            opacity: 0;
-            transform: scale(0.95);
-            transition: none;
-            display: none;
-        }
-        .song-card.revealed {
-            display: block;
-            animation: cardReveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-
-        @keyframes cardReveal {
-            0% { opacity: 0; transform: scale(0.92) translateY(10px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        .song-card-inner {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .song-art {
-            width: 100px;
-            height: 100px;
-            border-radius: 12px;
-            flex-shrink: 0;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
-        .song-art-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        .song-art-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.3);
-            animation: artPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes artPulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
-            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
-        }
-
-        .song-info {
-            flex: 1;
-            min-width: 0;
-        }
-        .song-title {
-            font-family: 'Cormorant', serif;
-            font-size: 1.4rem;
-            font-weight: 500;
-            color: #fff;
-            margin-bottom: 4px;
-            line-height: 1.3;
-        }
-        .song-artist {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.95rem;
-            color: #00F5FF;
-            margin-bottom: 2px;
-        }
-        .song-album {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.8rem;
-            color: #777;
-            font-style: italic;
-        }
-        .song-tags {
-            display: flex;
-            gap: 6px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-        }
-        .song-tag {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.7rem;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-        .song-tag-vibe { background: rgba(123, 47, 255, 0.2); color: #b47fff; border: 1px solid rgba(123, 47, 255, 0.3); }
-        .song-tag-roots { background: rgba(0, 245, 255, 0.1); color: #00F5FF; border: 1px solid rgba(0, 245, 255, 0.2); }
-        .song-tag-texture { background: rgba(255, 45, 120, 0.15); color: #ff6b9d; border: 1px solid rgba(255, 45, 120, 0.25); }
-
-        /* ========================
-           COLLECTION BROWSER
-           ======================== */
-        .collection-section {
-            margin-top: 80px;
-            padding-top: 40px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-        .collection-toggle {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.9rem;
-            color: #888;
-            background: none;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 12px 24px;
-            cursor: pointer;
-            display: block;
-            margin: 0 auto;
-            transition: all 0.3s ease;
-        }
-        .collection-toggle:hover {
-            color: #fff;
-            border-color: rgba(123, 47, 255, 0.4);
-            box-shadow: 0 0 20px rgba(123, 47, 255, 0.1);
-        }
-
-        .collection-content {
-            display: none;
-            margin-top: 30px;
-        }
-        .collection-content.open {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .filter-pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            margin-bottom: 25px;
-        }
-        .filter-pill {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.75rem;
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.12);
-            background: transparent;
-            color: #999;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .filter-pill:hover {
-            color: #fff;
-            border-color: rgba(0, 245, 255, 0.4);
-        }
-        .filter-pill.active {
-            background: rgba(0, 245, 255, 0.15);
-            color: #00F5FF;
-            border-color: rgba(0, 245, 255, 0.4);
-        }
-
-        .collection-list {
-            display: grid;
-            gap: 2px;
-        }
-        .collection-item {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 6px;
-            transition: background 0.2s ease;
-            align-items: center;
-        }
-        .collection-item:hover {
-            background: rgba(255,255,255,0.03);
-        }
-        .collection-item-main {
-            min-width: 0;
-        }
-        .collection-item-song {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.85rem;
-            color: #ddd;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .collection-item-artist {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.75rem;
-            color: #666;
-        }
-        .collection-item-genre {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.65rem;
-            color: #555;
-            text-align: right;
-            white-space: nowrap;
-        }
-
-        /* ========================
-           FOOTER OVERRIDE
-           ======================== */
-        .cosmic-footer {
-            text-align: center;
-            margin-top: 80px;
-            padding: 30px 0;
-            font-family: 'DM Sans', sans-serif;
-        }
-        .cosmic-footer .footer-main {
-            font-family: 'Cormorant', serif;
-            font-size: 1.3rem;
-            font-style: italic;
-            color: #555;
-            margin-bottom: 12px;
-        }
-        .cosmic-footer .footer-meta {
-            font-size: 0.7rem;
-            color: #444;
-            letter-spacing: 1px;
-        }
-
-        /* ========================
-           UTILITY ANIMATIONS
-           ======================== */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* ========================
-           RESPONSIVE
-           ======================== */
-        @media (max-width: 600px) {
-            .music-page { padding: 30px 15px 60px; }
-            .cabinet { padding: 25px 15px; }
-            .reels-container { gap: 8px; }
-            .reel-value { font-size: 0.8rem; padding: 5px 10px; }
-            .reel-label { font-size: 0.6rem; letter-spacing: 2px; }
-            .spin-btn { padding: 15px 35px; font-size: 0.85rem; }
-            .song-card-inner { flex-direction: column; text-align: center; }
-            .song-tags { justify-content: center; }
-            .song-art { width: 80px; height: 80px; }
-            .cosmic-title { margin-bottom: 5px; }
-            .intro-text { font-size: 1.1rem; }
-            .floater { display: none; }
-        }
-    </style>
+/* === MOBILE === */
+@media(max-width:600px){
+  .tagline{font-size:1.3rem}
+  .machine{padding:32px 20px 28px}
+  .reels{flex-direction:column;align-items:center;gap:8px;padding-right:50px}
+  .reel-col{max-width:200px;width:100%}
+  .reel-window{height:52px}
+  .reel-val{font-size:0.9rem}
+  .lever-track{right:10px;width:30px}
+  .lever-handle{width:26px;height:26px}
+  .result-card{flex-direction:column;text-align:center;padding:24px}
+  .result-art{width:100px;height:100px;min-width:100px}
+  .result-links{justify-content:center}
+}
+</style>
 </head>
 <body>
-    <div class="cosmos-bg"></div>
-    <div class="stars"></div>
 
-    <!-- Floating decorations -->
-    <div class="floater floater-vinyl"></div>
-    <div class="floater floater-note1">&#9835;</div>
-    <div class="floater floater-note2">&#9834;</div>
-    <div class="floater floater-diamond"></div>
-    <div class="floater floater-ring"></div>
+<div class="dust"></div><div class="dust"></div><div class="dust"></div><div class="dust"></div><div class="dust"></div>
 
-    <header>
-        <a href="index.html">
-            <img src="raspberry-logo.jpeg" alt="Home" class="logo-small">
-            <span class="site-title">Alex Farcet</span>
-        </a>
-    </header>
+<div class="page-wrap">
+  <nav class="side-nav">
+    <a href="bio.html" class="nav-link">Bio</a>
+    <a href="anti-algorithm.html" class="nav-link">Anti-algorithm</a>
+    <a href="music.html" class="nav-link nav-link-active">Music</a>
+    <a href="pictures.html" class="nav-link">Pictures</a>
+    <a href="tests.html" class="nav-link">Tests</a>
+  </nav>
 
-    <nav class="side-nav">
-        <a href="bio.html" class="nav-link">Bio</a>
-        <a href="anti-algorithm.html" class="nav-link">Anti-algorithm</a>
-        <a href="music.html" class="nav-link nav-link-active">Music</a>
-        <a href="pictures.html" class="nav-link">Pictures</a>
-        <a href="tests.html" class="nav-link">Tests</a>
-    </nav>
+  <header class="top-header">
+    <a href="index.html">
+      <img src="raspberry-logo.jpeg" alt="Home" class="logo-small">
+      <span class="site-title">Alex Farcet</span>
+    </a>
+  </header>
 
-    <main class="music-page">
-        <h1 class="cosmic-title">The Machine</h1>
-        <p class="cosmic-subtitle">128 songs &bull; zero algorithms</p>
+  <p class="tagline">Say <span class="no">no</span> to the algorithm, <span class="yes">yes</span> to SlotMusic.</p>
 
-        <div class="intro-text">
-            <p>Remember when music found you? Through a wall. From a stranger's car. On a mixtape from someone who got you. Not served by a machine that watched what you skipped.</p>
-            <p class="intro-highlight">This is 128 songs from one person's collection. No algorithm. No recommendations engine. Just three wheels and the beautiful chaos of chance.</p>
-            <p>Spin the machine. Discover something.</p>
-        </div>
+  <!-- THE MACHINE -->
+  <div class="machine" id="machine">
+    <div class="reels">
+      <div class="reel-col">
+        <div class="reel-label">Vibe</div>
+        <div class="reel-window" id="r1"><span class="reel-val">?</span></div>
+      </div>
+      <div class="reel-col">
+        <div class="reel-label">Roots</div>
+        <div class="reel-window" id="r2"><span class="reel-val">?</span></div>
+      </div>
+      <div class="reel-col">
+        <div class="reel-label">Texture</div>
+        <div class="reel-window" id="r3"><span class="reel-val">?</span></div>
+      </div>
+    </div>
+    <!-- LEVER -->
+    <div class="lever-track">
+      <div class="lever-slot">
+        <div class="lever-handle" id="lever"></div>
+      </div>
+      <div class="lever-base"></div>
+    </div>
+  </div>
 
-        <!-- SLOT MACHINE -->
-        <div class="cabinet">
-            <div class="cabinet-trim"></div>
-            <div class="reels-container">
-                <div class="reel">
-                    <div class="reel-label">Vibes</div>
-                    <div class="reel-window" id="reel-vibe">
-                        <span class="reel-value" data-category="vibe">?</span>
-                    </div>
-                </div>
-                <div class="reel">
-                    <div class="reel-label">Roots</div>
-                    <div class="reel-window" id="reel-roots">
-                        <span class="reel-value" data-category="roots">?</span>
-                    </div>
-                </div>
-                <div class="reel">
-                    <div class="reel-label">Texture</div>
-                    <div class="reel-window" id="reel-texture">
-                        <span class="reel-value" data-category="texture">?</span>
-                    </div>
-                </div>
-            </div>
-            <div class="spin-btn-container">
-                <button class="spin-btn" id="spin-btn">SPIN THE COSMOS</button>
-            </div>
-            <div class="song-card" id="song-card">
-                <div class="song-card-inner">
-                    <div class="song-art" id="song-art">
-                        <div class="song-art-bg" id="song-art-bg"></div>
-                        <div class="song-art-overlay"></div>
-                    </div>
-                    <div class="song-info">
-                        <div class="song-title" id="song-title"></div>
-                        <div class="song-artist" id="song-artist"></div>
-                        <div class="song-album" id="song-album"></div>
-                        <div class="song-tags" id="song-tags"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- RESULT -->
+  <div class="result" id="result">
+    <div class="result-card">
+      <div class="result-art"><div class="result-art-bg" id="art"></div></div>
+      <div class="result-info">
+        <div class="result-song" id="rs"></div>
+        <div class="result-artist" id="ra"></div>
+        <div class="result-album" id="ral"></div>
+        <div class="result-links" id="rl"></div>
+      </div>
+    </div>
+    <div class="result-again"><button id="again">spin again</button></div>
+  </div>
 
-        <!-- COLLECTION BROWSER -->
-        <div class="collection-section">
-            <button class="collection-toggle" id="collection-toggle">Browse the full collection</button>
-            <div class="collection-content" id="collection-content">
-                <div class="filter-pills" id="filter-pills"></div>
-                <div class="collection-list" id="collection-list"></div>
-            </div>
-        </div>
+  <!-- COLLECTION -->
+  <div class="collection">
+    <button class="coll-toggle" id="ctog"><span class="arr">&#9654;</span>Browse the full collection</button>
+    <div class="coll-body" id="cbody">
+      <div class="pills" id="pills"></div>
+      <div id="clist"></div>
+    </div>
+  </div>
 
-        <footer class="cosmic-footer">
-            <div class="footer-main">Headphones on.</div>
-            <div class="footer-meta">Updated: May 2026 &middot; Built with Claude Opus 4.6</div>
-        </footer>
-    </main>
+  <footer class="page-footer">
+    <p>Headphones on.</p>
+    <p>Updated: May 2026</p>
+    <p>Built with Claude Opus 4.6</p>
+  </footer>
+</div>
 
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
+<script>
+(function(){
+  var S=[
+    {s:"Pain (feat. Snoop Dogg)",al:"A nous Paris 2017",ar:"De La Soul",v:"Groove",r:"Hip Hop",t:"Rhythmic"},
+    {s:"Brasilia Brasil",al:"Abre Alas",ar:"Rogerio Caetano",v:"Fire",r:"Brazilian",t:"Rhythmic"},
+    {s:"Talkin To Myself",al:"Abstractions",ar:"Zo! & Tall Black Guy",v:"Groove",r:"Soul & Funk",t:"Melodic"},
+    {s:"Feel the Real",al:"Adrenalin",ar:"David Bendeth",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
+    {s:"Where You Belong",al:"Afternoon Delights",ar:"The Groovers",v:"Groove",r:"Electronic",t:"Melodic"},
+    {s:"Sir Boastful",al:"Aldorande",ar:"Aldorande",v:"Groove",r:"Jazz",t:"Rhythmic"},
+    {s:"Abrahams New Gift",al:"Alive",ar:"Phronesis",v:"Fire",r:"Jazz",t:"Rhythmic"},
+    {s:"All 4 U",al:"All 4 U",ar:"30/70",v:"Groove",r:"Soul & Funk",t:"Melodic"},
+    {s:"All I Hear (is a funky bassline)",al:"Single",ar:"The Sponges & Father Funk",v:"Fire",r:"Soul & Funk",t:"Rhythmic"},
+    {s:"Sockem Bopem",al:"All In",ar:"Know Good",v:"Fire",r:"Jazz",t:"Rhythmic"},
+    {s:"ALL IN (feat. Rimarkable)",al:"Single",ar:"Jitwam & Rimarkable",v:"Groove",r:"Electronic",t:"Rhythmic"},
+    {s:"Wax Your Body",al:"All Night Vibes",ar:"Lee Webster",v:"Groove",r:"Electronic",t:"Rhythmic"},
+    {s:"All of My Love",al:"Single",ar:"Etta Bond & Chris Loco",v:"Chill",r:"Soul & Funk",t:"Melodic"},
+    {s:"Beautiful People",al:"ALWAYS STRIVE AND PROSPER",ar:"A$AP Ferg",v:"Fire",r:"Hip Hop",t:"Rhythmic"},
+    {s:"Forbidden Planet",al:"Amal",ar:"Vins Da Cuero",v:"Groove",r:"Electronic",t:"Atmospheric"},
+    {s:"Dr. My - Ho",al:"Amazon to Lefrak",ar:"New Optimism",v:"Groove",r:"Electronic",t:"Rhythmic"},
+    {s:"Ancestral Rhythm",al:"EP",ar:"K-Alexi Shelby",v:"Fire",r:"Electronic",t:"Rhythmic"},
+    {s:"Bird Solo",al:"Ancient Lights",ar:"Uniting Of Opposites",v:"Chill",r:"Jazz",t:"Atmospheric"},
+    {s:"Time Is On Our Side",al:"Another Taste",ar:"Mad Honey",v:"Groove",r:"Electronic",t:"Melodic"},
+    {s:"Perfect Night",al:"Another Taste",ar:"Another Taste",v:"Chill",r:"Electronic",t:"Melodic"},
+    {s:"Brian",al:"Antiphon",ar:"Alfa Mist",v:"Chill",r:"Jazz",t:"Melodic"},
+    {s:"Drinking",al:"Any Day Now",ar:"The Brooks",v:"Groove",r:"Soul & Funk",t:"Melodic"},
+    {s:"Traicion",al:"Apollo Sound 6",ar:"Roberto Roena y Su Apollo Sound",v:"Fire",r:"Latin",t:"Rhythmic"},
+    {s:"Lua de Garrafa",al:"AS PALAVRAS",ar:"Rubel & Milton Nascimento",v:"Chill",r:"Brazilian",t:"Melodic"},
+    {s:"Help Me",al:"The Asylum Albums",ar:"Joni Mitchell",v:"Chill",r:"Rock & Alt",t:"Melodic"},
+    {s:"Pick Up the Pieces",al:"Average White Band",ar:"Average White Band",v:"Fire",r:"Soul & Funk",t:"Rhythmic"},
+    {s:"Little Sunflower",al:"Backlash",ar:"Freddie Hubbard",v:"Chill",r:"Jazz",t:"Melodic"},
+    {s:"Weird Love",al:"Bar Lounge Classics",ar:"Moodorama",v:"Chill",r:"Electronic",t:"Atmospheric"},
+    {s:"Barbershop",al:"Single",ar:"Jason Moran",v:"Groove",r:"Jazz",t:"Rhythmic"},
+    {s:"The Beat Inside",al:"EP",ar:"Soledrifter",v:"Groove",r:"Electronic",t:"Rhythmic"},
+    {s:"flight fm",al:"Beats In Space 103",ar:"Joy Orbison",v:"Groove",r:"Electronic",t:"Atmospheric"},
+    {s:"Beleza Destruida",al:"Single",ar:"Djavan & Milton Nascimento",v:"Chill",r:"Brazilian",t:"Melodic"},
+    {s:"Flickermood",al:"Belle et Fou OST",ar:"Forss",v:"Chill",r:"Electronic",t:"Atmospheric"},
+    {s:"Grey Luh",al:"Berhana",ar:"Berhana",v:"Chill",r:"Soul & Funk",t:"Melodic"},
+    {s:"Poweride",al:"Best of Marcos Valle",ar:"Marcos Valle",v:"Groove",r:"Brazilian",t:"Rhythmic"},
+    {s:"Dont Go",al:"Best of Tania Maria",ar:"Tania Maria",v:"Fire",r:"Brazilian",t:"Rhythmic"},
+    {s:"Betta Daze",al:"Single",ar:"Minus 8",v:"Chill",r:"Electronic",t:"Melodic"},
+    {s:"Better (Love in Detail Remix)",al:"Single",ar:"aboveDat",v:"Groove",r:"Soul & Funk",t:"Melodic"},
+    {s:"I Found Love (Operator S Remix)",al:"Big Fish Little Fish",ar:"Hardrive & Lives",v:"Groove",r:"Electronic",t:"Rhythmic"},
+    {s:"Days Like This",al:"Big Fish Little Fish",ar:"Kenny Lattimore",v:"Groove",r:"Soul & Funk",t:"Melodic"},
+    {s:"The Big Sun",al:"Single",ar:"Jo Paciello",v:"Groove",r:"Electronic",t:"Melodic"},
+    {s:"Slop Jar Blues",al:"Black Byrd",ar:"Donald Byrd",v:"Groove",r:"Jazz",t:"Melodic"},
+    {s:"Remembrance",al:"Black Focus",ar:"Yussef Kamaal",v:"Chill",r:"Jazz",t:"Atmospheric"},
+    {s:"Joint 17",al:"Black Focus",ar:"Yussef Kamaal",v:"Groove",r:"Jazz",t:"Rhythmic"},
+    {s:"Black Light",al:"EP",ar:"Brett Gould",v:"Groove",r:"Electronic",t:"Melodic"},
+    {s:"Blackjack",al:"Blackjack",ar:"Donald Byrd",v:"Groove",r:"Jazz",t:"Melodic"},
+    {s:"Blind (Frankie Knuckles Remix)",al:"Blind",ar:"Hercules & Love Affair",v:"Groove",r:"Electronic",t:"Melodic"},
+    {s:"Blind Date (feat. ABRA)",al:"Single",ar:"Joy Orbison & Overmono",v:"Groove",r:"Electronic",t:"Atmospheric"},
+    {s:"On The Nature Of Daylight",al:"The Blue Notebooks",ar:"Max Richter",v:"Chill",r:"Rock & Alt",t:"Atmospheric"},
+    {s:"Puente",al:"Bocanada",ar:"Gustavo Cerati",v:"Chill",r:"Rock & Alt",t:"Atmospheric"},
+    {s:"Flips and Flops Drips and Drops",al:"Braincase",ar:"Electric Mantis",v:"Groove",r:"Electronic",t:"Melodic"},
+    {s:"Brasil Pandeiro (Atjazz Mix)",al:"Sonzeira",ar:"Sonzeira",v:"Groove",r:"Brazilian",t:"Rhythmic"},
+    {s:"In Your Eyes",al:"Bridges",ar:"Dianne Reeves",v:"Chill",r:"Jazz",t:"Melodic"},
+    {s:"Broken Harvest",al:"Single",ar:"Madison Cunningham",v:"Chill",r:"Rock & Alt",t:"Melodic"},
+    {s:"Calling Out (David Penn Remix)",al:"Single",ar:"Sophie Lloyd",v:"Groove",r:"Electronic",t:"Melodic"},
+    {s:"Bakara",al:"Canopee",ar:"Polo & Pan",v:"Groove",r:"Electronic",t:"Atmospheric"},
+    {s:"Sky Islands",al:"Capitol Rare Vol 1",ar:"Caldera",v:"Groove",r:"Jazz",t:"Melodic"},
+    {s:"Careless (Tiny Room Sessions)",al:"Single",ar:"Ronald Bruner Jr.",v:"Fire",r:"Jazz",t:"Rhythmic"},
+    {s:"Modinha (feat. Maria Bethania)",al:"Carminho Canta Tom Jobim",ar:"Carminho",v:"Chill",r:"Brazilian",t:"Melodic"},
+    {s:"Carrie (Slowed)",al:"Single",ar:"Ugovhb & EF",v:"Chill",r:"Electronic",t:"Atmospheric"},
+    {s:"From the Lonely Afternoon",al:"Carry On",ar:"Flora Purim",v:"Chill",r:"Brazilian",t:"Atmospheric"},
+    {s:"Kate Song",al:"Casually Introducing",ar:"Walter Smith III",v:"Chill",r:"Jazz",t:"Melodic"},
+    {s:"Romance",al:"Cat",ar:"Hiroshi Suzuki",v:"Groove",r:"Jazz",t:"Melodic"},
+    {s:"No Na Garganta",al:"Cheio De Dedos",ar:"Guinga",v:"Chill",r:"Brazilian",t:"Melodic"},
+    {s:"Essa Moca Ta Diferente",al:"Chico Buarque No4",ar:"Chico Buarque",v:"Groove",r:"Brazilian",t:"Melodic"},
+    {s:"Waiting On The Corner",al:"Cinnamon Flower",ar:"Charlie Rouse",v:"Groove",r:"Jazz",t:"Rhythmic"},
+    {s:"Lazy Afternoon",al:"Classic Blue Note Ballads",ar:"Pete La Roca",v:"Chill",r:"Jazz",t:"Atmospheric"},
+    {s:"Midnight Mischief",al:"Cloak",ar:"Jordan Rakei",v:"Groove",r:"Soul & Funk",t:"Atmospheric"},
+    {s:"Tudo o Que Voce Podia Ser",al:"Clube da Esquina",ar:"Milton Nascimento",v:"Chill",r:"Brazilian",t:"Atmospheric"},
+    {s:"New World Spirit",al:"Colors of Latin Jazz",ar:"Ray Barretto",v:"Fire",r:"Latin",t:"Rhythmic"},
+    {s:"Come I Leave",al:"Single",ar:"Paleman",v:"Groove",r:"Electronic",t:"Rhythmic"},
+    {s:"Come With Me",al:"Come With Me",ar:"Tania Maria",v:"Fire",r:"Brazilian",t:"Rhythmic"},
+    {s:"Short Skirt/Long Jacket",al:"Comfort Eagle",ar:"CAKE",v:"Fire",r:"Rock & Alt",t:"Rhythmic"},
+    {s:"Craving Comes Back",al:"Single",ar:"Demarkus Lewis",v:"Groove",r:"Electronic",t:"Rhythmic"},
+    {s:"Crisis",al:"Single",ar:"Sondrio",v:"Groove",r:"Electronic",t:"Atmospheric"},
+    {s:"Cry Baby",al:"Single",ar:"Rooms",v:"Chill",r:"Electronic",t:"Atmospheric"},
+    {s:"CARPINTERIA (feat. Freddie Gibbs)",al:"CRYBABY",ar:"Rae Khalil",v:"Groove",r:"Hip Hop",t:"Melodic"},
+    {s:"All Night Long",al:"Cypress Grove",ar:"Jimmy Duck Holmes",v:"Groove",r:"Rock & Alt",t:"Rhythmic"},
+    {s:"College Welcomes Carl",al:"Daylight Savings",ar:"Surprise Chef",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
+    {s:"Good Boy (Decapo Edit)",al:"De Capo",ar:"De-Phazz",v:"Chill",r:"Jazz",t:"Melodic"},
+    {s:"Devoted (Radio Edit)",al:"Single",ar:"Reverendos Of Soul",v:"Groove",r:"Soul & Funk",t:"Melodic"},
+    {s:"Dance To This",al:"Diamante Records Vol 3",ar:"Daniel Klauser",v:"Groove",r:"Electronic",t:"Rhythmic"},
+    {s:"Still Here",al:"Diamante Records 4",ar:"Dj Gab",v:"Groove",r:"Electronic",t:"Melodic"},
+    {s:"CASCADE",al:"DIEU SAUVE KIWIBUNNY",ar:"Nelick",v:"Groove",r:"Hip Hop",t:"Melodic"},
+    {s:"Butterfly",al:"Direct Step",ar:"Herbie Hancock",v:"Groove",r:"Jazz",t:"Melodic"},
+    {s:"Directions",al:"EP",ar:"Jab",v:"Groove",r:"Electronic",t:"Rhythmic"},
+    {s:"Disco Daze",al:"Single",ar:"Josh Butler & Manoova",v:"Groove",r:"Electronic",t:"Rhythmic"},
+    {s:"Tanta Saudade",al:"Djavan Various",ar:"Djavan",v:"Chill",r:"Brazilian",t:"Melodic"},
+    {s:"You Aint Fly",al:"Do You Want More",ar:"The Roots",v:"Groove",r:"Hip Hop",t:"Rhythmic"},
+    {s:"Love Is In Control",al:"Donna Summer",ar:"Donna Summer",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
+    {s:"The Infamous Grouse",al:"Dream Circus",ar:"Misha Mullov-Abbado",v:"Groove",r:"Jazz",t:"Melodic"},
+    {s:"Drink A Yak",al:"Single",ar:"Jidanofu",v:"Groove",r:"Electronic",t:"Rhythmic"},
+    {s:"Lonely",al:"Drive Slow",ar:"Mac Ayres",v:"Chill",r:"Soul & Funk",t:"Melodic"},
+    {s:"Feel the Morning!",al:"E Minor String Quintet",ar:"Raffy Bushman",v:"Chill",r:"Jazz",t:"Melodic"},
+    {s:"Fourteen (feat. Joshua Redman)",al:"Eclipse",ar:"Joey Alexander",v:"Groove",r:"Jazz",t:"Melodic"},
+    {s:"QUE NO SALGA LA LUNA",al:"EL MAL QUERER",ar:"ROSALIA",v:"Fire",r:"Latin",t:"Rhythmic"},
+    {s:"Silhouettes (I, II & III)",al:"Elaenia",ar:"Floating Points",v:"Chill",r:"Electronic",t:"Atmospheric"},
+    {s:"Endless (II)",al:"Endless",ar:"Leon Vynehall",v:"Chill",r:"Electronic",t:"Atmospheric"},
+    {s:"Who Got Da Props",al:"Enta Da Stage",ar:"Black Moon",v:"Fire",r:"Hip Hop",t:"Rhythmic"},
+    {s:"Equinox",al:"Equinox",ar:"Project Karnak",v:"Groove",r:"Electronic",t:"Rhythmic"},
+    {s:"tough tough",al:"Esbjorn Svensson",ar:"Esbjorn Svensson",v:"Chill",r:"Jazz",t:"Atmospheric"},
+    {s:"Fingertrip 1",al:"Esbjorn Svensson",ar:"Esbjorn Svensson Trio",v:"Groove",r:"Jazz",t:"Rhythmic"},
+    {s:"Jungle Waters",al:"Escapism III",ar:"Sam Gellaitry",v:"Groove",r:"Electronic",t:"Atmospheric"},
+    {s:"Lookie",al:"Eternal Child",ar:"Avishai Cohen",v:"Groove",r:"Jazz",t:"Melodic"},
+    {s:"Nao Existe Amor em SP",al:"Existe Amor",ar:"Milton Nascimento & Criolo",v:"Groove",r:"Brazilian",t:"Rhythmic"},
+    {s:"Expansions",al:"Expansions",ar:"Lonnie Liston Smith",v:"Chill",r:"Jazz",t:"Atmospheric"},
+    {s:"Nabu Corfa",al:"Jazz Harp of Dorothy Ashby",ar:"Dorothy Ashby",v:"Chill",r:"Jazz",t:"Melodic"},
+    {s:"Far Away From A Distance",al:"Single",ar:"Simian Mobile Disco",v:"Groove",r:"Electronic",t:"Atmospheric"},
+    {s:"Feeling High (Lenzman Remix)",al:"Single",ar:"The Mouse Outfit",v:"Groove",r:"Hip Hop",t:"Melodic"},
+    {s:"Feminina",al:"Femeninas",ar:"Edward Simon",v:"Chill",r:"Latin",t:"Melodic"},
+    {s:"Slow Breath",al:"Find Your Flame",ar:"Nubiyan Twist",v:"Chill",r:"Soul & Funk",t:"Atmospheric"},
+    {s:"Scene 5",al:"Fingers and Thumbs",ar:"Unforscene",v:"Groove",r:"Electronic",t:"Rhythmic"},
+    {s:"Future Children Future Hopes",al:"Flying Start",ar:"The Blackbyrds",v:"Groove",r:"Soul & Funk",t:"Melodic"},
+    {s:"For Horace",al:"Single",ar:"Raffy Bushman",v:"Chill",r:"Jazz",t:"Melodic"},
+    {s:"Molecular (Ovatow Reclock)",al:"Single",ar:"Duplex",v:"Groove",r:"Electronic",t:"Rhythmic"},
+    {s:"Imagine",al:"Franklins Room",ar:"Jordan Rakei",v:"Chill",r:"Soul & Funk",t:"Melodic"},
+    {s:"Eternal Light",al:"Free Nationals",ar:"Free Nationals & Chronixx",v:"Groove",r:"Soul & Funk",t:"Melodic"},
+    {s:"Buckle Up (feat. Soweto Kinch)",al:"Freedom Fables",ar:"Nubiyan Twist",v:"Fire",r:"Soul & Funk",t:"Rhythmic"},
+    {s:"Veneno",al:"Friends from Rio 2014",ar:"Friends from Rio",v:"Groove",r:"Brazilian",t:"Melodic"},
+    {s:"Sixty-Six",al:"From This Place",ar:"Pat Metheny",v:"Chill",r:"Jazz",t:"Atmospheric"},
+    {s:"Souly",al:"Funky Times",ar:"Funky Times",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
+    {s:"Alone Again",al:"Fusion",ar:"Fauna Flash",v:"Chill",r:"Electronic",t:"Atmospheric"},
+    {s:"Gaucho",al:"Gaucho",ar:"Steely Dan",v:"Groove",r:"Jazz",t:"Melodic"},
+    {s:"Soulsides",al:"Gentle Eyes",ar:"Art Farmer",v:"Chill",r:"Jazz",t:"Melodic"},
+    {s:"Danger",al:"Get High",ar:"Frederic Soulard",v:"Groove",r:"Electronic",t:"Rhythmic"},
+    {s:"A Queda",al:"Giant Stops",ar:"Minus & MrDolly & Luca Argel",v:"Groove",r:"Brazilian",t:"Melodic"},
+    {s:"Gnosis",al:"Gnosis",ar:"Taylor Haskins",v:"Chill",r:"Jazz",t:"Atmospheric"},
+    {s:"Slump",al:"The Godbanger",ar:"S3A",v:"Groove",r:"Electronic",t:"Rhythmic"}
+  ];
 
-        var SONGS = [
-            {s:"Pain (feat. Snoop Dogg)",al:"A nous Paris 2017",ar:"De La Soul",v:"Groove",r:"Hip Hop",t:"Rhythmic"},
-            {s:"Brasilia Brasil",al:"Abre Alas",ar:"Rogerio Caetano, Daniel Santiago & Hamilton de Holanda",v:"Fire",r:"Brazilian",t:"Rhythmic"},
-            {s:"Talkin To Myself (feat. BeMyFiasco)",al:"Abstractions",ar:"Zo! & Tall Black Guy",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-            {s:"Feel the Real",al:"Adrenalin",ar:"David Bendeth",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-            {s:"Where You Belong (Mixed)",al:"Afternoon Delights",ar:"The Groovers",v:"Groove",r:"Electronic",t:"Melodic"},
-            {s:"Sir Boastful",al:"Aldorande",ar:"Aldorande",v:"Groove",r:"Jazz",t:"Rhythmic"},
-            {s:"Abrahams New Gift",al:"Alive",ar:"Phronesis",v:"Fire",r:"Jazz",t:"Rhythmic"},
-            {s:"All 4 U",al:"All 4 U",ar:"30/70",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-            {s:"All I Hear (is a funky bassline)",al:"Single",ar:"The Sponges & Father Funk",v:"Fire",r:"Soul & Funk",t:"Rhythmic"},
-            {s:"Sockem Bopem",al:"All In",ar:"Know Good",v:"Fire",r:"Jazz",t:"Rhythmic"},
-            {s:"ALL IN (feat. Rimarkable)",al:"Single",ar:"Jitwam & Rimarkable",v:"Groove",r:"Electronic",t:"Rhythmic"},
-            {s:"Wax Your Body",al:"All Night Vibes",ar:"Lee Webster",v:"Groove",r:"Electronic",t:"Rhythmic"},
-            {s:"All of My Love",al:"Single",ar:"Etta Bond & Chris Loco",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-            {s:"Beautiful People (feat. Chuck D & Mama Ferg)",al:"ALWAYS STRIVE AND PROSPER",ar:"A$AP Ferg",v:"Fire",r:"Hip Hop",t:"Rhythmic"},
-            {s:"Forbidden Planet",al:"Amal",ar:"Vins Da Cuero",v:"Groove",r:"Electronic",t:"Atmospheric"},
-            {s:"Dr. My - Ho",al:"Amazon to Lefrak",ar:"New Optimism",v:"Groove",r:"Electronic",t:"Rhythmic"},
-            {s:"Ancestral Rhythm (feat. Tony Loveless)",al:"EP",ar:"K-Alexi Shelby",v:"Fire",r:"Electronic",t:"Rhythmic"},
-            {s:"Bird Solo",al:"Ancient Lights",ar:"Uniting Of Opposites",v:"Chill",r:"Jazz",t:"Atmospheric"},
-            {s:"Time Is On Our Side (Edit)",al:"Another Taste",ar:"Mad Honey & Another Taste",v:"Groove",r:"Electronic",t:"Melodic"},
-            {s:"Perfect Night",al:"Another Taste",ar:"Another Taste",v:"Chill",r:"Electronic",t:"Melodic"},
-            {s:"Brian",al:"Antiphon",ar:"Alfa Mist",v:"Chill",r:"Jazz",t:"Melodic"},
-            {s:"Drinking",al:"Any Day Now",ar:"The Brooks",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-            {s:"Traicion",al:"Apollo Sound 6",ar:"Roberto Roena y Su Apollo Sound",v:"Fire",r:"Latin",t:"Rhythmic"},
-            {s:"Lua de Garrafa",al:"AS PALAVRAS VOL 1 & 2",ar:"Rubel & Milton Nascimento",v:"Chill",r:"Brazilian",t:"Melodic"},
-            {s:"Help Me (2022 Remaster)",al:"The Asylum Albums",ar:"Joni Mitchell",v:"Chill",r:"Rock & Alt",t:"Melodic"},
-            {s:"Pick Up the Pieces",al:"Average White Band",ar:"Average White Band",v:"Fire",r:"Soul & Funk",t:"Rhythmic"},
-            {s:"Little Sunflower (LP Version)",al:"Backlash",ar:"Freddie Hubbard",v:"Chill",r:"Jazz",t:"Melodic"},
-            {s:"Weird Love",al:"Bar Lounge Classics",ar:"Moodorama",v:"Chill",r:"Electronic",t:"Atmospheric"},
-            {s:"Barbershop",al:"Single",ar:"Jason Moran, BlankFor.ms & Marcus Gilmore",v:"Groove",r:"Jazz",t:"Rhythmic"},
-            {s:"The Beat Inside feat. Marck Jamz",al:"EP",ar:"Soledrifter",v:"Groove",r:"Electronic",t:"Rhythmic"},
-            {s:"flight fm (Mixed)",al:"Beats In Space 103",ar:"Joy Orbison",v:"Groove",r:"Electronic",t:"Atmospheric"},
-            {s:"Beleza Destruida",al:"Single",ar:"Djavan & Milton Nascimento",v:"Chill",r:"Brazilian",t:"Melodic"},
-            {s:"Flickermood",al:"Belle et Fou OST",ar:"Forss",v:"Chill",r:"Electronic",t:"Atmospheric"},
-            {s:"Grey Luh",al:"Berhana",ar:"Berhana",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-            {s:"Poweride",al:"Best of Marcos Valle",ar:"Marcos Valle",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-            {s:"Dont Go",al:"Best of Tania Maria",ar:"Tania Maria",v:"Fire",r:"Brazilian",t:"Rhythmic"},
-            {s:"Betta Daze (Instrumental)",al:"Single",ar:"Minus 8",v:"Chill",r:"Electronic",t:"Melodic"},
-            {s:"Better (Love in Detail Remix)",al:"Single",ar:"aboveDat",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-            {s:"I Found Love (Operator S Remix)",al:"Big Fish Little Fish",ar:"Hardrive & Lives",v:"Groove",r:"Electronic",t:"Rhythmic"},
-            {s:"Days Like This (Soul House Mix)",al:"Big Fish Little Fish",ar:"Kenny Lattimore",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-            {s:"The Big Sun",al:"Single",ar:"Jo Paciello & Raffaele Ciavolino",v:"Groove",r:"Electronic",t:"Melodic"},
-            {s:"Slop Jar Blues",al:"Black Byrd",ar:"Donald Byrd",v:"Groove",r:"Jazz",t:"Melodic"},
-            {s:"Remembrance",al:"Black Focus",ar:"Yussef Kamaal",v:"Chill",r:"Jazz",t:"Atmospheric"},
-            {s:"Joint 17",al:"Black Focus",ar:"Yussef Kamaal",v:"Groove",r:"Jazz",t:"Rhythmic"},
-            {s:"Black Light (feat. Penny F.)",al:"EP",ar:"Brett Gould",v:"Groove",r:"Electronic",t:"Melodic"},
-            {s:"Blackjack",al:"Blackjack (Remastered)",ar:"Donald Byrd",v:"Groove",r:"Jazz",t:"Melodic"},
-            {s:"Blind (Frankie Knuckles Remix)",al:"Blind",ar:"Hercules & Love Affair",v:"Groove",r:"Electronic",t:"Melodic"},
-            {s:"Blind Date (feat. ABRA)",al:"Single",ar:"Joy Orbison & Overmono",v:"Groove",r:"Electronic",t:"Atmospheric"},
-            {s:"On The Nature Of Daylight",al:"The Blue Notebooks",ar:"Max Richter Orchestra",v:"Chill",r:"Rock & Alt",t:"Atmospheric"},
-            {s:"Puente",al:"Bocanada",ar:"Gustavo Cerati",v:"Chill",r:"Rock & Alt",t:"Atmospheric"},
-            {s:"Flips and Flops Drips and Drops",al:"Braincase",ar:"Electric Mantis",v:"Groove",r:"Electronic",t:"Melodic"},
-            {s:"Brasil Pandeiro (Atjazz Mix)",al:"Sonzeira",ar:"Sonzeira",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-            {s:"In Your Eyes",al:"Bridges",ar:"Dianne Reeves",v:"Chill",r:"Jazz",t:"Melodic"},
-            {s:"Broken Harvest",al:"Single",ar:"Madison Cunningham",v:"Chill",r:"Rock & Alt",t:"Melodic"},
-            {s:"Calling Out (David Penn Extended Remix)",al:"Single",ar:"Sophie Lloyd",v:"Groove",r:"Electronic",t:"Melodic"},
-            {s:"Bakara",al:"Canopee",ar:"Polo & Pan",v:"Groove",r:"Electronic",t:"Atmospheric"},
-            {s:"Sky Islands",al:"Capitol Rare Vol 1",ar:"Caldera",v:"Groove",r:"Jazz",t:"Melodic"},
-            {s:"Careless (Tiny Room Sessions)",al:"Single",ar:"Ronald Bruner Jr., Greg Spero & MonoNeon",v:"Fire",r:"Jazz",t:"Rhythmic"},
-            {s:"Modinha (feat. Maria Bethania)",al:"Carminho Canta Tom Jobim",ar:"Carminho",v:"Chill",r:"Brazilian",t:"Melodic"},
-            {s:"Carrie (Slowed)",al:"Single",ar:"Ugovhb & EF",v:"Chill",r:"Electronic",t:"Atmospheric"},
-            {s:"From the Lonely Afternoon",al:"Carry On",ar:"Flora Purim",v:"Chill",r:"Brazilian",t:"Atmospheric"},
-            {s:"Kate Song",al:"Casually Introducing",ar:"Walter Smith III",v:"Chill",r:"Jazz",t:"Melodic"},
-            {s:"Romance",al:"Cat",ar:"Hiroshi Suzuki",v:"Groove",r:"Jazz",t:"Melodic"},
-            {s:"No Na Garganta",al:"Cheio De Dedos",ar:"Guinga",v:"Chill",r:"Brazilian",t:"Melodic"},
-            {s:"Essa Moca Ta Diferente",al:"Chico Buarque de Hollanda No4",ar:"Chico Buarque",v:"Groove",r:"Brazilian",t:"Melodic"},
-            {s:"Waiting On The Corner",al:"Cinnamon Flower",ar:"Charlie Rouse",v:"Groove",r:"Jazz",t:"Rhythmic"},
-            {s:"Lazy Afternoon",al:"Classic Blue Note: The Ballads",ar:"Pete La Roca",v:"Chill",r:"Jazz",t:"Atmospheric"},
-            {s:"Midnight Mischief",al:"Cloak",ar:"Jordan Rakei",v:"Groove",r:"Soul & Funk",t:"Atmospheric"},
-            {s:"Tudo o Que Voce Podia Ser",al:"Clube da Esquina",ar:"Milton Nascimento",v:"Chill",r:"Brazilian",t:"Atmospheric"},
-            {s:"New World Spirit",al:"Colors of Latin Jazz",ar:"Ray Barretto & The New World Spirit",v:"Fire",r:"Latin",t:"Rhythmic"},
-            {s:"Come I Leave",al:"Single",ar:"Paleman",v:"Groove",r:"Electronic",t:"Rhythmic"},
-            {s:"Come With Me",al:"Come With Me",ar:"Tania Maria",v:"Fire",r:"Brazilian",t:"Rhythmic"},
-            {s:"Short Skirt/Long Jacket",al:"Comfort Eagle",ar:"CAKE",v:"Fire",r:"Rock & Alt",t:"Rhythmic"},
-            {s:"Craving Comes Back",al:"Single",ar:"Demarkus Lewis",v:"Groove",r:"Electronic",t:"Rhythmic"},
-            {s:"Crisis",al:"Single",ar:"Sondrio",v:"Groove",r:"Electronic",t:"Atmospheric"},
-            {s:"Cry Baby",al:"Single",ar:"Rooms",v:"Chill",r:"Electronic",t:"Atmospheric"},
-            {s:"CARPINTERIA (feat. Freddie Gibbs)",al:"CRYBABY",ar:"Rae Khalil",v:"Groove",r:"Hip Hop",t:"Melodic"},
-            {s:"All Night Long",al:"Cypress Grove",ar:"Jimmy Duck Holmes",v:"Groove",r:"Rock & Alt",t:"Rhythmic"},
-            {s:"College Welcomes Carl",al:"Daylight Savings",ar:"Surprise Chef",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-            {s:"Good Boy (Decapo Edit)",al:"De Capo",ar:"De-Phazz & STUBAphilharmonie",v:"Chill",r:"Jazz",t:"Melodic"},
-            {s:"Devoted (Radio Edit)",al:"Single",ar:"Micky More & Andy Tee, Reverendos Of Soul & Anduze",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-            {s:"Dance To This",al:"Diamante Records VA Vol 3",ar:"Daniel Klauser",v:"Groove",r:"Electronic",t:"Rhythmic"},
-            {s:"Still Here",al:"Diamante Records 4",ar:"Dj Gab",v:"Groove",r:"Electronic",t:"Melodic"},
-            {s:"CASCADE (feat. Kayden & Jagger Jazz)",al:"DIEU SAUVE KIWIBUNNY",ar:"Nelick",v:"Groove",r:"Hip Hop",t:"Melodic"},
-            {s:"Butterfly",al:"Direct Step",ar:"Herbie Hancock",v:"Groove",r:"Jazz",t:"Melodic"},
-            {s:"Directions",al:"EP",ar:"Jab",v:"Groove",r:"Electronic",t:"Rhythmic"},
-            {s:"Disco Daze",al:"Single",ar:"Josh Butler & Manoova",v:"Groove",r:"Electronic",t:"Rhythmic"},
-            {s:"Tanta Saudade",al:"Djavan Various",ar:"Djavan",v:"Chill",r:"Brazilian",t:"Melodic"},
-            {s:"You Aint Fly",al:"Do You Want More",ar:"The Roots",v:"Groove",r:"Hip Hop",t:"Rhythmic"},
-            {s:"Love Is In Control",al:"Donna Summer",ar:"Donna Summer",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-            {s:"The Infamous Grouse",al:"Dream Circus",ar:"Misha Mullov-Abbado",v:"Groove",r:"Jazz",t:"Melodic"},
-            {s:"Drink A Yak",al:"Single",ar:"Jidanofu",v:"Groove",r:"Electronic",t:"Rhythmic"},
-            {s:"Lonely",al:"Drive Slow",ar:"Mac Ayres",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-            {s:"Feel the Morning!",al:"E Minor String Quintet + Rhythm",ar:"Raffy Bushman",v:"Chill",r:"Jazz",t:"Melodic"},
-            {s:"Fourteen (feat. Joshua Redman)",al:"Eclipse",ar:"Joey Alexander",v:"Groove",r:"Jazz",t:"Melodic"},
-            {s:"QUE NO SALGA LA LUNA",al:"EL MAL QUERER",ar:"ROSALIA",v:"Fire",r:"Latin",t:"Rhythmic"},
-            {s:"Silhouettes (I, II & III)",al:"Elaenia",ar:"Floating Points",v:"Chill",r:"Electronic",t:"Atmospheric"},
-            {s:"Endless (II)",al:"Endless",ar:"Leon Vynehall",v:"Chill",r:"Electronic",t:"Atmospheric"},
-            {s:"Who Got Da Props",al:"Enta Da Stage",ar:"Black Moon",v:"Fire",r:"Hip Hop",t:"Rhythmic"},
-            {s:"Equinox",al:"Equinox",ar:"Project Karnak",v:"Groove",r:"Electronic",t:"Rhythmic"},
-            {s:"tough tough",al:"Esbjorn Svensson",ar:"Esbjorn Svensson",v:"Chill",r:"Jazz",t:"Atmospheric"},
-            {s:"Fingertrip 1",al:"Esbjorn Svensson",ar:"Esbjorn Svensson Trio",v:"Groove",r:"Jazz",t:"Rhythmic"},
-            {s:"Jungle Waters",al:"Escapism III",ar:"Sam Gellaitry",v:"Groove",r:"Electronic",t:"Atmospheric"},
-            {s:"Lookie",al:"Eternal Child",ar:"Avishai Cohen",v:"Groove",r:"Jazz",t:"Melodic"},
-            {s:"Nao Existe Amor em SP (feat. Amaro Freitas)",al:"Existe Amor",ar:"Milton Nascimento & Criolo",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-            {s:"Expansions",al:"Expansions",ar:"Lonnie Liston Smith & The Cosmic Echoes",v:"Chill",r:"Jazz",t:"Atmospheric"},
-            {s:"Nabu Corfa",al:"Fantastic Jazz Harp of Dorothy Ashby",ar:"Dorothy Ashby",v:"Chill",r:"Jazz",t:"Melodic"},
-            {s:"Far Away From A Distance",al:"Single",ar:"Simian Mobile Disco",v:"Groove",r:"Electronic",t:"Atmospheric"},
-            {s:"Feeling High (Lenzman Remix)",al:"Single",ar:"The Mouse Outfit & Lenzman",v:"Groove",r:"Hip Hop",t:"Melodic"},
-            {s:"Feminina",al:"Femeninas",ar:"Edward Simon",v:"Chill",r:"Latin",t:"Melodic"},
-            {s:"Slow Breath",al:"Find Your Flame",ar:"Nubiyan Twist & Mamani Keita",v:"Chill",r:"Soul & Funk",t:"Atmospheric"},
-            {s:"Scene 5",al:"Fingers and Thumbs",ar:"Unforscene",v:"Groove",r:"Electronic",t:"Rhythmic"},
-            {s:"Future Children Future Hopes",al:"Flying Start",ar:"The Blackbyrds",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-            {s:"For Horace",al:"Single",ar:"Raffy Bushman",v:"Chill",r:"Jazz",t:"Melodic"},
-            {s:"Molecular (Ovatow Reclock)",al:"Single",ar:"Duplex",v:"Groove",r:"Electronic",t:"Rhythmic"},
-            {s:"Imagine",al:"Franklins Room",ar:"Jordan Rakei",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-            {s:"Eternal Light",al:"Free Nationals",ar:"Free Nationals & Chronixx",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-            {s:"Buckle Up (feat. Soweto Kinch)",al:"Freedom Fables",ar:"Nubiyan Twist",v:"Fire",r:"Soul & Funk",t:"Rhythmic"},
-            {s:"Veneno",al:"Friends from Rio Project 2014",ar:"Friends from Rio & Denise Pinaud",v:"Groove",r:"Brazilian",t:"Melodic"},
-            {s:"Sixty-Six",al:"From This Place",ar:"Pat Metheny",v:"Chill",r:"Jazz",t:"Atmospheric"},
-            {s:"Souly",al:"Funky Times",ar:"Funky Times",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-            {s:"Alone Again",al:"Fusion",ar:"Fauna Flash",v:"Chill",r:"Electronic",t:"Atmospheric"},
-            {s:"Gaucho",al:"Gaucho",ar:"Steely Dan",v:"Groove",r:"Jazz",t:"Melodic"},
-            {s:"Soulsides",al:"Gentle Eyes",ar:"Art Farmer",v:"Chill",r:"Jazz",t:"Melodic"},
-            {s:"Danger",al:"Get High",ar:"Frederic Soulard",v:"Groove",r:"Electronic",t:"Rhythmic"},
-            {s:"A Queda",al:"Giant Stops",ar:"Minus & MrDolly & Luca Argel",v:"Groove",r:"Brazilian",t:"Melodic"},
-            {s:"Gnosis",al:"Gnosis",ar:"Taylor Haskins",v:"Chill",r:"Jazz",t:"Atmospheric"},
-            {s:"Slump",al:"The Godbanger",ar:"S3A",v:"Groove",r:"Electronic",t:"Rhythmic"}
-        ];
+  var V=["Chill","Groove","Fire"];
+  var R=["Jazz","Brazilian","Electronic","Soul & Funk","Hip Hop","Latin","Rock & Alt"];
+  var T=["Melodic","Rhythmic","Atmospheric"];
+  var GC={
+    "Jazz":"#1a3a4e,#0a2030,#4ecdc4",
+    "Brazilian":"#3a2e0a,#1a2e0a,#e6b422",
+    "Electronic":"#1a0a3e,#0a1a2e,#7b6fff",
+    "Soul & Funk":"#3e1a0a,#2e1a0a,#ff8c42",
+    "Hip Hop":"#2e0a2e,#1a0a1a,#ff4d6d",
+    "Latin":"#3e2a0a,#2e0a0a,#ff6b35",
+    "Rock & Alt":"#1a1a2e,#0a0a1a,#8888aa"
+  };
 
-        var VIBES = ["Chill", "Groove", "Fire"];
-        var ROOTS = ["Jazz", "Brazilian", "Electronic", "Soul & Funk", "Hip Hop", "Latin", "Rock & Alt"];
-        var TEXTURES = ["Melodic", "Rhythmic", "Atmospheric"];
+  var lever=document.getElementById("lever");
+  var r1=document.getElementById("r1");
+  var r2=document.getElementById("r2");
+  var r3=document.getElementById("r3");
+  var result=document.getElementById("result");
+  var again=document.getElementById("again");
+  var ctog=document.getElementById("ctog");
+  var cbody=document.getElementById("cbody");
+  var busy=false;
 
-        // Genre color map for album art
-        var GENRE_COLORS = {
-            "Jazz": {bg1: "#1a0a3e", bg2: "#0a2a4e", accent: "#00F5FF"},
-            "Brazilian": {bg1: "#1a2e0a", bg2: "#2e1a0a", accent: "#FFD700"},
-            "Electronic": {bg1: "#0a1a2e", bg2: "#1a0a2e", accent: "#7B2FFF"},
-            "Soul & Funk": {bg1: "#2e0a1a", bg2: "#2e1a0a", accent: "#FF6B35"},
-            "Hip Hop": {bg1: "#1a1a1a", bg2: "#2e0a2e", accent: "#FF2D78"},
-            "Latin": {bg1: "#2e1a0a", bg2: "#1a0a0a", accent: "#FF6B35"},
-            "Rock & Alt": {bg1: "#0a0a1a", bg2: "#1a0a1a", accent: "#aaa"}
-        };
+  function spin(){
+    if(busy)return;
+    busy=true;
+    result.classList.remove("show");
 
-        var spinBtn = document.getElementById("spin-btn");
-        var reelVibe = document.getElementById("reel-vibe");
-        var reelRoots = document.getElementById("reel-roots");
-        var reelTexture = document.getElementById("reel-texture");
-        var songCard = document.getElementById("song-card");
-        var collectionToggle = document.getElementById("collection-toggle");
-        var collectionContent = document.getElementById("collection-content");
+    // Animate lever
+    lever.classList.remove("released");
+    lever.classList.add("pulled");
 
-        var spinning = false;
+    // Start spinning reels
+    r1.classList.add("spin");r1.classList.remove("land");
+    r2.classList.add("spin");r2.classList.remove("land");
+    r3.classList.add("spin");r3.classList.remove("land");
 
-        // =====================
-        // SPIN FUNCTION
-        // =====================
-        function pullLever() {
-            if (spinning) return;
-            spinning = true;
+    // Cycle text in reels
+    var i1=setInterval(function(){r1.querySelector(".reel-val").textContent=V[Math.floor(Math.random()*V.length)]},80);
+    var i2=setInterval(function(){r2.querySelector(".reel-val").textContent=R[Math.floor(Math.random()*R.length)]},90);
+    var i3=setInterval(function(){r3.querySelector(".reel-val").textContent=T[Math.floor(Math.random()*T.length)]},100);
 
-            spinBtn.disabled = true;
-            spinBtn.textContent = "SPINNING...";
+    // Pick final values
+    var fv=V[Math.floor(Math.random()*V.length)];
+    var fr=R[Math.floor(Math.random()*R.length)];
+    var ft=T[Math.floor(Math.random()*T.length)];
 
-            // Hide previous song card
-            songCard.classList.remove("revealed");
-            songCard.style.display = "none";
+    // Release lever
+    setTimeout(function(){lever.classList.remove("pulled");lever.classList.add("released")},600);
 
-            // Start all reels spinning
-            reelVibe.classList.add("spinning");
-            reelVibe.classList.remove("stopped");
-            reelRoots.classList.add("spinning");
-            reelRoots.classList.remove("stopped");
-            reelTexture.classList.add("spinning");
-            reelTexture.classList.remove("stopped");
+    // Stop reel 1
+    setTimeout(function(){
+      clearInterval(i1);r1.classList.remove("spin");r1.classList.add("land");
+      r1.querySelector(".reel-val").textContent=fv;
+    },1400);
+    // Stop reel 2
+    setTimeout(function(){
+      clearInterval(i2);r2.classList.remove("spin");r2.classList.add("land");
+      r2.querySelector(".reel-val").textContent=fr;
+    },2000);
+    // Stop reel 3
+    setTimeout(function(){
+      clearInterval(i3);r3.classList.remove("spin");r3.classList.add("land");
+      r3.querySelector(".reel-val").textContent=ft;
+    },2600);
+    // Reveal song
+    setTimeout(function(){
+      var song=find(fv,fr,ft);
+      show(song);
+      busy=false;
+    },3000);
+  }
 
-            // Cycle reel values during spin
-            var vibeInterval = setInterval(function() {
-                reelVibe.querySelector(".reel-value").textContent = VIBES[Math.floor(Math.random() * VIBES.length)];
-            }, 80);
-            var rootsInterval = setInterval(function() {
-                reelRoots.querySelector(".reel-value").textContent = ROOTS[Math.floor(Math.random() * ROOTS.length)];
-            }, 90);
-            var textureInterval = setInterval(function() {
-                reelTexture.querySelector(".reel-value").textContent = TEXTURES[Math.floor(Math.random() * TEXTURES.length)];
-            }, 100);
+  function find(v,r,t){
+    var m=S.filter(function(x){return x.v===v&&x.r===r&&x.t===t});
+    if(m.length)return m[Math.floor(Math.random()*m.length)];
+    m=S.filter(function(x){return x.v===v&&x.r===r});
+    if(m.length)return m[Math.floor(Math.random()*m.length)];
+    m=S.filter(function(x){return x.v===v});
+    if(m.length)return m[Math.floor(Math.random()*m.length)];
+    return S[Math.floor(Math.random()*S.length)];
+  }
 
-            // Pick final values
-            var finalVibe = VIBES[Math.floor(Math.random() * VIBES.length)];
-            var finalRoots = ROOTS[Math.floor(Math.random() * ROOTS.length)];
-            var finalTexture = TEXTURES[Math.floor(Math.random() * TEXTURES.length)];
+  function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+  function enc(s){return encodeURIComponent(s)}
 
-            // Stop reel 1 at 1.5s
-            setTimeout(function() {
-                clearInterval(vibeInterval);
-                reelVibe.classList.remove("spinning");
-                reelVibe.classList.add("stopped");
-                reelVibe.querySelector(".reel-value").textContent = finalVibe;
-            }, 1500);
+  function show(song){
+    document.getElementById("rs").textContent=song.s;
+    document.getElementById("ra").textContent=song.ar;
+    document.getElementById("ral").textContent=song.al;
 
-            // Stop reel 2 at 2.2s
-            setTimeout(function() {
-                clearInterval(rootsInterval);
-                reelRoots.classList.remove("spinning");
-                reelRoots.classList.add("stopped");
-                reelRoots.querySelector(".reel-value").textContent = finalRoots;
-            }, 2200);
+    // Album art
+    var gc=(GC[song.r]||"#1a1a2e,#0a0a1a,#888").split(",");
+    var ang=Math.floor(Math.random()*360);
+    document.getElementById("art").style.background="linear-gradient("+ang+"deg,"+gc[0]+","+gc[1]+")";
 
-            // Stop reel 3 at 2.8s
-            setTimeout(function() {
-                clearInterval(textureInterval);
-                reelTexture.classList.remove("spinning");
-                reelTexture.classList.add("stopped");
-                reelTexture.querySelector(".reel-value").textContent = finalTexture;
-            }, 2800);
+    // Links
+    var q=enc(song.ar+" "+song.s);
+    var rl=document.getElementById("rl");
+    rl.innerHTML='<a href="https://open.spotify.com/search/'+q+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg> Spotify</a>'
+    +'<a href="https://www.youtube.com/results?search_query='+q+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> YouTube</a>'
+    +'<a href="https://music.apple.com/us/search?term='+q+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M23.994 18.066a8.4 8.4 0 01-.925 2.03c-.56.82-1.02 1.39-1.37 1.71-.55.52-1.14.79-1.77.8-.45 0-1-.13-1.64-.39-.64-.26-1.22-.39-1.76-.39-.56 0-1.16.13-1.8.39-.64.26-1.16.4-1.56.4-.6.02-1.2-.16-1.8-.55a12.3 12.3 0 01-1.95-2.16 14 14 0 01-1.3-2.22 12.7 12.7 0 01-.86-3.09c0-1.14.25-2.12.74-2.95a4.3 4.3 0 013.64-2.17c.48 0 1.11.15 1.9.45.78.3 1.28.45 1.5.45.16 0 .72-.18 1.67-.52.9-.32 1.65-.46 2.27-.4 1.68.13 2.94.8 3.78 1.99-1.5.91-2.24 2.19-2.23 3.82.01 1.27.47 2.33 1.38 3.17.41.39.87.69 1.38.9-.11.32-.23.63-.35.93zM18.09.3c0 1-.36 1.93-1.09 2.78-.87 1.02-1.93 1.61-3.07 1.52a3 3 0 01-.02-.38c0-.96.42-1.98 1.16-2.82A4.5 4.5 0 0118.07 0c.01.1.02.2.02.3z"/></svg> Apple</a>';
 
-            // Reveal song at 3.2s
-            setTimeout(function() {
-                var song = findSong(finalVibe, finalRoots, finalTexture);
-                revealSong(song);
-                spinning = false;
-                spinBtn.disabled = false;
-                spinBtn.textContent = "SPIN AGAIN";
-            }, 3200);
-        }
+    result.classList.add("show");
+  }
 
-        // =====================
-        // FIND MATCHING SONG
-        // =====================
-        function findSong(vibe, roots, texture) {
-            // Try exact match
-            var matches = SONGS.filter(function(song) {
-                return song.v === vibe && song.r === roots && song.t === texture;
-            });
-            if (matches.length > 0) {
-                return matches[Math.floor(Math.random() * matches.length)];
-            }
+  // Bind events
+  lever.addEventListener("click",spin);
+  lever.addEventListener("touchend",function(e){e.preventDefault();spin()});
+  again.addEventListener("click",spin);
 
-            // Relax texture
-            matches = SONGS.filter(function(song) {
-                return song.v === vibe && song.r === roots;
-            });
-            if (matches.length > 0) {
-                return matches[Math.floor(Math.random() * matches.length)];
-            }
+  // Collection
+  var built=false;
+  ctog.addEventListener("click",function(){
+    var open=cbody.classList.contains("open");
+    if(open){
+      cbody.classList.remove("open");
+      ctog.classList.remove("open");
+    }else{
+      cbody.classList.add("open");
+      ctog.classList.add("open");
+      if(!built){buildColl();built=true}
+    }
+  });
 
-            // Relax roots too
-            matches = SONGS.filter(function(song) {
-                return song.v === vibe;
-            });
-            if (matches.length > 0) {
-                return matches[Math.floor(Math.random() * matches.length)];
-            }
-
-            // Fallback: random song
-            return SONGS[Math.floor(Math.random() * SONGS.length)];
-        }
-
-        // =====================
-        // REVEAL SONG
-        // =====================
-        function revealSong(song) {
-            document.getElementById("song-title").textContent = song.s;
-            document.getElementById("song-artist").textContent = song.ar;
-            document.getElementById("song-album").textContent = song.al;
-
-            // Generate album art
-            var colors = GENRE_COLORS[song.r] || {bg1: "#1a1a2e", bg2: "#0a0a1a", accent: "#888"};
-            var artBg = document.getElementById("song-art-bg");
-            var angle = Math.floor(Math.random() * 360);
-            artBg.style.background = "linear-gradient(" + angle + "deg, " + colors.bg1 + ", " + colors.bg2 + "), radial-gradient(circle at 30% 70%, " + colors.accent + "33, transparent 60%)";
-
-            // Tags
-            var tagsEl = document.getElementById("song-tags");
-            tagsEl.innerHTML = "";
-
-            var tagVibe = document.createElement("span");
-            tagVibe.className = "song-tag song-tag-vibe";
-            tagVibe.textContent = song.v;
-            tagsEl.appendChild(tagVibe);
-
-            var tagRoots = document.createElement("span");
-            tagRoots.className = "song-tag song-tag-roots";
-            tagRoots.textContent = song.r;
-            tagsEl.appendChild(tagRoots);
-
-            var tagTexture = document.createElement("span");
-            tagTexture.className = "song-tag song-tag-texture";
-            tagTexture.textContent = song.t;
-            tagsEl.appendChild(tagTexture);
-
-            // Show card with animation
-            songCard.style.display = "block";
-            // Force reflow before adding class
-            songCard.offsetHeight;
-            songCard.classList.add("revealed");
-        }
-
-        // =====================
-        // COLLECTION BROWSER
-        // =====================
-        function buildCollection() {
-            var pillsContainer = document.getElementById("filter-pills");
-            var listContainer = document.getElementById("collection-list");
-
-            // Build filter pills
-            var allPill = document.createElement("button");
-            allPill.className = "filter-pill active";
-            allPill.textContent = "All";
-            allPill.setAttribute("data-filter", "all");
-            pillsContainer.appendChild(allPill);
-
-            ROOTS.forEach(function(genre) {
-                var pill = document.createElement("button");
-                pill.className = "filter-pill";
-                pill.textContent = genre;
-                pill.setAttribute("data-filter", genre);
-                pillsContainer.appendChild(pill);
-            });
-
-            // Pill click handlers
-            pillsContainer.addEventListener("click", function(e) {
-                if (e.target.classList.contains("filter-pill")) {
-                    var pills = pillsContainer.querySelectorAll(".filter-pill");
-                    for (var i = 0; i < pills.length; i++) {
-                        pills[i].classList.remove("active");
-                    }
-                    e.target.classList.add("active");
-                    renderList(e.target.getAttribute("data-filter"));
-                }
-            });
-
-            renderList("all");
-        }
-
-        function renderList(filter) {
-            var listContainer = document.getElementById("collection-list");
-            listContainer.innerHTML = "";
-
-            var sorted = SONGS.slice().sort(function(a, b) {
-                return a.ar.localeCompare(b.ar);
-            });
-
-            var filtered = filter === "all" ? sorted : sorted.filter(function(song) {
-                return song.r === filter;
-            });
-
-            filtered.forEach(function(song) {
-                var item = document.createElement("div");
-                item.className = "collection-item";
-
-                var main = document.createElement("div");
-                main.className = "collection-item-main";
-
-                var songName = document.createElement("div");
-                songName.className = "collection-item-song";
-                songName.textContent = song.s;
-
-                var artistName = document.createElement("div");
-                artistName.className = "collection-item-artist";
-                artistName.textContent = song.ar;
-
-                main.appendChild(songName);
-                main.appendChild(artistName);
-
-                var genre = document.createElement("div");
-                genre.className = "collection-item-genre";
-                genre.textContent = song.r;
-
-                item.appendChild(main);
-                item.appendChild(genre);
-                listContainer.appendChild(item);
-            });
-        }
-
-        // =====================
-        // EVENT LISTENERS
-        // =====================
-        spinBtn.addEventListener("click", pullLever);
-
-        collectionToggle.addEventListener("click", function() {
-            var isOpen = collectionContent.classList.contains("open");
-            if (isOpen) {
-                collectionContent.classList.remove("open");
-                collectionToggle.textContent = "Browse the full collection";
-            } else {
-                collectionContent.classList.add("open");
-                collectionToggle.textContent = "Hide collection";
-                if (!collectionContent.hasAttribute("data-built")) {
-                    buildCollection();
-                    collectionContent.setAttribute("data-built", "true");
-                }
-            }
-        });
-
+  function buildColl(){
+    var pills=document.getElementById("pills");
+    var all=["All"].concat(R);
+    all.forEach(function(g){
+      var b=document.createElement("button");
+      b.className="pill"+(g==="All"?" on":"");
+      b.textContent=g;
+      b.addEventListener("click",function(){
+        var ps=pills.querySelectorAll(".pill");
+        for(var i=0;i<ps.length;i++)ps[i].classList.remove("on");
+        b.classList.add("on");
+        renderColl(g==="All"?null:g);
+      });
+      pills.appendChild(b);
     });
-    </script>
+    renderColl(null);
+  }
+
+  function renderColl(filter){
+    var list=document.getElementById("clist");
+    list.innerHTML="";
+    var sorted=S.slice().sort(function(a,b){return a.ar.localeCompare(b.ar)});
+    if(filter)sorted=sorted.filter(function(x){return x.r===filter});
+    sorted.forEach(function(x){
+      var d=document.createElement("div");
+      d.className="coll-item";
+      d.innerHTML='<span class="coll-item-song">'+esc(x.s)+'</span><span class="coll-item-artist">'+esc(x.ar)+'</span>';
+      list.appendChild(d);
+    });
+  }
+
+})();
+</script>
 </body>
 </html>
