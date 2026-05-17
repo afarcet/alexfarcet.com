@@ -6,300 +6,452 @@
 <title>SlotMusic — Alex Farcet</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=DM+Sans:wght@400;500&family=Russo+One&family=Bungee+Shade&family=Permanent+Marker&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Permanent+Marker&family=DM+Sans:wght@400;500;700&family=Russo+One&family=Special+Elite&family=Caveat+Brush&family=Rye&family=Monoton&family=Abril+Fatface&display=swap" rel="stylesheet">
 <style>
+/* ============================================================
+   SLOTMUSIC — TROPICÁLIA COSMIC CASINO
+   ============================================================ */
+:root{
+  --bahia:#ff1b6b;
+  --sunset:#ff6a00;
+  --gold:#ffc93c;
+  --lime:#b6ff3c;
+  --teal:#00d9c7;
+  --violet:#7b2cbf;
+  --indigo:#0d0322;
+  --indigo-2:#1a0540;
+  --cream:#fff5e1;
+  --paper:#f4e8c8;
+  --ink:#2a0a1f;
+}
 *{margin:0;padding:0;box-sizing:border-box}
-
+html,body{overflow-x:hidden}
 body{
-  background:#0a0a12;
-  color:#e0d8c8;
+  background:#06010f;
+  color:var(--cream);
   font-family:'DM Sans',sans-serif;
   min-height:100vh;
-  overflow-x:hidden;
+  position:relative;
+  cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><circle cx='12' cy='12' r='9' fill='%23ff1b6b' stroke='%23ffc93c' stroke-width='1.5'/><circle cx='12' cy='12' r='2.4' fill='%230d0322'/><circle cx='12' cy='12' r='0.6' fill='%23ffc93c'/></svg>") 12 12, auto;
 }
 
-/* === NEON GLOW BACKGROUND === */
-body::before{
-  content:'';position:fixed;top:0;left:0;right:0;bottom:0;
+/* ===== COSMIC NIGHT SKY ===== */
+.sky{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
-    radial-gradient(ellipse at 30% 20%,rgba(255,0,100,0.08) 0%,transparent 50%),
-    radial-gradient(ellipse at 70% 80%,rgba(0,200,255,0.06) 0%,transparent 50%),
-    radial-gradient(ellipse at 50% 50%,rgba(120,0,255,0.04) 0%,transparent 60%);
-  pointer-events:none;z-index:0;
+    radial-gradient(ellipse at 18% 12%,rgba(255,27,107,0.35) 0%,transparent 38%),
+    radial-gradient(ellipse at 82% 18%,rgba(123,44,191,0.45) 0%,transparent 42%),
+    radial-gradient(ellipse at 50% 92%,rgba(255,106,0,0.30) 0%,transparent 50%),
+    radial-gradient(ellipse at 90% 70%,rgba(0,217,199,0.25) 0%,transparent 45%),
+    radial-gradient(ellipse at 12% 60%,rgba(255,201,60,0.18) 0%,transparent 40%),
+    linear-gradient(180deg,#0a0322 0%,#1a0540 40%,#2a0838 70%,#0d0322 100%);
+  background-size:cover;
+  animation:skyDrift 60s ease-in-out infinite alternate;
 }
-body::after{
-  content:'';position:fixed;top:0;left:0;right:0;bottom:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:9999;opacity:0.5;
+@keyframes skyDrift{0%{filter:hue-rotate(0deg) brightness(1)}50%{filter:hue-rotate(-12deg) brightness(1.06)}100%{filter:hue-rotate(8deg) brightness(0.95)}}
+
+.stars{position:fixed;inset:0;z-index:1;pointer-events:none}
+.stars svg{width:100%;height:100%}
+.star{animation:twinkle var(--d,4s) ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:0.25}50%{opacity:1}}
+
+/* Drifting tropical leaves */
+.leaf{position:fixed;pointer-events:none;z-index:1;opacity:0.18;will-change:transform}
+.leaf-1{top:8%;left:-80px;animation:floatRight 38s linear infinite}
+.leaf-2{top:60%;right:-90px;animation:floatLeft 44s linear infinite;animation-delay:-12s}
+.leaf-3{bottom:18%;left:-70px;animation:floatRight 52s linear infinite;animation-delay:-25s}
+.leaf-4{top:30%;right:-100px;animation:floatLeft 47s linear infinite;animation-delay:-7s}
+@keyframes floatRight{0%{transform:translateX(0) rotate(0deg)}100%{transform:translateX(120vw) rotate(360deg)}}
+@keyframes floatLeft{0%{transform:translateX(0) rotate(0deg)}100%{transform:translateX(-120vw) rotate(-360deg)}}
+
+/* Film grain */
+.grain{
+  position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.08;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
 }
 
-/* Floating particles */
-.dust{position:fixed;border-radius:50%;pointer-events:none;z-index:1}
-.dust:nth-child(1){width:4px;height:4px;top:15%;left:20%;background:rgba(255,0,150,0.3);animation:drift1 18s infinite linear}
-.dust:nth-child(2){width:3px;height:3px;top:45%;left:70%;background:rgba(0,200,255,0.3);animation:drift2 22s infinite linear}
-.dust:nth-child(3){width:5px;height:5px;top:70%;left:40%;background:rgba(255,200,0,0.2);animation:drift1 15s infinite linear reverse}
-.dust:nth-child(4){width:3px;height:3px;top:25%;left:80%;background:rgba(0,255,150,0.2);animation:drift2 20s infinite linear reverse}
-.dust:nth-child(5){width:4px;height:4px;top:60%;left:15%;background:rgba(255,0,200,0.25);animation:drift1 25s infinite linear}
-@keyframes drift1{0%{transform:translate(0,0) scale(1);opacity:0.2}50%{transform:translate(60px,-40px) scale(2);opacity:0.6}100%{transform:translate(-20px,30px) scale(0.8);opacity:0.2}}
-@keyframes drift2{0%{transform:translate(0,0);opacity:0.15}50%{transform:translate(-50px,60px);opacity:0.5}100%{transform:translate(30px,-20px);opacity:0.15}}
+/* ===== LAYOUT ===== */
+.page-wrap{max-width:980px;margin:0 auto;padding:24px 24px 60px;position:relative;z-index:5}
 
-/* === LAYOUT === */
-.page-wrap{max-width:900px;margin:0 auto;padding:24px 24px 60px;position:relative;z-index:2}
-nav.side-nav{display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap}
-nav.side-nav .nav-link{color:#665e4a;font-size:0.75rem;text-decoration:none;transition:color 0.3s}
-nav.side-nav .nav-link:hover{color:#ff69b4}
-nav.side-nav .nav-link-active{color:#ff69b4}
-.top-header{margin-bottom:32px}
-.top-header a{display:flex;align-items:center;gap:12px;text-decoration:none;color:#e0d8c8}
-.top-header .logo-small{width:36px;height:36px;object-fit:contain;border-radius:50%;filter:saturate(1.3)}
-.top-header .site-title{font-family:'Special Elite',serif;font-size:1.1rem;letter-spacing:0.05em}
+nav.side-nav{display:flex;gap:18px;margin-bottom:24px;flex-wrap:wrap;position:relative;z-index:6}
+nav.side-nav .nav-link{
+  color:rgba(255,245,225,0.4);font-size:0.78rem;text-decoration:none;
+  transition:color 0.3s, transform 0.2s;font-family:'DM Sans';letter-spacing:0.04em;
+}
+nav.side-nav .nav-link:hover{color:var(--bahia);transform:translateY(-1px)}
+nav.side-nav .nav-link-active{color:var(--gold);text-shadow:0 0 12px rgba(255,201,60,0.5)}
 
-/* === TAGLINE === */
+.top-header{margin-bottom:36px}
+.top-header a{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--cream)}
+.top-header .logo-small{
+  width:42px;height:42px;object-fit:contain;border-radius:50%;
+  filter:saturate(1.4) drop-shadow(0 0 10px rgba(255,27,107,0.4));
+  border:2px solid rgba(255,201,60,0.4);
+}
+.top-header .site-title{font-family:'Special Elite',serif;font-size:1.15rem;letter-spacing:0.05em}
+
+/* ===== TAGLINE ===== */
 .tagline{
   font-family:'Permanent Marker',cursive;
-  font-size:1.8rem;
+  font-size:2rem;
   text-align:center;
-  margin-bottom:36px;
-  line-height:1.4;
-  color:#fff;
-  text-shadow:0 0 30px rgba(255,0,150,0.4),0 0 60px rgba(255,0,150,0.2);
+  margin-bottom:8px;
+  line-height:1.3;
+  color:var(--cream);
+  text-shadow:
+    0 0 24px rgba(255,27,107,0.6),
+    0 0 48px rgba(255,27,107,0.3),
+    2px 2px 0 rgba(13,3,34,0.8);
+  transform:rotate(-1.5deg);
 }
 .tagline .no{
-  color:#ff1744;
-  text-decoration:line-through;
-  text-decoration-color:#ff1744;
+  color:var(--bahia);
+  text-decoration:line-through wavy;
   text-decoration-thickness:3px;
+  text-decoration-color:var(--sunset);
 }
 .tagline .yes{
-  color:#00e5ff;
+  color:var(--lime);
   font-style:italic;
-  text-shadow:0 0 20px rgba(0,229,255,0.6),0 0 40px rgba(0,229,255,0.3);
+  text-shadow:0 0 18px rgba(182,255,60,0.7),0 0 36px rgba(0,217,199,0.4),3px 3px 0 var(--violet);
+  transform:rotate(2deg);display:inline-block;
 }
+.tag-stamp{
+  display:block;text-align:center;
+  font-family:'Caveat Brush',cursive;font-size:0.95rem;color:var(--gold);
+  letter-spacing:0.25em;text-transform:uppercase;
+  margin-bottom:34px;opacity:0.7;
+  text-shadow:0 0 12px rgba(255,201,60,0.4);
+}
+.tag-stamp::before,.tag-stamp::after{content:" ✦ "}
 
-/* ============================
+/* ============================================================
    THE MACHINE
-   ============================ */
+   ============================================================ */
 .cabinet{
   position:relative;
-  max-width:700px;
-  margin:0 auto 32px;
+  max-width:780px;
+  margin:0 auto 40px;
+  filter:drop-shadow(0 30px 60px rgba(0,0,0,0.6));
 }
 
+/* SVG cabinet frame sits behind everything */
+.cabinet-art{
+  position:absolute;inset:-32px -20px -20px;z-index:0;
+  pointer-events:none;
+}
+.cabinet-art svg{width:100%;height:100%;display:block}
+
+/* The inner machine card */
 .machine{
   position:relative;
-  background:linear-gradient(180deg,#1a1028 0%,#12101e 50%,#0e0c18 100%);
-  border-radius:20px 20px 16px 16px;
-  border:3px solid;
-  border-image:linear-gradient(180deg,#ff69b4,#8b00ff 50%,#00e5ff) 1;
+  background:
+    radial-gradient(ellipse at top,rgba(123,44,191,0.4) 0%,transparent 60%),
+    linear-gradient(180deg,#2a0838 0%,#1a0540 30%,#0d0322 100%);
+  border-radius:24px 24px 14px 14px;
+  border:none;
   box-shadow:
-    0 0 40px rgba(255,0,150,0.15),
-    0 0 80px rgba(139,0,255,0.1),
-    0 30px 80px rgba(0,0,0,0.7),
-    inset 0 1px 0 rgba(255,255,255,0.05);
+    0 0 50px rgba(255,27,107,0.20),
+    0 0 100px rgba(123,44,191,0.15),
+    inset 0 2px 0 rgba(255,201,60,0.20),
+    inset 0 -3px 12px rgba(0,0,0,0.5);
   overflow:visible;
+  z-index:2;
 }
 
-/* === MARQUEE === */
+/* Decorative inner frame (ornate gold-leaf border) */
+.machine::before{
+  content:'';position:absolute;inset:8px;border-radius:18px 18px 8px 8px;
+  border:1px solid rgba(255,201,60,0.25);
+  pointer-events:none;
+  background:
+    linear-gradient(rgba(255,201,60,0.4),rgba(255,201,60,0.4)) top left/24px 1px no-repeat,
+    linear-gradient(rgba(255,201,60,0.4),rgba(255,201,60,0.4)) top right/24px 1px no-repeat,
+    linear-gradient(rgba(255,201,60,0.4),rgba(255,201,60,0.4)) bottom left/24px 1px no-repeat,
+    linear-gradient(rgba(255,201,60,0.4),rgba(255,201,60,0.4)) bottom right/24px 1px no-repeat;
+}
+
+/* ===== MARQUEE ===== */
 .marquee{
   position:relative;
-  background:linear-gradient(180deg,#1e0830 0%,#120020 100%);
-  padding:24px 20px 18px;
+  padding:28px 24px 22px;
   text-align:center;
-  border-bottom:2px solid rgba(255,105,180,0.3);
+  border-bottom:2px solid rgba(255,201,60,0.3);
   overflow:hidden;
+  background:
+    radial-gradient(ellipse at center,rgba(255,27,107,0.15),transparent 70%),
+    linear-gradient(180deg,#3a0a4a 0%,#1f0530 100%);
 }
-/* Animated neon border at top */
+/* Light bulb crown */
+.bulb-crown{
+  position:absolute;top:6px;left:0;right:0;height:10px;
+  display:flex;justify-content:space-around;align-items:center;z-index:3;
+  padding:0 18px;
+}
+.bulb{
+  width:8px;height:8px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff,var(--gold) 40%,#b88600 80%);
+  box-shadow:0 0 6px var(--gold),0 0 12px rgba(255,201,60,0.6);
+  animation:bulbFlicker 1.8s infinite;
+}
+.bulb:nth-child(odd){animation-delay:0.3s}
+.bulb:nth-child(3n){animation-delay:0.6s}
+.bulb:nth-child(5n){animation-delay:0.9s}
+@keyframes bulbFlicker{0%,100%{opacity:1;box-shadow:0 0 6px var(--gold),0 0 14px rgba(255,201,60,0.6)}50%{opacity:0.45;box-shadow:0 0 3px var(--gold)}}
+
+/* Animated rainbow top border */
 .marquee::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,#ff1744,#ff69b4,#e040fb,#7c4dff,#00e5ff,#00e676,#ffea00,#ff1744);
+  content:'';position:absolute;top:18px;left:24px;right:24px;height:3px;
+  background:linear-gradient(90deg,var(--bahia),var(--sunset),var(--gold),var(--lime),var(--teal),var(--violet),var(--bahia));
   background-size:200% 100%;
-  animation:rainbowSlide 4s linear infinite;
+  animation:rainbowSlide 5s linear infinite;
+  border-radius:2px;
 }
 @keyframes rainbowSlide{0%{background-position:0% 0}100%{background-position:200% 0}}
 
+.marquee-pre{
+  display:block;
+  font-family:'Caveat Brush',cursive;font-size:0.7rem;
+  letter-spacing:0.4em;text-transform:uppercase;
+  color:var(--teal);
+  text-shadow:0 0 10px rgba(0,217,199,0.5);
+  margin-bottom:6px;margin-top:12px;
+}
 .marquee-title{
   font-family:'Bungee Shade',cursive;
-  font-size:2.2rem;
-  letter-spacing:0.08em;
-  color:#ff69b4;
+  font-size:2.7rem;
+  letter-spacing:0.06em;
+  color:var(--bahia);
   text-shadow:
-    0 0 10px rgba(255,105,180,0.8),
-    0 0 30px rgba(255,105,180,0.5),
-    0 0 60px rgba(255,105,180,0.3),
-    0 0 100px rgba(255,0,150,0.2),
-    3px 3px 0 rgba(0,229,255,0.3);
+    0 0 12px rgba(255,27,107,0.9),
+    0 0 36px rgba(255,27,107,0.5),
+    0 0 70px rgba(255,106,0,0.4),
+    4px 4px 0 rgba(0,217,199,0.3),
+    -2px -2px 0 rgba(255,201,60,0.25);
   position:relative;z-index:2;
+  line-height:1;
+  cursor:default;
+  transition:transform 0.3s;
 }
+.marquee-title:hover{transform:scale(1.02) rotate(-0.5deg)}
+.marquee-title.glitch{animation:titleGlitch 0.6s steps(3) 1}
+@keyframes titleGlitch{
+  0%{text-shadow:0 0 12px rgba(255,27,107,0.9),4px 4px 0 var(--teal)}
+  20%{text-shadow:-3px 0 0 var(--lime),3px 0 0 var(--bahia),0 3px 0 var(--gold);transform:translate(-2px,1px)}
+  40%{text-shadow:3px 0 0 var(--lime),-3px 0 0 var(--bahia);transform:translate(3px,-1px)}
+  60%{text-shadow:0 -3px 0 var(--teal),0 3px 0 var(--sunset);transform:translate(-1px,2px)}
+  100%{text-shadow:0 0 12px rgba(255,27,107,0.9),4px 4px 0 var(--teal);transform:translate(0)}
+}
+
 .marquee-sub{
   font-family:'Permanent Marker',cursive;
-  font-size:0.7rem;
-  color:#00e5ff;
-  letter-spacing:0.2em;
+  font-size:0.72rem;
+  color:var(--gold);
+  letter-spacing:0.25em;
   text-transform:uppercase;
-  margin-top:6px;
-  text-shadow:0 0 10px rgba(0,229,255,0.5);
+  margin-top:10px;
+  text-shadow:0 0 12px rgba(255,201,60,0.5);
   position:relative;z-index:2;
 }
+.marquee-sub .dot{color:var(--bahia);margin:0 6px}
 
-/* Chaser lights */
 .chasers{
-  display:flex;justify-content:center;gap:18px;
-  margin-top:10px;position:relative;z-index:2;
+  display:flex;justify-content:center;gap:14px;
+  margin-top:14px;position:relative;z-index:2;
 }
 .chaser{
-  width:8px;height:8px;border-radius:50%;
-  animation:chase 1.5s infinite;
+  width:10px;height:10px;border-radius:50%;
+  animation:chase 1.6s infinite;
 }
-.chaser:nth-child(1){background:#ff1744;box-shadow:0 0 8px #ff1744,0 0 16px #ff1744;animation-delay:0s}
-.chaser:nth-child(2){background:#ff69b4;box-shadow:0 0 8px #ff69b4,0 0 16px #ff69b4;animation-delay:0.1s}
-.chaser:nth-child(3){background:#e040fb;box-shadow:0 0 8px #e040fb,0 0 16px #e040fb;animation-delay:0.2s}
-.chaser:nth-child(4){background:#7c4dff;box-shadow:0 0 8px #7c4dff,0 0 16px #7c4dff;animation-delay:0.3s}
-.chaser:nth-child(5){background:#00e5ff;box-shadow:0 0 8px #00e5ff,0 0 16px #00e5ff;animation-delay:0.4s}
-.chaser:nth-child(6){background:#00e676;box-shadow:0 0 8px #00e676,0 0 16px #00e676;animation-delay:0.5s}
-.chaser:nth-child(7){background:#ffea00;box-shadow:0 0 8px #ffea00,0 0 16px #ffea00;animation-delay:0.6s}
-.chaser:nth-child(8){background:#ff9100;box-shadow:0 0 8px #ff9100,0 0 16px #ff9100;animation-delay:0.7s}
-.chaser:nth-child(9){background:#ff1744;box-shadow:0 0 8px #ff1744,0 0 16px #ff1744;animation-delay:0.8s}
-@keyframes chase{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1.3)}}
+.chaser:nth-child(1){background:#ff1b6b;box-shadow:0 0 10px #ff1b6b,0 0 20px #ff1b6b;animation-delay:0s}
+.chaser:nth-child(2){background:#ff6a00;box-shadow:0 0 10px #ff6a00,0 0 20px #ff6a00;animation-delay:0.1s}
+.chaser:nth-child(3){background:#ffc93c;box-shadow:0 0 10px #ffc93c,0 0 20px #ffc93c;animation-delay:0.2s}
+.chaser:nth-child(4){background:#b6ff3c;box-shadow:0 0 10px #b6ff3c,0 0 20px #b6ff3c;animation-delay:0.3s}
+.chaser:nth-child(5){background:#00d9c7;box-shadow:0 0 10px #00d9c7,0 0 20px #00d9c7;animation-delay:0.4s}
+.chaser:nth-child(6){background:#7b2cbf;box-shadow:0 0 10px #7b2cbf,0 0 20px #7b2cbf;animation-delay:0.5s}
+.chaser:nth-child(7){background:#ff1b6b;box-shadow:0 0 10px #ff1b6b,0 0 20px #ff1b6b;animation-delay:0.6s}
+.chaser:nth-child(8){background:#ff6a00;box-shadow:0 0 10px #ff6a00,0 0 20px #ff6a00;animation-delay:0.7s}
+.chaser:nth-child(9){background:#ffc93c;box-shadow:0 0 10px #ffc93c,0 0 20px #ffc93c;animation-delay:0.8s}
+.chaser:nth-child(10){background:#b6ff3c;box-shadow:0 0 10px #b6ff3c,0 0 20px #b6ff3c;animation-delay:0.9s}
+.chaser:nth-child(11){background:#00d9c7;box-shadow:0 0 10px #00d9c7,0 0 20px #00d9c7;animation-delay:1.0s}
+@keyframes chase{0%,100%{opacity:0.25;transform:scale(0.8)}50%{opacity:1;transform:scale(1.35)}}
 
-/* === REEL AREA === */
+/* ===== REEL AREA ===== */
 .reel-area{
-  padding:24px 20px 16px;
+  padding:28px 28px 18px;
   position:relative;z-index:2;
 }
 .reel-labels{
-  display:flex;gap:8px;justify-content:center;margin-bottom:8px;
+  display:flex;gap:8px;justify-content:center;margin-bottom:12px;
 }
 .reel-label{
-  flex:1;max-width:160px;text-align:center;
-  font-family:'Permanent Marker',cursive;font-size:0.7rem;
-  text-transform:uppercase;letter-spacing:0.15em;
-  color:#00e5ff;
-  text-shadow:0 0 8px rgba(0,229,255,0.4);
+  flex:1;max-width:170px;text-align:center;
+  font-family:'Rye',cursive;font-size:0.85rem;
+  letter-spacing:0.15em;
+  color:var(--gold);
+  text-shadow:0 0 10px rgba(255,201,60,0.5);
+  text-transform:uppercase;
 }
 
 /* Reel viewport */
 .reel-viewport{
-  background:#030208;
-  border:3px solid;
-  border-image:linear-gradient(180deg,#ff69b4 0%,#7c4dff 50%,#00e5ff 100%) 1;
-  border-radius:0;
+  background:
+    radial-gradient(ellipse at center,#0a0218 0%,#000 100%);
+  border:4px solid transparent;
+  border-radius:8px;
   padding:0;
   display:flex;
-  box-shadow:
-    inset 0 0 40px rgba(0,0,0,0.9),
-    0 0 20px rgba(139,0,255,0.2),
-    0 2px 0 rgba(255,255,255,0.03);
   position:relative;
   overflow:hidden;
+  box-shadow:
+    inset 0 0 60px rgba(0,0,0,0.95),
+    inset 0 0 20px rgba(255,27,107,0.15),
+    0 0 30px rgba(255,201,60,0.2),
+    0 2px 0 rgba(255,255,255,0.05);
+  background-clip:padding-box;
 }
-/* Scan line effect */
+/* Animated gold frame */
+.reel-viewport::before{
+  content:'';position:absolute;inset:-4px;border-radius:8px;z-index:-1;
+  background:linear-gradient(45deg,var(--gold),var(--bahia),var(--sunset),var(--gold),var(--teal),var(--violet),var(--gold));
+  background-size:300% 300%;
+  animation:goldShift 8s linear infinite;
+}
+@keyframes goldShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+/* CRT scanlines */
 .reel-viewport::after{
-  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.15) 2px,rgba(0,0,0,0.15) 4px);
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.20) 2px,rgba(0,0,0,0.20) 4px);
   pointer-events:none;z-index:3;
 }
 
 .reel-window{
   flex:1;
-  height:90px;
-  display:flex;align-items:center;justify-content:center;
+  height:110px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
   position:relative;
-  border-right:1px solid rgba(139,0,255,0.3);
+  border-right:1px solid rgba(255,201,60,0.2);
+  background:radial-gradient(ellipse at center,rgba(255,27,107,0.06) 0%,transparent 70%);
 }
 .reel-window:last-child{border-right:none}
-/* Glow at top/bottom */
+/* Vignettes */
 .reel-window::before,.reel-window::after{
-  content:'';position:absolute;left:0;right:0;height:25px;z-index:2;pointer-events:none;
+  content:'';position:absolute;left:0;right:0;height:30px;z-index:2;pointer-events:none;
 }
-.reel-window::before{top:0;background:linear-gradient(to bottom,rgba(3,2,8,0.9),transparent)}
-.reel-window::after{bottom:0;background:linear-gradient(to top,rgba(3,2,8,0.9),transparent)}
+.reel-window::before{top:0;background:linear-gradient(to bottom,rgba(0,0,0,0.9),transparent)}
+.reel-window::after{bottom:0;background:linear-gradient(to top,rgba(0,0,0,0.9),transparent)}
 
+.reel-icon{
+  font-size:1.5rem;
+  margin-bottom:4px;
+  filter:drop-shadow(0 0 8px rgba(255,201,60,0.6)) drop-shadow(0 0 4px var(--gold));
+  transition:none;
+  height:24px;
+  line-height:1;
+}
 .reel-val{
   font-family:'Russo One',sans-serif;
-  font-size:1.15rem;
-  color:#00ff88;
-  text-shadow:0 0 10px rgba(0,255,136,0.7),0 0 20px rgba(0,255,136,0.4),0 0 40px rgba(0,255,136,0.2);
+  font-size:1.05rem;
+  color:var(--lime);
+  text-shadow:0 0 10px rgba(182,255,60,0.8),0 0 24px rgba(0,217,199,0.4),0 0 48px rgba(182,255,60,0.2);
   transition:none;
   position:relative;z-index:1;
   text-transform:uppercase;
-  letter-spacing:0.05em;
+  letter-spacing:0.06em;
+  white-space:nowrap;
 }
-.reel-window.spin .reel-val{animation:reelBlur 0.1s infinite;color:rgba(0,255,136,0.5)}
-.reel-window.land .reel-val{animation:reelLand 0.35s ease-out;color:#00ff88}
-@keyframes reelBlur{0%{transform:translateY(-12px);opacity:0.2}50%{transform:translateY(0);opacity:0.6}100%{transform:translateY(12px);opacity:0.2}}
-@keyframes reelLand{0%{transform:translateY(-10px) scale(1.2);text-shadow:0 0 30px rgba(0,255,136,1)}60%{transform:translateY(3px) scale(0.95)}100%{transform:translateY(0) scale(1)}}
+.reel-window.spin .reel-val,.reel-window.spin .reel-icon{animation:reelBlur 0.08s infinite;color:rgba(182,255,60,0.5)}
+.reel-window.land .reel-val{animation:reelLand 0.45s ease-out;color:var(--lime)}
+.reel-window.land .reel-icon{animation:reelLandIcon 0.45s ease-out}
+@keyframes reelBlur{0%{transform:translateY(-16px);opacity:0.15}50%{transform:translateY(0);opacity:0.6}100%{transform:translateY(16px);opacity:0.15}}
+@keyframes reelLand{0%{transform:translateY(-12px) scale(1.25);text-shadow:0 0 40px var(--lime),0 0 80px var(--lime)}50%{transform:translateY(4px) scale(0.92)}100%{transform:translateY(0) scale(1)}}
+@keyframes reelLandIcon{0%{transform:scale(0.5) rotate(-30deg);opacity:0}50%{transform:scale(1.4) rotate(15deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
 
 /* Payline arrows */
-.payline{
-  position:absolute;top:50%;transform:translateY(-50%);
-  width:0;height:0;z-index:5;
-}
-.payline-l{left:2px;border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:10px solid #ff1744;filter:drop-shadow(0 0 4px #ff1744)}
-.payline-r{right:2px;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:10px solid #ff1744;filter:drop-shadow(0 0 4px #ff1744)}
+.payline{position:absolute;top:50%;transform:translateY(-50%);width:0;height:0;z-index:5}
+.payline-l{left:6px;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:12px solid var(--bahia);filter:drop-shadow(0 0 6px var(--bahia))}
+.payline-r{right:6px;border-top:9px solid transparent;border-bottom:9px solid transparent;border-right:12px solid var(--bahia);filter:drop-shadow(0 0 6px var(--bahia))}
 
-/* === CONTROLS === */
+/* ===== CONTROLS ===== */
 .controls{
-  padding:16px 20px 20px;
-  display:flex;align-items:center;justify-content:center;gap:20px;
+  padding:18px 24px 22px;
+  display:flex;align-items:center;justify-content:center;gap:24px;
   position:relative;z-index:2;
 }
 .spin-btn{
-  background:linear-gradient(180deg,#ff1744 0%,#d50000 50%,#b71c1c 100%);
-  border:3px solid #ff5252;
+  background:
+    radial-gradient(circle at 35% 30%,#ff8a3a 0%,#ff6a00 35%,#d54a00 65%,#8a2c00 100%);
+  border:none;
   color:#fff;
-  font-family:'Russo One',sans-serif;
-  font-size:1rem;
-  letter-spacing:0.2em;
+  font-family:'Rye',cursive;
+  font-size:1.1rem;
+  letter-spacing:0.18em;
   text-transform:uppercase;
-  padding:14px 48px;
+  padding:18px 56px;
   border-radius:50px;
   cursor:pointer;
+  position:relative;
   box-shadow:
-    0 0 20px rgba(255,23,68,0.4),
-    0 0 40px rgba(255,23,68,0.2),
-    0 4px 12px rgba(0,0,0,0.5),
-    inset 0 1px 0 rgba(255,255,255,0.3),
-    inset 0 -2px 0 rgba(0,0,0,0.2);
+    0 0 30px rgba(255,106,0,0.5),
+    0 0 60px rgba(255,27,107,0.3),
+    0 6px 16px rgba(0,0,0,0.6),
+    inset 0 2px 0 rgba(255,255,255,0.4),
+    inset 0 -3px 0 rgba(0,0,0,0.3),
+    inset 0 0 0 2px rgba(255,201,60,0.4);
   transition:all 0.15s;
-  text-shadow:0 2px 4px rgba(0,0,0,0.5);
+  text-shadow:0 2px 6px rgba(0,0,0,0.6);
+  font-weight:bold;
+}
+.spin-btn::before{
+  content:'';position:absolute;inset:-3px;border-radius:50px;z-index:-1;
+  background:conic-gradient(from 0deg,var(--gold),var(--bahia),var(--sunset),var(--gold),var(--teal),var(--violet),var(--gold));
+  animation:goldShift 5s linear infinite;
+  opacity:0.7;
+  filter:blur(2px);
 }
 .spin-btn:hover{
-  background:linear-gradient(180deg,#ff5252 0%,#ff1744 50%,#d50000 100%);
-  box-shadow:0 0 30px rgba(255,23,68,0.6),0 0 60px rgba(255,23,68,0.3),0 4px 16px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.3);
-  transform:scale(1.03);
+  transform:scale(1.05) translateY(-2px);
+  box-shadow:0 0 40px rgba(255,106,0,0.7),0 0 80px rgba(255,27,107,0.4),0 8px 20px rgba(0,0,0,0.6),inset 0 2px 0 rgba(255,255,255,0.4),inset 0 0 0 2px rgba(255,201,60,0.6);
 }
 .spin-btn:active{
-  transform:scale(0.97) translateY(2px);
-  box-shadow:0 0 15px rgba(255,23,68,0.3),0 2px 6px rgba(0,0,0,0.5),inset 0 2px 4px rgba(0,0,0,0.4);
+  transform:scale(0.96) translateY(2px);
+  box-shadow:0 0 20px rgba(255,106,0,0.4),0 2px 8px rgba(0,0,0,0.6),inset 0 3px 6px rgba(0,0,0,0.4);
 }
+.spin-btn.busy{pointer-events:none;opacity:0.7}
+
 .counter{
-  font-family:'Permanent Marker',cursive;font-size:0.7rem;
-  color:#7c4dff;letter-spacing:0.05em;
-  text-shadow:0 0 8px rgba(124,77,255,0.4);
+  font-family:'Caveat Brush',cursive;font-size:0.85rem;
+  color:var(--teal);letter-spacing:0.08em;
+  text-shadow:0 0 10px rgba(0,217,199,0.4);
+  text-align:center;line-height:1.1;
 }
-.counter span{color:#e040fb;text-shadow:0 0 8px rgba(224,64,251,0.5)}
+.counter span{color:var(--gold);font-size:1.1rem;display:block;text-shadow:0 0 10px rgba(255,201,60,0.6)}
 
 /* Machine footer */
 .machine-foot{
-  background:linear-gradient(180deg,#0e0c18,#08060f);
-  padding:8px 20px;
-  border-top:1px solid rgba(255,105,180,0.15);
-  display:flex;justify-content:space-between;
+  background:linear-gradient(180deg,#080216,#04010c);
+  padding:10px 24px;
+  border-top:1px solid rgba(255,201,60,0.15);
+  display:flex;justify-content:space-between;align-items:center;
+  border-radius:0 0 14px 14px;
+  font-family:'Special Elite',serif;font-size:0.6rem;letter-spacing:0.15em;
+  color:rgba(255,201,60,0.35);
 }
-.machine-foot span{
-  font-family:'Special Elite',serif;font-size:0.55rem;
-  color:#3d2860;letter-spacing:0.1em;
-}
+.machine-foot .sm-medal{color:var(--bahia);opacity:0.7;font-size:0.7rem}
 
-/* ============================
+/* ============================================================
    LEVER ARM
-   ============================ */
+   ============================================================ */
 .lever-arm{
   position:absolute;
-  right:-65px;
-  top:80px;
-  width:60px;
-  height:280px;
+  right:-78px;
+  top:90px;
+  width:72px;
+  height:320px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -307,188 +459,557 @@ nav.side-nav .nav-link-active{color:#ff69b4}
   z-index:20;
   -webkit-user-select:none;user-select:none;
 }
+/* Brass plate behind lever */
+.lever-plate{
+  position:absolute;left:50%;top:0;transform:translateX(-50%);
+  width:46px;height:100%;
+  background:linear-gradient(90deg,#7a5a1a 0%,#c08820 30%,#ffd76b 50%,#c08820 70%,#7a5a1a 100%);
+  border-radius:23px;
+  box-shadow:
+    inset 0 0 12px rgba(0,0,0,0.5),
+    inset 2px 0 4px rgba(255,255,255,0.3),
+    inset -2px 0 4px rgba(0,0,0,0.3),
+    0 0 24px rgba(255,201,60,0.25),
+    4px 6px 18px rgba(0,0,0,0.6);
+  z-index:0;
+}
+.lever-plate::before,.lever-plate::after{
+  content:'';position:absolute;left:50%;transform:translateX(-50%);
+  width:8px;height:8px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff,#c08820 60%,#5a3a00);
+  box-shadow:inset 0 -1px 2px rgba(0,0,0,0.5);
+}
+.lever-plate::before{top:8px}
+.lever-plate::after{bottom:8px}
 
-/* Chrome rod via SVG */
+/* Chrome rod */
 .lever-rod{
-  width:16px;
+  width:18px;
   flex:1;
-  background:linear-gradient(90deg,#888 0%,#ccc 25%,#fff 45%,#ddd 55%,#aaa 75%,#777 100%);
-  border-radius:8px;
+  margin-top:24px;
+  margin-bottom:30px;
+  background:linear-gradient(90deg,#5a5a5a 0%,#aaa 25%,#fff 45%,#ddd 55%,#888 75%,#555 100%);
+  border-radius:9px;
   position:relative;
-  box-shadow:2px 4px 12px rgba(0,0,0,0.6);
+  z-index:1;
+  box-shadow:2px 4px 12px rgba(0,0,0,0.6),inset 0 0 4px rgba(0,0,0,0.3);
 }
 
-/* Big red ball */
+/* Big glowing orb — Brazilian gem */
 .lever-ball{
-  width:56px;height:56px;
-  background:radial-gradient(circle at 35% 28%,#ff6666,#ff1744 30%,#d50000 55%,#8b0000 80%,#4a0000);
-  border:3px solid #ff5252;
+  width:64px;height:64px;
+  background:
+    radial-gradient(circle at 32% 26%,#ffcce0 0%,#ff6699 20%,var(--bahia) 45%,#a00040 75%,#3a0010 100%);
+  border:3px solid var(--gold);
   border-radius:50%;
   cursor:grab;
   position:absolute;
   top:0;left:50%;transform:translateX(-50%);
   box-shadow:
-    0 0 20px rgba(255,23,68,0.5),
-    0 0 40px rgba(255,23,68,0.25),
-    0 6px 20px rgba(0,0,0,0.6),
-    inset 0 3px 0 rgba(255,255,255,0.25),
-    inset 0 -3px 6px rgba(0,0,0,0.3);
+    0 0 30px rgba(255,27,107,0.7),
+    0 0 60px rgba(255,27,107,0.35),
+    0 0 80px rgba(255,201,60,0.2),
+    0 8px 24px rgba(0,0,0,0.6),
+    inset 0 4px 0 rgba(255,255,255,0.35),
+    inset 0 -4px 8px rgba(0,0,0,0.4);
   transition:top 0.15s ease-in;
   z-index:10;
 }
-/* Shine */
+/* Inner gem shine */
 .lever-ball::before{
-  content:'';position:absolute;top:7px;left:12px;
-  width:18px;height:14px;border-radius:50%;
-  background:radial-gradient(ellipse,rgba(255,255,255,0.45),transparent 70%);
+  content:'';position:absolute;top:9px;left:14px;
+  width:22px;height:18px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(255,255,255,0.6),transparent 70%);
+  filter:blur(1px);
+}
+.lever-ball::after{
+  content:'';position:absolute;bottom:12px;right:12px;
+  width:8px;height:6px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(255,201,60,0.7),transparent 70%);
+  filter:blur(0.5px);
 }
 .lever-ball:hover{
-  box-shadow:0 0 30px rgba(255,23,68,0.7),0 0 60px rgba(255,23,68,0.35),0 6px 24px rgba(0,0,0,0.6),inset 0 3px 0 rgba(255,255,255,0.25);
-  border-color:#ff8a80;
+  box-shadow:0 0 40px rgba(255,27,107,0.9),0 0 80px rgba(255,27,107,0.5),0 0 100px rgba(255,201,60,0.3),0 8px 28px rgba(0,0,0,0.6),inset 0 4px 0 rgba(255,255,255,0.4);
+  border-color:#fff5b3;
 }
 .lever-ball:active{cursor:grabbing}
-.lever-ball.pulled{top:calc(100% - 56px);transition:top 0.3s ease-in}
-.lever-ball.released{top:0;transition:top 0.5s cubic-bezier(0.175,0.885,0.32,1.275)}
+.lever-ball.pulled{top:calc(100% - 64px);transition:top 0.35s ease-in}
+.lever-ball.released{top:0;transition:top 0.55s cubic-bezier(0.175,0.885,0.32,1.275)}
 
-/* Chrome mount */
-.lever-mount{
-  width:30px;height:18px;
-  background:linear-gradient(90deg,#888,#ccc 30%,#fff 50%,#ccc 70%,#888);
-  border-radius:4px 4px 10px 10px;
-  margin-top:-2px;
-  box-shadow:0 4px 8px rgba(0,0,0,0.4);
-}
 .lever-hint{
-  font-family:'Permanent Marker',cursive;font-size:0.6rem;
-  color:#ff1744;text-align:center;margin-top:8px;
-  text-shadow:0 0 8px rgba(255,23,68,0.5);
-  animation:hintPulse 2s infinite;
+  font-family:'Caveat Brush',cursive;font-size:0.7rem;
+  color:var(--gold);text-align:center;
+  letter-spacing:0.2em;
+  text-shadow:0 0 8px rgba(255,201,60,0.6);
+  animation:hintPulse 2.4s infinite;
+  position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);
+  white-space:nowrap;text-transform:uppercase;
 }
-@keyframes hintPulse{0%,100%{opacity:0.3}50%{opacity:1}}
+@keyframes hintPulse{0%,100%{opacity:0.35}50%{opacity:1}}
 
-/* ============================
-   RESULT
-   ============================ */
+/* ============================================================
+   RESULT CARD WITH YOUTUBE EMBED
+   ============================================================ */
 .result{
-  max-width:700px;margin:0 auto 40px;
-  opacity:0;transform:translateY(20px) scale(0.97);
-  transition:opacity 0.5s ease,transform 0.5s ease;
-  pointer-events:none;
+  max-width:780px;margin:0 auto 48px;
+  opacity:0;transform:translateY(30px) scale(0.96);
+  transition:opacity 0.6s ease,transform 0.6s cubic-bezier(0.175,0.885,0.32,1.275);
+  pointer-events:none;position:relative;z-index:5;
 }
 .result.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+
 .result-card{
-  background:linear-gradient(145deg,#1a1028,#12101e);
-  border:2px solid rgba(139,0,255,0.3);
-  border-radius:14px;
-  padding:24px;
-  box-shadow:0 0 30px rgba(139,0,255,0.1),0 12px 40px rgba(0,0,0,0.5);
-}
-.result-top{display:flex;gap:20px;align-items:center}
-.result-art{
-  width:100px;height:100px;min-width:100px;
-  border-radius:10px;overflow:hidden;
-  box-shadow:0 0 20px rgba(0,0,0,0.5);
   position:relative;
+  background:
+    linear-gradient(135deg,rgba(255,201,60,0.06) 0%,rgba(255,27,107,0.03) 100%),
+    linear-gradient(180deg,#22063a,#100322);
+  border-radius:18px;
+  padding:0;
+  box-shadow:
+    0 0 50px rgba(255,27,107,0.25),
+    0 20px 60px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,201,60,0.2);
+  overflow:hidden;
 }
-.result-art-bg{width:100%;height:100%}
-.result-art::after{
-  content:'';position:absolute;top:50%;left:50%;
-  width:50px;height:50px;border-radius:50%;
-  transform:translate(-50%,-50%);
-  border:2px solid rgba(255,255,255,0.08);
-  box-shadow:0 0 0 8px rgba(255,255,255,0.03),0 0 0 16px rgba(255,255,255,0.015);
+.result-card::before{
+  content:'';position:absolute;inset:0;border-radius:18px;
+  border:2px solid transparent;
+  background:linear-gradient(135deg,var(--gold),var(--bahia),var(--violet),var(--teal),var(--gold)) border-box;
+  background-size:300% 300%;
+  animation:goldShift 10s linear infinite;
+  mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  pointer-events:none;
 }
-.result-info{flex:1;min-width:0}
+
+/* Top "now playing" strip */
+.now-playing{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 22px;
+  background:linear-gradient(90deg,rgba(255,27,107,0.20),rgba(123,44,191,0.20));
+  border-bottom:1px solid rgba(255,201,60,0.15);
+  font-family:'Caveat Brush',cursive;font-size:0.78rem;
+  letter-spacing:0.32em;text-transform:uppercase;
+  color:var(--gold);
+}
+.now-playing .nowdot{
+  width:10px;height:10px;border-radius:50%;background:var(--bahia);
+  box-shadow:0 0 12px var(--bahia);animation:nowPulse 1.2s infinite;
+}
+@keyframes nowPulse{0%,100%{opacity:0.5;transform:scale(0.9)}50%{opacity:1;transform:scale(1.15)}}
+.now-playing .nowtag{margin-left:auto;color:var(--lime);text-shadow:0 0 8px rgba(182,255,60,0.5)}
+
+/* YouTube embed container */
+.yt-frame{
+  position:relative;
+  width:100%;
+  aspect-ratio:16/9;
+  background:#000;
+  overflow:hidden;
+  border-bottom:1px solid rgba(255,201,60,0.15);
+}
+.yt-frame iframe{
+  position:absolute;inset:0;width:100%;height:100%;border:0;
+}
+/* Thumbnail / play overlay (shown when not yet loaded) */
+.yt-thumb{
+  position:absolute;inset:0;width:100%;height:100%;
+  background-size:cover;background-position:center;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  transition:opacity 0.3s;
+}
+.yt-thumb::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at center,transparent 0%,rgba(0,0,0,0.5) 100%);
+}
+.yt-thumb-fallback{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:14px;
+  background:
+    radial-gradient(ellipse at 30% 20%,rgba(255,27,107,0.4),transparent 50%),
+    radial-gradient(ellipse at 70% 80%,rgba(123,44,191,0.4),transparent 50%),
+    linear-gradient(135deg,#22063a,#0d0322);
+  color:var(--gold);
+}
+.yt-thumb-fallback .ytfa-vinyl{
+  width:90px;height:90px;border-radius:50%;
+  background:
+    radial-gradient(circle at center,var(--bahia) 0%,var(--bahia) 18%,#000 19%,#000 22%,#0d0322 23%,#0d0322 99%,var(--gold) 100%);
+  position:relative;
+  box-shadow:0 0 30px rgba(255,27,107,0.5);
+  animation:vinylSpin 6s linear infinite;
+}
+.yt-thumb-fallback .ytfa-vinyl::before,.yt-thumb-fallback .ytfa-vinyl::after{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.yt-thumb-fallback .ytfa-vinyl::before{inset:10px}
+.yt-thumb-fallback .ytfa-vinyl::after{inset:20px}
+.yt-thumb-fallback .ytfa-text{font-family:'Caveat Brush',cursive;font-size:0.85rem;letter-spacing:0.2em;text-transform:uppercase}
+@keyframes vinylSpin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+
+.yt-play{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#ff8a3a,var(--sunset) 35%,#a04000 100%);
+  border:4px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 40px rgba(255,106,0,0.7),0 0 80px rgba(255,27,107,0.4),0 10px 30px rgba(0,0,0,0.7),inset 0 3px 0 rgba(255,255,255,0.4);
+  transition:transform 0.2s;
+  z-index:2;
+}
+.yt-thumb:hover .yt-play{transform:translate(-50%,-50%) scale(1.08)}
+.yt-play::before{
+  content:'';width:0;height:0;
+  border-top:18px solid transparent;border-bottom:18px solid transparent;
+  border-left:30px solid #fff;
+  margin-left:6px;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
+
+.result-body{padding:20px 24px 22px}
 .result-song{
-  font-family:'Permanent Marker',cursive;font-size:1.2rem;
-  color:#fff;margin-bottom:4px;line-height:1.3;
-  text-shadow:0 0 10px rgba(255,105,180,0.3);
+  font-family:'Bungee Shade',cursive;
+  font-size:1.7rem;
+  color:var(--cream);
+  margin-bottom:6px;line-height:1.15;
+  letter-spacing:-0.01em;
 }
-.result-artist{font-size:0.85rem;color:#e040fb;margin-bottom:2px;text-shadow:0 0 8px rgba(224,64,251,0.3)}
-.result-album{font-size:0.75rem;color:#7c4dff;font-style:italic;margin-bottom:14px}
-.result-links{display:flex;gap:8px;flex-wrap:wrap}
+.result-artist{
+  font-family:'Permanent Marker',cursive;
+  font-size:1.05rem;color:var(--bahia);
+  margin-bottom:2px;
+  text-shadow:0 0 12px rgba(255,27,107,0.4);
+}
+.result-album{
+  font-size:0.78rem;color:var(--gold);font-style:italic;margin-bottom:16px;opacity:0.85;
+  font-family:'Special Elite',serif;
+}
+.result-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.result-tag{
+  font-size:0.65rem;padding:3px 10px;border-radius:10px;
+  background:rgba(255,201,60,0.1);border:1px solid rgba(255,201,60,0.3);
+  color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;
+  font-family:'DM Sans';font-weight:500;
+}
+.result-tag.t-v{color:var(--bahia);border-color:rgba(255,27,107,0.4);background:rgba(255,27,107,0.08)}
+.result-tag.t-r{color:var(--lime);border-color:rgba(182,255,60,0.4);background:rgba(182,255,60,0.08)}
+.result-tag.t-t{color:var(--teal);border-color:rgba(0,217,199,0.4);background:rgba(0,217,199,0.08)}
+
+.result-links{display:flex;gap:10px;flex-wrap:wrap}
 .result-links a{
-  display:inline-flex;align-items:center;gap:5px;
-  font-size:0.7rem;color:#888;text-decoration:none;
-  padding:5px 12px;border:1px solid rgba(139,0,255,0.3);border-radius:16px;
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:0.75rem;color:var(--cream);text-decoration:none;
+  padding:7px 14px;border:1px solid rgba(255,201,60,0.3);border-radius:18px;
+  transition:all 0.2s;
+  background:rgba(255,255,255,0.02);
+  font-family:'DM Sans';font-weight:500;
+}
+.result-links a:hover{color:var(--gold);border-color:var(--gold);background:rgba(255,201,60,0.08);box-shadow:0 0 14px rgba(255,201,60,0.2);transform:translateY(-1px)}
+.result-links svg{width:14px;height:14px;fill:currentColor}
+
+.result-again{text-align:center;margin-top:18px}
+.result-again button{
+  background:none;border:1px dashed rgba(255,201,60,0.4);color:var(--gold);
+  font-family:'Permanent Marker',cursive;font-size:0.9rem;
+  padding:10px 28px;border-radius:24px;cursor:pointer;
+  transition:all 0.2s;text-shadow:0 0 10px rgba(255,201,60,0.3);
+  letter-spacing:0.06em;
+}
+.result-again button:hover{border-color:var(--gold);border-style:solid;box-shadow:0 0 20px rgba(255,201,60,0.25);transform:scale(1.02)}
+
+/* ============================================================
+   JACKPOT EASTER EGG
+   ============================================================ */
+.jackpot-overlay{
+  position:fixed;inset:0;pointer-events:none;z-index:99;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity 0.4s;
+}
+.jackpot-overlay.show{opacity:1;animation:jackpotFlash 1.6s ease-in-out 2}
+@keyframes jackpotFlash{0%,100%{background:transparent}50%{background:radial-gradient(ellipse at center,rgba(255,201,60,0.4),transparent 60%)}}
+.jackpot-text{
+  font-family:'Monoton',sans-serif;
+  font-size:clamp(3rem,12vw,8rem);
+  background:linear-gradient(90deg,var(--gold) 0%,var(--bahia) 25%,var(--sunset) 50%,var(--lime) 75%,var(--teal) 100%);
+  background-size:200% 100%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:jackpotTextDance 0.8s ease-in-out infinite alternate, rainbowSlide 2s linear infinite;
+  text-shadow:none;
+  filter:drop-shadow(0 0 30px rgba(255,201,60,0.6)) drop-shadow(0 0 60px rgba(255,27,107,0.4));
+  letter-spacing:0.05em;
+}
+@keyframes jackpotTextDance{0%{transform:rotate(-3deg) scale(1)}100%{transform:rotate(3deg) scale(1.08)}}
+
+.confetti{position:fixed;top:-20px;width:10px;height:14px;pointer-events:none;z-index:98;border-radius:2px;will-change:transform,opacity}
+
+/* ============================================================
+   COLLECTION
+   ============================================================ */
+.collection{max-width:780px;margin:0 auto 60px;position:relative;z-index:5}
+.coll-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  padding:14px 0;border-top:1px dashed rgba(255,201,60,0.2);
+  border-bottom:1px dashed rgba(255,201,60,0.2);
+}
+.coll-toggle{
+  background:none;border:none;color:var(--gold);
+  font-family:'Permanent Marker',cursive;font-size:1rem;
+  cursor:pointer;padding:0;text-align:left;
+  transition:color 0.2s;text-shadow:0 0 10px rgba(255,201,60,0.3);
+  letter-spacing:0.04em;
+}
+.coll-toggle:hover{color:var(--bahia)}
+.coll-toggle .arr{display:inline-block;transition:transform 0.3s;margin-right:10px;font-size:0.8rem;color:var(--bahia)}
+.coll-toggle.open .arr{transform:rotate(90deg)}
+.coll-count{
+  font-family:'Caveat Brush',cursive;color:var(--teal);font-size:0.85rem;
+  letter-spacing:0.2em;text-transform:uppercase;
+}
+.coll-body{max-height:0;overflow:hidden;transition:max-height 0.5s ease}
+.coll-body.open{max-height:none;overflow:visible;padding-top:18px}
+
+.coll-search{
+  width:100%;padding:10px 14px;
+  background:rgba(255,245,225,0.03);
+  border:1px solid rgba(255,201,60,0.25);
+  border-radius:22px;
+  color:var(--cream);font-family:'DM Sans';font-size:0.9rem;
+  margin-bottom:14px;
+  transition:all 0.2s;
+  outline:none;
+}
+.coll-search:focus{border-color:var(--gold);background:rgba(255,245,225,0.05);box-shadow:0 0 14px rgba(255,201,60,0.15)}
+.coll-search::placeholder{color:rgba(255,245,225,0.3)}
+
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.pill{
+  background:rgba(255,245,225,0.03);border:1px solid rgba(255,201,60,0.25);color:var(--cream);
+  font-size:0.72rem;padding:5px 12px;border-radius:14px;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:all 0.2s;
+  letter-spacing:0.03em;
+}
+.pill:hover{color:var(--gold);border-color:var(--gold)}
+.pill.on{color:var(--ink);background:var(--gold);border-color:var(--gold);box-shadow:0 0 14px rgba(255,201,60,0.4);font-weight:500}
+
+.coll-item{
+  display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  padding:11px 12px;border-radius:10px;
+  border-bottom:1px solid rgba(255,201,60,0.06);
+  font-size:0.85rem;cursor:pointer;text-decoration:none;
+  transition:all 0.18s;
+  color:inherit;
+}
+.coll-item:hover{
+  background:linear-gradient(90deg,rgba(255,27,107,0.06),rgba(255,201,60,0.04));
+  transform:translateX(4px);border-bottom-color:rgba(255,201,60,0.3);
+}
+.coll-item-left{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.coll-item-play{
+  width:22px;height:22px;border-radius:50%;
+  background:rgba(255,27,107,0.1);border:1px solid rgba(255,27,107,0.3);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
   transition:all 0.2s;
 }
-.result-links a:hover{color:#00e5ff;border-color:#00e5ff;background:rgba(0,229,255,0.05);box-shadow:0 0 10px rgba(0,229,255,0.15)}
-.result-links svg{width:13px;height:13px;fill:currentColor}
-.result-again{text-align:center;margin-top:16px}
-.result-again button{
-  background:none;border:1px dashed rgba(255,105,180,0.3);color:#ff69b4;
-  font-family:'Permanent Marker',cursive;font-size:0.8rem;
-  padding:8px 24px;border-radius:20px;cursor:pointer;
-  transition:all 0.2s;text-shadow:0 0 8px rgba(255,105,180,0.3);
+.coll-item:hover .coll-item-play{background:var(--bahia);border-color:var(--bahia);box-shadow:0 0 12px rgba(255,27,107,0.5)}
+.coll-item-play::before{
+  content:'';width:0;height:0;
+  border-top:5px solid transparent;border-bottom:5px solid transparent;
+  border-left:7px solid var(--bahia);margin-left:2px;
+  transition:border-left-color 0.2s;
 }
-.result-again button:hover{border-color:#ff69b4;box-shadow:0 0 15px rgba(255,105,180,0.2)}
+.coll-item:hover .coll-item-play::before{border-left-color:#fff}
+.coll-item-song{color:var(--cream);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
+.coll-item-artist{color:var(--gold);font-size:0.78rem;text-align:right;min-width:120px;font-family:'Special Elite',serif;letter-spacing:0.04em;opacity:0.85;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+.coll-empty{
+  text-align:center;padding:40px 20px;color:rgba(255,245,225,0.5);
+  font-family:'Permanent Marker',cursive;
+}
 
-/* === COLLECTION === */
-.collection{max-width:700px;margin:0 auto 60px}
-.coll-toggle{
-  background:none;border:none;color:#7c4dff;
-  font-family:'Permanent Marker',cursive;font-size:0.85rem;
-  cursor:pointer;padding:8px 0;width:100%;text-align:left;
-  transition:color 0.2s;text-shadow:0 0 8px rgba(124,77,255,0.3);
+/* ============================================================
+   POLAROID ARTISTS WALL
+   ============================================================ */
+.polaroid-wall{
+  max-width:980px;margin:60px auto 40px;
+  padding:32px 24px;
+  position:relative;z-index:5;
+  border-top:1px dashed rgba(255,201,60,0.2);
 }
-.coll-toggle:hover{color:#e040fb}
-.coll-toggle .arr{display:inline-block;transition:transform 0.3s;margin-right:8px;font-size:0.7rem}
-.coll-toggle.open .arr{transform:rotate(90deg)}
-.coll-body{max-height:0;overflow:hidden;transition:max-height 0.5s ease}
-.coll-body.open{max-height:8000px}
-.pills{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0}
-.pill{
-  background:none;border:1px solid rgba(139,0,255,0.3);color:#7c4dff;
-  font-size:0.7rem;padding:4px 12px;border-radius:12px;cursor:pointer;
-  font-family:'DM Sans',sans-serif;transition:all 0.2s;
+.polaroid-wall h3{
+  font-family:'Caveat Brush',cursive;font-size:1.4rem;
+  text-align:center;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;
+  margin-bottom:24px;text-shadow:0 0 12px rgba(255,201,60,0.4);
 }
-.pill:hover,.pill.on{color:#e040fb;border-color:#e040fb;box-shadow:0 0 8px rgba(224,64,251,0.2)}
-.coll-item{
-  display:flex;justify-content:space-between;align-items:baseline;
-  padding:8px 0;border-bottom:1px solid rgba(139,0,255,0.08);font-size:0.8rem;
+.polaroid-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:24px;
+  align-items:end;
 }
-.coll-item-song{color:#bbb}
-.coll-item-artist{color:#7c4dff;font-size:0.75rem;text-align:right;min-width:100px}
+.polaroid{
+  background:#fff5e1;
+  padding:10px 10px 28px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.4),0 2px 6px rgba(0,0,0,0.3);
+  transform:rotate(var(--rot,-2deg));
+  transition:transform 0.3s, box-shadow 0.3s;
+  position:relative;
+  font-family:'Special Elite',serif;
+  text-align:center;
+}
+.polaroid:hover{
+  transform:rotate(0deg) scale(1.06) translateY(-4px);
+  box-shadow:0 12px 30px rgba(0,0,0,0.5),0 4px 10px rgba(0,0,0,0.4),0 0 30px rgba(255,201,60,0.2);
+  z-index:10;
+}
+.polaroid:nth-child(2n){--rot:2.5deg}
+.polaroid:nth-child(3n){--rot:-3.5deg}
+.polaroid:nth-child(4n){--rot:1.5deg}
+.polaroid:nth-child(5n){--rot:-1deg}
+.polaroid-art{
+  width:100%;aspect-ratio:1;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bungee Shade',cursive;font-size:1.6rem;color:#fff;
+  text-shadow:0 2px 4px rgba(0,0,0,0.3);
+  line-height:1;
+  letter-spacing:-0.02em;
+}
+.polaroid-name{
+  margin-top:10px;font-size:0.7rem;color:#5a3a2a;letter-spacing:0.05em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
 
-/* === FOOTER === */
+/* ============================================================
+   FOOTER
+   ============================================================ */
 .page-footer{
-  text-align:center;padding-top:24px;
-  border-top:1px solid rgba(139,0,255,0.1);max-width:700px;margin:0 auto;
+  text-align:center;padding-top:30px;
+  border-top:1px dashed rgba(255,201,60,0.2);max-width:780px;margin:0 auto 20px;
+  position:relative;z-index:5;
 }
-.page-footer p{font-size:0.7rem;color:#3d2860;margin-bottom:4px}
-.page-footer p:first-child{font-family:'Permanent Marker',cursive;font-size:0.8rem;color:#7c4dff;text-shadow:0 0 8px rgba(124,77,255,0.3)}
+.page-footer p{font-size:0.75rem;color:rgba(255,245,225,0.4);margin-bottom:4px}
+.page-footer p:first-child{font-family:'Permanent Marker',cursive;font-size:0.95rem;color:var(--gold);text-shadow:0 0 10px rgba(255,201,60,0.3);margin-bottom:8px}
 
-/* === MOBILE === */
-@media(max-width:650px){
-  .tagline{font-size:1.3rem}
+/* ============================================================
+   MOBILE
+   ============================================================ */
+@media(max-width:720px){
+  .page-wrap{padding:18px 14px 40px}
+  .tagline{font-size:1.4rem}
+  .tag-stamp{font-size:0.75rem;letter-spacing:0.18em}
   .cabinet{max-width:100%}
-  .lever-arm{right:-50px;width:44px;top:70px;height:220px}
-  .lever-ball{width:42px;height:42px}
-  .lever-ball.pulled{top:calc(100% - 42px)}
-  .lever-rod{width:12px}
-  .marquee-title{font-size:1.4rem}
-  .reel-window{height:70px}
-  .reel-val{font-size:0.9rem}
-  .controls{gap:12px}
-  .spin-btn{padding:12px 32px;font-size:0.85rem}
-  .result-top{flex-direction:column;text-align:center}
-  .result-art{width:80px;height:80px;min-width:80px}
-  .result-links{justify-content:center}
+  .lever-arm{right:-58px;width:54px;top:78px;height:260px}
+  .lever-ball{width:50px;height:50px}
+  .lever-ball.pulled{top:calc(100% - 50px)}
+  .lever-plate{width:36px}
+  .lever-rod{width:14px;margin-top:18px;margin-bottom:24px}
+  .marquee-title{font-size:1.8rem;letter-spacing:0.04em}
+  .marquee-sub{font-size:0.6rem;letter-spacing:0.18em}
+  .reel-area{padding:22px 18px 14px}
+  .reel-window{height:90px}
+  .reel-val{font-size:0.85rem}
+  .reel-icon{font-size:1.2rem}
+  .reel-label{font-size:0.72rem}
+  .controls{gap:14px;flex-wrap:wrap}
+  .spin-btn{padding:14px 36px;font-size:0.95rem}
+  .result-song{font-size:1.25rem}
+  .result-artist{font-size:0.9rem}
+  .result-links a{font-size:0.7rem;padding:6px 10px}
+  .now-playing{font-size:0.65rem;letter-spacing:0.2em;padding:10px 14px}
+  .yt-play{width:70px;height:70px}
+  .yt-play::before{border-top:14px solid transparent;border-bottom:14px solid transparent;border-left:24px solid #fff}
+  .coll-item-artist{min-width:90px;font-size:0.7rem;max-width:130px}
+  .coll-item-song{font-size:0.8rem}
+  .polaroid-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:18px}
+  .polaroid-art{font-size:1.2rem}
 }
-@media(max-width:450px){
-  .lever-arm{right:-40px;width:36px;height:180px;top:60px}
-  .lever-ball{width:34px;height:34px}
-  .lever-ball.pulled{top:calc(100% - 34px)}
-  .marquee-title{font-size:1.1rem;letter-spacing:0.03em}
+@media(max-width:460px){
+  .lever-arm{right:-42px;width:42px;height:200px;top:64px}
+  .lever-ball{width:38px;height:38px}
+  .lever-ball.pulled{top:calc(100% - 38px)}
+  .lever-plate{width:28px}
+  .lever-rod{width:11px}
+  .marquee-title{font-size:1.4rem;letter-spacing:0.02em}
   .chasers{gap:10px}
-  .spin-btn{padding:10px 24px;font-size:0.75rem;letter-spacing:0.1em}
+  .chaser{width:8px;height:8px}
+  .spin-btn{padding:12px 26px;font-size:0.82rem;letter-spacing:0.1em}
+  .reel-window{height:78px}
+  .reel-icon{font-size:1rem;height:20px}
+}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){
+  .sky,.star,.leaf,.bulb,.chaser,.spin-btn::before,.result-card::before,.reel-viewport::before,.yt-thumb-fallback .ytfa-vinyl,.marquee::before{animation:none !important}
+  .lever-ball.pulled,.lever-ball.released{transition:none}
 }
 </style>
 </head>
 <body>
 
-<div class="dust"></div><div class="dust"></div><div class="dust"></div><div class="dust"></div><div class="dust"></div>
+<!-- Animated cosmic backdrop -->
+<div class="sky"></div>
+<div class="stars" aria-hidden="true">
+  <svg viewBox="0 0 1200 800" preserveAspectRatio="none">
+    <g fill="#ffc93c">
+      <circle class="star" cx="120" cy="80" r="1.2" style="--d:3s"/>
+      <circle class="star" cx="280" cy="200" r="1.5" style="--d:4.2s"/>
+      <circle class="star" cx="450" cy="60" r="1" style="--d:5s"/>
+      <circle class="star" cx="620" cy="180" r="1.8" style="--d:3.5s"/>
+      <circle class="star" cx="780" cy="90" r="1.2" style="--d:4.7s"/>
+      <circle class="star" cx="940" cy="220" r="1.4" style="--d:3.8s"/>
+      <circle class="star" cx="1080" cy="120" r="1" style="--d:5.4s"/>
+      <circle class="star" cx="60" cy="320" r="1.6" style="--d:4.3s"/>
+      <circle class="star" cx="190" cy="480" r="1.2" style="--d:5.1s"/>
+      <circle class="star" cx="340" cy="380" r="1" style="--d:3.6s"/>
+      <circle class="star" cx="540" cy="540" r="1.3" style="--d:4.9s"/>
+      <circle class="star" cx="720" cy="430" r="1.5" style="--d:3.4s"/>
+      <circle class="star" cx="880" cy="610" r="1.8" style="--d:4.6s"/>
+      <circle class="star" cx="1010" cy="490" r="1.1" style="--d:5.2s"/>
+      <circle class="star" cx="1140" cy="660" r="1.4" style="--d:3.7s"/>
+      <circle class="star" cx="100" cy="690" r="1" style="--d:4.1s"/>
+      <circle class="star" cx="260" cy="720" r="1.6" style="--d:5.3s"/>
+      <circle class="star" cx="410" cy="640" r="1.2" style="--d:4s"/>
+      <circle class="star" cx="650" cy="700" r="1.3" style="--d:3.9s"/>
+      <circle class="star" cx="820" cy="760" r="1.5" style="--d:4.4s"/>
+    </g>
+    <g fill="#ff1b6b" opacity="0.6">
+      <circle class="star" cx="380" cy="280" r="2" style="--d:6s"/>
+      <circle class="star" cx="700" cy="120" r="1.8" style="--d:5.5s"/>
+      <circle class="star" cx="1000" cy="350" r="2.2" style="--d:6.5s"/>
+      <circle class="star" cx="160" cy="560" r="1.6" style="--d:5.8s"/>
+      <circle class="star" cx="490" cy="420" r="1.8" style="--d:6.2s"/>
+    </g>
+    <g fill="#00d9c7" opacity="0.7">
+      <circle class="star" cx="240" cy="140" r="1.4" style="--d:7s"/>
+      <circle class="star" cx="560" cy="250" r="1.6" style="--d:6.8s"/>
+      <circle class="star" cx="860" cy="380" r="1.4" style="--d:7.4s"/>
+      <circle class="star" cx="1100" cy="540" r="1.6" style="--d:6.6s"/>
+    </g>
+  </svg>
+</div>
+
+<!-- Drifting tropical leaves -->
+<svg class="leaf leaf-1" width="80" height="60" viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path d="M5 30 Q20 5 70 18 Q60 32 30 30 Q60 35 70 42 Q35 50 5 30 Z" fill="#b6ff3c" opacity="0.6"/>
+  <path d="M5 30 L70 30" stroke="#7b2cbf" stroke-width="1" fill="none"/>
+</svg>
+<svg class="leaf leaf-2" width="100" height="72" viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path d="M8 36 Q25 8 88 22 Q72 40 36 36 Q72 44 88 54 Q42 64 8 36 Z" fill="#ffc93c" opacity="0.5"/>
+  <path d="M8 36 L88 36" stroke="#ff1b6b" stroke-width="1" fill="none"/>
+</svg>
+<svg class="leaf leaf-3" width="90" height="64" viewBox="0 0 90 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path d="M6 32 Q22 6 78 20 Q66 35 32 32 Q66 40 78 48 Q38 58 6 32 Z" fill="#ff6a00" opacity="0.5"/>
+  <path d="M6 32 L78 32" stroke="#7b2cbf" stroke-width="1" fill="none"/>
+</svg>
+<svg class="leaf leaf-4" width="110" height="78" viewBox="0 0 110 78" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path d="M8 38 Q28 8 98 24 Q80 42 38 38 Q80 48 98 60 Q44 70 8 38 Z" fill="#00d9c7" opacity="0.45"/>
+  <path d="M8 38 L98 38" stroke="#ff1b6b" stroke-width="1" fill="none"/>
+</svg>
+
+<div class="grain"></div>
 
 <div class="page-wrap">
   <nav class="side-nav">
@@ -506,17 +1027,114 @@ nav.side-nav .nav-link-active{color:#ff69b4}
     </a>
   </header>
 
-  <p class="tagline">Say <span class="no">no</span> to the algorithm, <span class="yes">yes</span> to SlotMusic.</p>
+  <p class="tagline">Say <span class="no">no</span> to the algorithm,<br><span class="yes">yes</span> to SlotMusic.</p>
+  <div class="tag-stamp">Tropicália Cosmic Casino</div>
 
   <div class="cabinet">
+    <!-- Ornamental hand-illustrated frame behind the machine -->
+    <div class="cabinet-art" aria-hidden="true">
+      <svg viewBox="0 0 800 700" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#7a5a1a"/>
+            <stop offset="0.3" stop-color="#ffc93c"/>
+            <stop offset="0.5" stop-color="#fff5b3"/>
+            <stop offset="0.7" stop-color="#ffc93c"/>
+            <stop offset="1" stop-color="#7a5a1a"/>
+          </linearGradient>
+          <radialGradient id="sunBurst">
+            <stop offset="0" stop-color="#ffc93c" stop-opacity="0.85"/>
+            <stop offset="0.5" stop-color="#ff6a00" stop-opacity="0.4"/>
+            <stop offset="1" stop-color="#ff1b6b" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Sunburst behind the cabinet -->
+        <g opacity="0.85" transform="translate(400,250)">
+          <circle r="240" fill="url(#sunBurst)"/>
+          <g stroke="#ffc93c" stroke-width="2" opacity="0.45">
+            <line x1="0" y1="-280" x2="0" y2="-200"/>
+            <line x1="0" y1="280" x2="0" y2="200"/>
+            <line x1="-280" y1="0" x2="-200" y2="0"/>
+            <line x1="280" y1="0" x2="200" y2="0"/>
+            <line x1="-200" y1="-200" x2="-140" y2="-140"/>
+            <line x1="200" y1="200" x2="140" y2="140"/>
+            <line x1="-200" y1="200" x2="-140" y2="140"/>
+            <line x1="200" y1="-200" x2="140" y2="-140"/>
+            <line x1="-100" y1="-260" x2="-70" y2="-180"/>
+            <line x1="100" y1="-260" x2="70" y2="-180"/>
+            <line x1="-260" y1="-100" x2="-180" y2="-70"/>
+            <line x1="260" y1="-100" x2="180" y2="-70"/>
+            <line x1="-100" y1="260" x2="-70" y2="180"/>
+            <line x1="100" y1="260" x2="70" y2="180"/>
+            <line x1="-260" y1="100" x2="-180" y2="70"/>
+            <line x1="260" y1="100" x2="180" y2="70"/>
+          </g>
+        </g>
+
+        <!-- Top arch -->
+        <path d="M60 90 Q400 -20 740 90" stroke="url(#goldGrad)" stroke-width="4" fill="none" opacity="0.85"/>
+        <path d="M60 100 Q400 -10 740 100" stroke="#ff1b6b" stroke-width="1.5" fill="none" opacity="0.4"/>
+
+        <!-- Decorative ornaments at top corners -->
+        <g transform="translate(60,90)">
+          <circle r="10" fill="#ffc93c" opacity="0.7"/>
+          <circle r="5" fill="#ff1b6b"/>
+          <circle r="2" fill="#fff5b3"/>
+        </g>
+        <g transform="translate(740,90)">
+          <circle r="10" fill="#ffc93c" opacity="0.7"/>
+          <circle r="5" fill="#ff1b6b"/>
+          <circle r="2" fill="#fff5b3"/>
+        </g>
+
+        <!-- Tropical palm fronds left -->
+        <g transform="translate(40,250) rotate(-12)" opacity="0.75">
+          <path d="M0 0 Q-20 -30 -40 -50 Q-15 -45 0 -20 Z" fill="#b6ff3c"/>
+          <path d="M0 0 Q-25 -10 -50 -10 Q-25 -2 -5 5 Z" fill="#00d9c7"/>
+          <path d="M0 0 Q-25 15 -50 20 Q-25 22 -5 12 Z" fill="#b6ff3c" opacity="0.85"/>
+          <path d="M0 0 Q-22 35 -38 55 Q-15 45 0 20 Z" fill="#00d9c7" opacity="0.8"/>
+          <line x1="-50" y1="-10" x2="-2" y2="2" stroke="#7b2cbf" stroke-width="1" opacity="0.5"/>
+        </g>
+        <g transform="translate(760,250) rotate(12) scale(-1,1)" opacity="0.75">
+          <path d="M0 0 Q-20 -30 -40 -50 Q-15 -45 0 -20 Z" fill="#ffc93c"/>
+          <path d="M0 0 Q-25 -10 -50 -10 Q-25 -2 -5 5 Z" fill="#ff6a00"/>
+          <path d="M0 0 Q-25 15 -50 20 Q-25 22 -5 12 Z" fill="#ffc93c" opacity="0.85"/>
+          <path d="M0 0 Q-22 35 -38 55 Q-15 45 0 20 Z" fill="#ff6a00" opacity="0.8"/>
+          <line x1="-50" y1="-10" x2="-2" y2="2" stroke="#7b2cbf" stroke-width="1" opacity="0.5"/>
+        </g>
+
+        <!-- Decorative cosmic stars sprinkled -->
+        <g fill="#fff5b3">
+          <polygon points="100,180 103,188 111,188 105,193 107,201 100,196 93,201 95,193 89,188 97,188" opacity="0.7"/>
+          <polygon points="700,180 703,188 711,188 705,193 707,201 700,196 693,201 695,193 689,188 697,188" opacity="0.7"/>
+          <polygon points="120,520 122,526 128,526 124,530 125,536 120,533 115,536 116,530 112,526 118,526" opacity="0.5"/>
+          <polygon points="680,520 682,526 688,526 684,530 685,536 680,533 675,536 676,530 672,526 678,526" opacity="0.5"/>
+        </g>
+
+        <!-- Bottom ornament -->
+        <path d="M120 640 Q400 690 680 640" stroke="url(#goldGrad)" stroke-width="3" fill="none" opacity="0.6"/>
+        <g transform="translate(400,650)">
+          <path d="M-30 0 Q0 -10 30 0 Q0 6 -30 0 Z" fill="#ffc93c" opacity="0.7"/>
+          <circle r="4" fill="#ff1b6b"/>
+          <circle r="1.5" fill="#fff5b3"/>
+        </g>
+      </svg>
+    </div>
+
     <div class="machine" id="machine">
       <div class="marquee">
-        <div class="marquee-title">SlotMusic</div>
-        <div class="marquee-sub">374 tracks &bull; zero algorithm</div>
+        <div class="bulb-crown">
+          <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+        </div>
+        <span class="marquee-pre">★ Cosmic Casino ★</span>
+        <div class="marquee-title" id="title">SlotMusic</div>
+        <div class="marquee-sub"><span id="songCount">374</span> tracks <span class="dot">●</span> zero algorithm <span class="dot">●</span> hand-picked</div>
         <div class="chasers">
           <span class="chaser"></span><span class="chaser"></span><span class="chaser"></span>
           <span class="chaser"></span><span class="chaser"></span><span class="chaser"></span>
           <span class="chaser"></span><span class="chaser"></span><span class="chaser"></span>
+          <span class="chaser"></span><span class="chaser"></span>
         </div>
       </div>
 
@@ -528,496 +1146,551 @@ nav.side-nav .nav-link-active{color:#ff69b4}
         </div>
         <div class="reel-viewport">
           <div class="payline payline-l"></div>
-          <div class="reel-window" id="r1"><span class="reel-val">?</span></div>
-          <div class="reel-window" id="r2"><span class="reel-val">?</span></div>
-          <div class="reel-window" id="r3"><span class="reel-val">?</span></div>
+          <div class="reel-window" id="r1"><div class="reel-icon" id="i1">🎲</div><span class="reel-val">SPIN</span></div>
+          <div class="reel-window" id="r2"><div class="reel-icon" id="i2">🌎</div><span class="reel-val">ME</span></div>
+          <div class="reel-window" id="r3"><div class="reel-icon" id="i3">✨</div><span class="reel-val">ROUND</span></div>
           <div class="payline payline-r"></div>
         </div>
       </div>
 
       <div class="controls">
-        <div class="counter"><span id="spins">0</span> spins</div>
-        <button class="spin-btn" id="spinBtn">SPIN</button>
-        <div class="counter"><span id="songCount">374</span> tracks</div>
+        <div class="counter"><span id="spins">0</span>spins</div>
+        <button class="spin-btn" id="spinBtn">Spin</button>
+        <div class="counter"><span id="jackpots">0</span>jackpots</div>
       </div>
 
       <div class="machine-foot">
-        <span>Mk.I</span>
-        <span>Est. 2026</span>
+        <span>Mk.II Cosmic</span>
+        <span class="sm-medal">★ ★ ★</span>
+        <span>Est. 2026 — Lisboa</span>
       </div>
     </div>
 
     <div class="lever-arm" id="leverZone">
+      <div class="lever-plate"></div>
       <div class="lever-rod">
         <div class="lever-ball" id="lever"></div>
       </div>
-      <div class="lever-mount"></div>
-      <div class="lever-hint">PULL</div>
+      <div class="lever-hint">Pull</div>
     </div>
   </div>
 
   <div class="result" id="result">
     <div class="result-card">
-      <div class="result-top">
-        <div class="result-art"><div class="result-art-bg" id="art"></div></div>
-        <div class="result-info">
-          <div class="result-song" id="rs"></div>
-          <div class="result-artist" id="ra"></div>
-          <div class="result-album" id="ral"></div>
-          <div class="result-links" id="rl"></div>
+      <div class="now-playing">
+        <span class="nowdot"></span>
+        <span>Now playing</span>
+        <span class="nowtag" id="combo"></span>
+      </div>
+      <div class="yt-frame" id="ytf">
+        <div class="yt-thumb" id="ytThumb">
+          <div class="yt-thumb-fallback" id="ytFallback">
+            <div class="ytfa-vinyl"></div>
+            <div class="ytfa-text">Click to play</div>
+          </div>
+          <div class="yt-play"></div>
         </div>
       </div>
+      <div class="result-body">
+        <div class="result-song" id="rs"></div>
+        <div class="result-artist" id="ra"></div>
+        <div class="result-album" id="ral"></div>
+        <div class="result-tags" id="rtags"></div>
+        <div class="result-links" id="rl"></div>
+      </div>
     </div>
-    <div class="result-again"><button id="again">spin again</button></div>
+    <div class="result-again"><button id="again">spin again ✦</button></div>
   </div>
 
   <div class="collection">
-    <button class="coll-toggle" id="ctog"><span class="arr">&#9654;</span>Browse the full collection</button>
+    <div class="coll-head">
+      <button class="coll-toggle" id="ctog"><span class="arr">▶</span>Browse the full collection</button>
+      <span class="coll-count" id="collCount"></span>
+    </div>
     <div class="coll-body" id="cbody">
+      <input type="text" class="coll-search" id="csearch" placeholder="Search artist, song, or album…">
       <div class="pills" id="pills"></div>
       <div id="clist"></div>
     </div>
   </div>
 
+  <div class="polaroid-wall" id="polWall">
+    <h3>★ Featured Artists ★</h3>
+    <div class="polaroid-grid" id="polGrid"></div>
+  </div>
+
   <footer class="page-footer">
-    <p>Headphones on.</p>
-    <p>Updated: May 2026</p>
-    <p>Built with Claude Opus 4.6</p>
+    <p>Headphones on. ✦</p>
+    <p>Updated: May 2026 — Tropicália Cosmic Casino edition</p>
+    <p>Built with Claude Opus 4.7</p>
   </footer>
 </div>
 
+<!-- Jackpot overlay -->
+<div class="jackpot-overlay" id="jackpot"><div class="jackpot-text">JACKPOT</div></div>
+
 <script>
 (function(){
+  /* ============================
+     SONG DATABASE — 374 tracks
+     ============================ */
   var S=[
-    {s:"Pain (feat. Snoop Dogg)",al:"A nous Paris 2017",ar:"De La Soul",v:"Groove",r:"Hip Hop",t:"Rhythmic"},
-    {s:"Brasilia Brasil",al:"Abre Alas",ar:"Rogerio Caetano",v:"Fire",r:"Brazilian",t:"Rhythmic"},
-    {s:"Talkin To Myself",al:"Abstractions",ar:"Zo! & Tall Black Guy",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-    {s:"Feel the Real",al:"Adrenalin",ar:"David Bendeth",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Where You Belong",al:"Afternoon Delights",ar:"The Groovers",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Sir Boastful",al:"Aldorande",ar:"Aldorande",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"Abrahams New Gift",al:"Alive",ar:"Phronesis",v:"Fire",r:"Jazz",t:"Rhythmic"},
-    {s:"All 4 U",al:"All 4 U",ar:"30/70",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-    {s:"All I Hear (is a funky bassline)",al:"Single",ar:"The Sponges & Father Funk",v:"Fire",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Sockem Bopem",al:"All In",ar:"Know Good",v:"Fire",r:"Jazz",t:"Rhythmic"},
-    {s:"ALL IN (feat. Rimarkable)",al:"Single",ar:"Jitwam & Rimarkable",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Wax Your Body",al:"All Night Vibes",ar:"Lee Webster",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"All of My Love",al:"Single",ar:"Etta Bond & Chris Loco",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"Beautiful People",al:"ALWAYS STRIVE AND PROSPER",ar:"A$AP Ferg",v:"Fire",r:"Hip Hop",t:"Rhythmic"},
-    {s:"Forbidden Planet",al:"Amal",ar:"Vins Da Cuero",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"Dr. My - Ho",al:"Amazon to Lefrak",ar:"New Optimism",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Ancestral Rhythm",al:"EP",ar:"K-Alexi Shelby",v:"Fire",r:"Electronic",t:"Rhythmic"},
-    {s:"Bird Solo",al:"Ancient Lights",ar:"Uniting Of Opposites",v:"Chill",r:"Jazz",t:"Atmospheric"},
-    {s:"Time Is On Our Side",al:"Another Taste",ar:"Mad Honey",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Perfect Night",al:"Another Taste",ar:"Another Taste",v:"Chill",r:"Electronic",t:"Melodic"},
-    {s:"Brian",al:"Antiphon",ar:"Alfa Mist",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Drinking",al:"Any Day Now",ar:"The Brooks",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-    {s:"Traicion",al:"Apollo Sound 6",ar:"Roberto Roena y Su Apollo Sound",v:"Fire",r:"Latin",t:"Rhythmic"},
-    {s:"Lua de Garrafa",al:"AS PALAVRAS",ar:"Rubel & Milton Nascimento",v:"Chill",r:"Brazilian",t:"Melodic"},
-    {s:"Help Me",al:"The Asylum Albums",ar:"Joni Mitchell",v:"Chill",r:"Rock & Alt",t:"Melodic"},
-    {s:"Pick Up the Pieces",al:"Average White Band",ar:"Average White Band",v:"Fire",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Little Sunflower",al:"Backlash",ar:"Freddie Hubbard",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Weird Love",al:"Bar Lounge Classics",ar:"Moodorama",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"Barbershop",al:"Single",ar:"Jason Moran",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"The Beat Inside",al:"EP",ar:"Soledrifter",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"flight fm",al:"Beats In Space 103",ar:"Joy Orbison",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"Beleza Destruida",al:"Single",ar:"Djavan & Milton Nascimento",v:"Chill",r:"Brazilian",t:"Melodic"},
-    {s:"Flickermood",al:"Belle et Fou OST",ar:"Forss",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"Grey Luh",al:"Berhana",ar:"Berhana",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"Poweride",al:"Best of Marcos Valle",ar:"Marcos Valle",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-    {s:"Dont Go",al:"Best of Tania Maria",ar:"Tania Maria",v:"Fire",r:"Brazilian",t:"Rhythmic"},
-    {s:"Betta Daze",al:"Single",ar:"Minus 8",v:"Chill",r:"Electronic",t:"Melodic"},
-    {s:"Better (Love in Detail Remix)",al:"Single",ar:"aboveDat",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-    {s:"I Found Love (Operator S Remix)",al:"Big Fish Little Fish",ar:"Hardrive & Lives",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Days Like This",al:"Big Fish Little Fish",ar:"Kenny Lattimore",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-    {s:"The Big Sun",al:"Single",ar:"Jo Paciello",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Slop Jar Blues",al:"Black Byrd",ar:"Donald Byrd",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"Remembrance",al:"Black Focus",ar:"Yussef Kamaal",v:"Chill",r:"Jazz",t:"Atmospheric"},
-    {s:"Joint 17",al:"Black Focus",ar:"Yussef Kamaal",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"Black Light",al:"EP",ar:"Brett Gould",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Blackjack",al:"Blackjack",ar:"Donald Byrd",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"Blind (Frankie Knuckles Remix)",al:"Blind",ar:"Hercules & Love Affair",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Blind Date (feat. ABRA)",al:"Single",ar:"Joy Orbison & Overmono",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"On The Nature Of Daylight",al:"The Blue Notebooks",ar:"Max Richter",v:"Chill",r:"Rock & Alt",t:"Atmospheric"},
-    {s:"Puente",al:"Bocanada",ar:"Gustavo Cerati",v:"Chill",r:"Rock & Alt",t:"Atmospheric"},
-    {s:"Flips and Flops Drips and Drops",al:"Braincase",ar:"Electric Mantis",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Brasil Pandeiro (Atjazz Mix)",al:"Sonzeira",ar:"Sonzeira",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-    {s:"In Your Eyes",al:"Bridges",ar:"Dianne Reeves",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Broken Harvest",al:"Single",ar:"Madison Cunningham",v:"Chill",r:"Rock & Alt",t:"Melodic"},
-    {s:"Calling Out (David Penn Remix)",al:"Single",ar:"Sophie Lloyd",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Bakara",al:"Canopee",ar:"Polo & Pan",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"Sky Islands",al:"Capitol Rare Vol 1",ar:"Caldera",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"Careless (Tiny Room Sessions)",al:"Single",ar:"Ronald Bruner Jr.",v:"Fire",r:"Jazz",t:"Rhythmic"},
-    {s:"Modinha (feat. Maria Bethania)",al:"Carminho Canta Tom Jobim",ar:"Carminho",v:"Chill",r:"Brazilian",t:"Melodic"},
-    {s:"Carrie (Slowed)",al:"Single",ar:"Ugovhb & EF",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"From the Lonely Afternoon",al:"Carry On",ar:"Flora Purim",v:"Chill",r:"Brazilian",t:"Atmospheric"},
-    {s:"Kate Song",al:"Casually Introducing",ar:"Walter Smith III",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Romance",al:"Cat",ar:"Hiroshi Suzuki",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"No Na Garganta",al:"Cheio De Dedos",ar:"Guinga",v:"Chill",r:"Brazilian",t:"Melodic"},
-    {s:"Essa Moca Ta Diferente",al:"Chico Buarque No4",ar:"Chico Buarque",v:"Groove",r:"Brazilian",t:"Melodic"},
-    {s:"Waiting On The Corner",al:"Cinnamon Flower",ar:"Charlie Rouse",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"Lazy Afternoon",al:"Classic Blue Note Ballads",ar:"Pete La Roca",v:"Chill",r:"Jazz",t:"Atmospheric"},
-    {s:"Midnight Mischief",al:"Cloak",ar:"Jordan Rakei",v:"Groove",r:"Soul & Funk",t:"Atmospheric"},
-    {s:"Tudo o Que Voce Podia Ser",al:"Clube da Esquina",ar:"Milton Nascimento",v:"Chill",r:"Brazilian",t:"Atmospheric"},
-    {s:"New World Spirit",al:"Colors of Latin Jazz",ar:"Ray Barretto",v:"Fire",r:"Latin",t:"Rhythmic"},
-    {s:"Come I Leave",al:"Single",ar:"Paleman",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Come With Me",al:"Come With Me",ar:"Tania Maria",v:"Fire",r:"Brazilian",t:"Rhythmic"},
-    {s:"Short Skirt/Long Jacket",al:"Comfort Eagle",ar:"CAKE",v:"Fire",r:"Rock & Alt",t:"Rhythmic"},
-    {s:"Craving Comes Back",al:"Single",ar:"Demarkus Lewis",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Crisis",al:"Single",ar:"Sondrio",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"Cry Baby",al:"Single",ar:"Rooms",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"CARPINTERIA (feat. Freddie Gibbs)",al:"CRYBABY",ar:"Rae Khalil",v:"Groove",r:"Hip Hop",t:"Melodic"},
-    {s:"All Night Long",al:"Cypress Grove",ar:"Jimmy Duck Holmes",v:"Groove",r:"Rock & Alt",t:"Rhythmic"},
-    {s:"College Welcomes Carl",al:"Daylight Savings",ar:"Surprise Chef",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Good Boy (Decapo Edit)",al:"De Capo",ar:"De-Phazz",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Devoted (Radio Edit)",al:"Single",ar:"Reverendos Of Soul",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-    {s:"Dance To This",al:"Diamante Records Vol 3",ar:"Daniel Klauser",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Still Here",al:"Diamante Records 4",ar:"Dj Gab",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"CASCADE",al:"DIEU SAUVE KIWIBUNNY",ar:"Nelick",v:"Groove",r:"Hip Hop",t:"Melodic"},
-    {s:"Butterfly",al:"Direct Step",ar:"Herbie Hancock",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"Directions",al:"EP",ar:"Jab",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Disco Daze",al:"Single",ar:"Josh Butler & Manoova",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Tanta Saudade",al:"Djavan Various",ar:"Djavan",v:"Chill",r:"Brazilian",t:"Melodic"},
-    {s:"You Aint Fly",al:"Do You Want More",ar:"The Roots",v:"Groove",r:"Hip Hop",t:"Rhythmic"},
-    {s:"Love Is In Control",al:"Donna Summer",ar:"Donna Summer",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"The Infamous Grouse",al:"Dream Circus",ar:"Misha Mullov-Abbado",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"Drink A Yak",al:"Single",ar:"Jidanofu",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Lonely",al:"Drive Slow",ar:"Mac Ayres",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"Feel the Morning!",al:"E Minor String Quintet",ar:"Raffy Bushman",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Fourteen (feat. Joshua Redman)",al:"Eclipse",ar:"Joey Alexander",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"QUE NO SALGA LA LUNA",al:"EL MAL QUERER",ar:"ROSALIA",v:"Fire",r:"Latin",t:"Rhythmic"},
-    {s:"Silhouettes (I, II & III)",al:"Elaenia",ar:"Floating Points",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"Endless (II)",al:"Endless",ar:"Leon Vynehall",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"Who Got Da Props",al:"Enta Da Stage",ar:"Black Moon",v:"Fire",r:"Hip Hop",t:"Rhythmic"},
-    {s:"Equinox",al:"Equinox",ar:"Project Karnak",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"tough tough",al:"Esbjorn Svensson",ar:"Esbjorn Svensson",v:"Chill",r:"Jazz",t:"Atmospheric"},
-    {s:"Fingertrip 1",al:"Esbjorn Svensson",ar:"Esbjorn Svensson Trio",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"Jungle Waters",al:"Escapism III",ar:"Sam Gellaitry",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"Lookie",al:"Eternal Child",ar:"Avishai Cohen",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"Nao Existe Amor em SP",al:"Existe Amor",ar:"Milton Nascimento & Criolo",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-    {s:"Expansions",al:"Expansions",ar:"Lonnie Liston Smith",v:"Chill",r:"Jazz",t:"Atmospheric"},
-    {s:"Nabu Corfa",al:"Jazz Harp of Dorothy Ashby",ar:"Dorothy Ashby",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Far Away From A Distance",al:"Single",ar:"Simian Mobile Disco",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"Feeling High (Lenzman Remix)",al:"Single",ar:"The Mouse Outfit",v:"Groove",r:"Hip Hop",t:"Melodic"},
-    {s:"Feminina",al:"Femeninas",ar:"Edward Simon",v:"Chill",r:"Latin",t:"Melodic"},
-    {s:"Slow Breath",al:"Find Your Flame",ar:"Nubiyan Twist",v:"Chill",r:"Soul & Funk",t:"Atmospheric"},
-    {s:"Scene 5",al:"Fingers and Thumbs",ar:"Unforscene",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Future Children Future Hopes",al:"Flying Start",ar:"The Blackbyrds",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-    {s:"For Horace",al:"Single",ar:"Raffy Bushman",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Molecular (Ovatow Reclock)",al:"Single",ar:"Duplex",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Imagine",al:"Franklins Room",ar:"Jordan Rakei",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"Eternal Light",al:"Free Nationals",ar:"Free Nationals & Chronixx",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-    {s:"Buckle Up (feat. Soweto Kinch)",al:"Freedom Fables",ar:"Nubiyan Twist",v:"Fire",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Veneno",al:"Friends from Rio 2014",ar:"Friends from Rio",v:"Groove",r:"Brazilian",t:"Melodic"},
-    {s:"Sixty-Six",al:"From This Place",ar:"Pat Metheny",v:"Chill",r:"Jazz",t:"Atmospheric"},
-    {s:"Souly",al:"Funky Times",ar:"Funky Times",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Alone Again",al:"Fusion",ar:"Fauna Flash",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"Gaucho",al:"Gaucho",ar:"Steely Dan",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"Soulsides",al:"Gentle Eyes",ar:"Art Farmer",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Danger",al:"Get High",ar:"Frederic Soulard",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"A Queda",al:"Giant Stops",ar:"Minus & MrDolly & Luca Argel",v:"Groove",r:"Brazilian",t:"Melodic"},
-    {s:"Gnosis",al:"Gnosis",ar:"Taylor Haskins",v:"Chill",r:"Jazz",t:"Atmospheric"},
-    {s:"Slump",al:"The Godbanger",ar:"S3A",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"But I Tried",al:"Flow",ar:"Flwr Chyld & Sw!sh",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"Good Together",al:"Good Together",ar:"Misha, Kaisha & cocabona",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-    {s:"A Tribe Called Government",al:"Groove Curse",ar:"Jordan Rakei",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Alright",al:"Groove Curse",ar:"Jordan Rakei",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"I.L.Y.T.",al:"The Groove Lab",ar:"Cyrus Chestnut & Roy Hargrove",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"Footprints",al:"Groove Travels",ar:"Danish Radio Big Band & Gerard Presencer",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"In The Breaks",al:"Halfway Somewhere",ar:"Galliano",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"Afternoon",al:"Happiness Therapy 22",ar:"Marc Brauner & Steffen Heidemann",v:"Chill",r:"Electronic",t:"Melodic"},
-    {s:"Old Man",al:"Harvest",ar:"Neil Young",v:"Chill",r:"Rock & Alt",t:"Melodic"},
-    {s:"Muevelo Papi (Suonho Remix)",al:"The Havana Remixes",ar:"The Bahama Soul Club",v:"Groove",r:"Latin",t:"Rhythmic"},
-    {s:"Follow",al:"Here I Am and There You Are",ar:"Jono McCleery",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"Uncensored Love Transmission",al:"Hex",ar:"Toshio Matsuura presents HEX",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"Japan Air",al:"Himawari",ar:"Swayzak",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"Pools",al:"Holding Together",ar:"Steps Ahead",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"Purple Drank",al:"Holy Love",ar:"Axel Boman",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"Honey",al:"Honey",ar:"Katy B & KAYTRANADA",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Like this",al:"How Can I",ar:"Park Hye Jin",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Voyage",al:"How Long Is Now?",ar:"Iiro Rantala",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Dark Places",al:"Hyperspace",ar:"Beck",v:"Chill",r:"Rock & Alt",t:"Atmospheric"},
-    {s:"Ill Move You No Mountain",al:"I Hear a Symphony",ar:"Hank Crawford",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"I Thought It Was You (12in Mix)",al:"I Thought It Was You",ar:"Sex-O-Sonique",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Ill Still Call (Wowflower Remix)",al:"Single",ar:"Habe",v:"Chill",r:"Electronic",t:"Melodic"},
-    {s:"Woo!",al:"Im Allergic To Dogs!",ar:"Remi Wolf",v:"Fire",r:"Rock & Alt",t:"Rhythmic"},
-    {s:"Your Scenery Story",al:"Imaginary Visions",ar:"Miho Hazama",v:"Chill",r:"Jazz",t:"Atmospheric"},
-    {s:"Tempo de Amor",al:"The Imagine Project",ar:"Herbie Hancock",v:"Groove",r:"Brazilian",t:"Melodic"},
-    {s:"Give Up the Goods (Just Step)",al:"The Infamous",ar:"Mobb Deep",v:"Fire",r:"Hip Hop",t:"Rhythmic"},
-    {s:"IS IT WORTH IT",al:"Single",ar:"Rae Khalil",v:"Groove",r:"Hip Hop",t:"Melodic"},
-    {s:"Kuru / Speak Like a Child",al:"Jaco Pastorius",ar:"Jaco Pastorius",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"Touch Me",al:"JAGUAR",ar:"Victoria Monet",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Crawl",al:"Jardin",ar:"Gabriel Garzon-Montano",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"French Suite No 4 in E-Flat Major",al:"The French Suites",ar:"Murray Perahia",v:"Chill",r:"Rock & Alt",t:"Melodic"},
-    {s:"Of Course Thats Happening",al:"Joy Techniques",ar:"Nate Mercereau",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"Concave 1",al:"Borderland Angles",ar:"Juan Atkins & Moritz von Oswald",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"Mosaic",al:"Just Ride",ar:"Soledrifter",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Descobrir",al:"Kamalas Danz",ar:"Okvsho",v:"Groove",r:"Brazilian",t:"Melodic"},
-    {s:"Pattern Klear",al:"Klouds",ar:"Knxwledge",v:"Chill",r:"Hip Hop",t:"Atmospheric"},
-    {s:"L.O.V.E. (DJ-Kicks)",al:"DJ-Kicks",ar:"Motor City Drum Ensemble",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Ole (Remix)",al:"Lagos Shake",ar:"Moritz von Oswald",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Laikas Groove",al:"Single",ar:"Wyatt Lewis",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Gabriel (Live Garage Mix)",al:"Late Night Tales Django Django",ar:"Roy Davis Jr.",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Lei Lo Lai",al:"The Latin Project",ar:"The Latin Project",v:"Groove",r:"Latin",t:"Melodic"},
-    {s:"Wires (Lazarus Version)",al:"Lazarus OST",ar:"Floating Points",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"Sageness",al:"Lazarus OST",ar:"Kamasi Washington",v:"Chill",r:"Jazz",t:"Atmospheric"},
-    {s:"Mon peze",al:"Le cactus de Siberie",ar:"Oxmo Puccino",v:"Chill",r:"Hip Hop",t:"Melodic"},
-    {s:"Track 03",al:"Les 12 Etudes",ar:"Chopin",v:"Chill",r:"Rock & Alt",t:"Melodic"},
-    {s:"Someone Like You",al:"Les jours paresseux",ar:"Fred Everything",v:"Chill",r:"Electronic",t:"Melodic"},
-    {s:"Hypnotize",al:"Life After Death",ar:"The Notorious B.I.G.",v:"Fire",r:"Hip Hop",t:"Rhythmic"},
-    {s:"Proto-Cosmos",al:"Lifetime The Collection",ar:"Tony Williams",v:"Fire",r:"Jazz",t:"Rhythmic"},
-    {s:"More Pressure",al:"The Line Is A Curve",ar:"Kae Tempest",v:"Fire",r:"Hip Hop",t:"Rhythmic"},
-    {s:"Listen Love (Jazz Funk Renaissance Edit)",al:"Listen Love",ar:"The Sunburst Band & Dave Lee",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Listen Love (Dave Lee Flute Reboot)",al:"Listen Love",ar:"The Sunburst Band",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-    {s:"Orangepeelskin",al:"Live as an Art",ar:"Turbojazz",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Livin XL (Red Rackem Threemix)",al:"Livin XL",ar:"Turbojazz",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Open Me Up",al:"London / Detroit",ar:"Dave Lee & Maurissa Rose",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Dumplings For Dinner",al:"Long Road",ar:"After Ours & OMAR",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-    {s:"Some Kind of Blockage",al:"Long Road",ar:"After Ours",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Look Up",al:"Look Up",ar:"Nightmares On Wax",v:"Chill",r:"Electronic",t:"Melodic"},
-    {s:"San Lorenzo",al:"The Lore",ar:"Pat Metheny Group",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"And Everything",al:"Love & Sound",ar:"Garrett Mason",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"L. M. II",al:"Loveplaydance",ar:"Toshio Matsuura Group",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"I Am the Black Gold of the Sun",al:"Loveplaydance",ar:"Toshio Matsuura Group",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"Van Allens Belt",al:"Luck Be a Weirdo Tonight",ar:"Fila Brazillia",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"Lenha Na Fogueira",al:"Luisa",ar:"Azimuth & Luisa",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-    {s:"Magical Shoes",al:"Magical Shoes",ar:"Compuphonic",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"A Zed and Two Ls",al:"Maim That Tune",ar:"Fila Brazillia",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"3rd and Spring",al:"Makin Moves",ar:"The Chronicle",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"White Sedan",al:"Mara",ar:"Fazer",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"Mr. Funky Samba",al:"Maria Fumaca",ar:"Banda Black Rio",v:"Fire",r:"Brazilian",t:"Rhythmic"},
-    {s:"Heaven Bound",al:"Masterjam",ar:"Rufus & Chaka Khan",v:"Fire",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Maybe Monday",al:"Maybe Monday",ar:"KAASI",v:"Chill",r:"Electronic",t:"Melodic"},
-    {s:"Mantodea",al:"Meetings",ar:"Adrien Brandeis",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Cha Cha Paris",al:"Meetings",ar:"Adrien Brandeis",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"Baby Got Work",al:"Mellow Fantasy",ar:"Potatohead People & De La Soul",v:"Groove",r:"Hip Hop",t:"Melodic"},
-    {s:"Need Somebody To Love",al:"Memories",ar:"Ady Suleiman",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"NOISE OF YOU",al:"Mercy",ar:"John Cale",v:"Chill",r:"Rock & Alt",t:"Atmospheric"},
-    {s:"Astral Ascension",al:"Message From A New Dawn",ar:"Kyoto Jazz Massive",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"Get Up",al:"Message From A New Dawn",ar:"Kyoto Jazz Massive",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Lets Get...",al:"Metro Area",ar:"Metro Area",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Bambro Koyo Ganda",al:"Migration",ar:"Bonobo",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"Do It the Way",al:"Minuit",ar:"Minus 8",v:"Chill",r:"Electronic",t:"Melodic"},
-    {s:"Trust",al:"Mirrors",ar:"Zohar & Nymfo",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"Tiro Cruzado",al:"Miucha & Tom Jobim Vol. 1",ar:"Antonio Carlos Jobim & Miucha",v:"Chill",r:"Brazilian",t:"Melodic"},
-    {s:"Jay Vee Go (Live in London)",al:"mixtape - Live in London",ar:"Ben Jones & Jake Edwards-Wood",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"Youre the Only One",al:"Modern Streets",ar:"Beat Spacek",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-    {s:"Deixa Eu Dizer",al:"Modo Livre",ar:"Ivan Lins",v:"Chill",r:"Brazilian",t:"Melodic"},
-    {s:"Abre Alas",al:"Modo Livre",ar:"Ivan Lins",v:"Chill",r:"Brazilian",t:"Melodic"},
-    {s:"Teenage Engineering",al:"Monday Brain",ar:"Roman Flugel",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"The Mood",al:"The Mood",ar:"Maurice Brown",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"The Things We Do",al:"Moonlight",ar:"Zetbee",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"The Morning Side of Love",al:"The Morning Side of Love",ar:"Ego Ella May",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"I Told Ya So",al:"Move with the Shadow",ar:"Soledrifter",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Lost Translation",al:"Music Knights",ar:"Sunner Soul",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Lush Life",al:"My Favorite Things",ar:"Joey Alexander",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"From the Lonely Afternoons",al:"Native Dancer",ar:"Wayne Shorter",v:"Chill",r:"Jazz",t:"Atmospheric"},
-    {s:"Natural Forces",al:"Natural Forces",ar:"Lyle Lovett",v:"Chill",r:"Rock & Alt",t:"Melodic"},
-    {s:"Wititj (Lightning Snake) Pt. 1",al:"Needle Paw",ar:"Nai Palm",v:"Chill",r:"Rock & Alt",t:"Atmospheric"},
-    {s:"Distant Lands",al:"The New Beginning",ar:"Byron the Aquarius",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"5am Shut Down",al:"New World Disorder",ar:"Unforscene",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Da Pa Virada",al:"Nosso",ar:"Dani Gurgel",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-    {s:"Cosmic Underground",al:"Not of This World",ar:"Adam Nitti",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"Garoa E Maresia",al:"Noturno Copacabana",ar:"Guinga",v:"Chill",r:"Brazilian",t:"Melodic"},
-    {s:"So Mi Stay (Amapiano Version)",al:"Nt Soundsystem",ar:"Nubiyan Twist",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"CANT LET GO",al:"OASIS",ar:"Darius",v:"Chill",r:"Electronic",t:"Melodic"},
-    {s:"Keep the Fire Burning",al:"On My Way",ar:"Gwen McCrae",v:"Fire",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Modaji",al:"One of a Kind",ar:"Dave Grusin",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Optimistic (Michael Gray Remix)",al:"Optimistic",ar:"Brian Power",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-    {s:"Organic Warfare",al:"Organic Warfare",ar:"Phronesis",v:"Fire",r:"Jazz",t:"Rhythmic"},
-    {s:"Cherry Funk",al:"The Other Day",ar:"Pomo",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Krumbsnatcha / Put Up Or Shut Up",al:"The Ownerz",ar:"Gang Starr",v:"Fire",r:"Hip Hop",t:"Rhythmic"},
-    {s:"Mas Que Nada / Oba La Vem Ela",al:"Pack de Verao Vol. 2",ar:"Syon Trio",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-    {s:"Brown Eyes",al:"Paper Cant Wrap Fire",ar:"Don Glori",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"Julio & Sa Gogo Danseuse",al:"Paradis Damour",ar:"Krisy",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Riesling Pour Robert",al:"Pardon My French",ar:"Jahari Massamba Unit",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"The Morning Side Of Love",al:"Peregrinations",ar:"Chico Hamilton",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"The Sugar",al:"Perhaps",ar:"Sweatson Klank",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Phasing the Shit",al:"Phasing the Shit",ar:"Felipe Gordon",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Pick Hits (Live In Japan 1987)",al:"Pick Hits Live",ar:"John Scofield",v:"Fire",r:"Jazz",t:"Rhythmic"},
-    {s:"Essa Confusao",al:"Pique",ar:"Dora Morelenbaum",v:"Groove",r:"Brazilian",t:"Melodic"},
-    {s:"Satania Our Solar System",al:"Planetary Prince",ar:"Cameron Graves",v:"Fire",r:"Jazz",t:"Rhythmic"},
-    {s:"Play",al:"Play",ar:"Electro Deluxe",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Talkin Loud",al:"Positivity",ar:"Incognito",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Piece of Mind",al:"Power of Soul",ar:"Idris Muhammad",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"A New Day",al:"Prism",ar:"Dave Holland",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Magnificent Mango",al:"Produced with Love II",ar:"The Sunburst Band & Dave Lee",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-    {s:"Push",al:"Push",ar:"No Wahala",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Radio Joint",al:"The Quest",ar:"Andreas Varady",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"Her Dream",al:"The Quest",ar:"Andreas Varady",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Bailador (Live)",al:"Radar",ar:"Michel Portal & WDR Big Band",v:"Fire",r:"Jazz",t:"Rhythmic"},
-    {s:"Stereoface",al:"Radio Silence",ar:"Neil Cowley Trio",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"Contact",al:"Raven",ar:"Kelela",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"Raw Cuts (Marcellus Pittman Remix)",al:"Raw Cuts Remixes",ar:"Danilo Plessow & MCDE",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Raw Cuts (Recloose Remix)",al:"Raw Cuts Remixes",ar:"Danilo Plessow & MCDE",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Unbelievable",al:"Ready To Die",ar:"The Notorious B.I.G.",v:"Fire",r:"Hip Hop",t:"Rhythmic"},
-    {s:"Red Clay",al:"Red Clay",ar:"Freddie Hubbard",v:"Fire",r:"Jazz",t:"Rhythmic"},
-    {s:"Electric Counterpoint: I. Fast",al:"Different Trains / Electric Counterpoint",ar:"Steve Reich",v:"Chill",r:"Rock & Alt",t:"Rhythmic"},
-    {s:"Gloriole",al:"Release the Kraken",ar:"Fouk",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Rescue Me",al:"Rescue Me",ar:"Sunkids",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Nobodys Perfect",al:"The Reset",ar:"ANOTR & Willem Mulder",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Tea Leaf Dancers",al:"Reset",ar:"Flying Lotus",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"Fica Mal Com Deus",al:"Return Journey",ar:"IG Culture",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-    {s:"Trampa",al:"Ritmos Ilicitos",ar:"Dj Windows 7",v:"Groove",r:"Latin",t:"Rhythmic"},
-    {s:"Rocksteady",al:"Rocksteady",ar:"United Vibrations",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Incapable",al:"Roisin Machine",ar:"Roisin Murphy",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Now U Know Tha Deal 4 Real",al:"Room(s) Extended",ar:"Machinedrum",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Little Monster",al:"Royal Blood",ar:"Royal Blood",v:"Fire",r:"Rock & Alt",t:"Rhythmic"},
-    {s:"Toccata",al:"Ruthenia",ar:"Marko Churnchetz",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"S.O.L. (Alan Braxe Edit)",al:"S.O.L. Ep",ar:"Bibio",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Engano",al:"Samba a Distancia",ar:"Marcelo Kimura",v:"Chill",r:"Brazilian",t:"Melodic"},
-    {s:"Treze Trinta e Nove",al:"Samba Is Our Gift",ar:"The Ipanemas",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-    {s:"Ladeira Da Preguica",al:"Samba Jazz & Bossa",ar:"Elis Regina",v:"Chill",r:"Brazilian",t:"Melodic"},
-    {s:"SAN ANDREAS",al:"SAN ANDREAS",ar:"Tommy Richman",v:"Fire",r:"Hip Hop",t:"Rhythmic"},
-    {s:"Metro",al:"Sao Paulo - Brasil",ar:"Cesar Camargo Mariano",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-    {s:"Sensazioni Hi-Fi (Edit)",al:"Sensazioni Hi-Fi",ar:"Chromatic Filters & Alex Puddu",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Boiling",al:"Settle",ar:"Disclosure",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Nine Point Five",al:"The Seven",ar:"Talib Kweli & Styles P",v:"Fire",r:"Hip Hop",t:"Rhythmic"},
-    {s:"After the Fall",al:"Shadows EP",ar:"Zero 7",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"Shea",al:"Shango",ar:"Sango",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Leila (Poolside Remix)",al:"The Shapes",ar:"Miami Horror",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Before I Go",al:"Shaping Visions",ar:"Miguel Migs",v:"Chill",r:"Electronic",t:"Melodic"},
-    {s:"She",al:"She",ar:"El Train",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"Celadon",al:"Shed Beets",ar:"Phairo",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"Shores of Easy (Lost Tapes)",al:"Shores of Easy",ar:"Royksopp",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"Grappa",al:"Six Aces",ar:"Corey King",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"2 Bridges",al:"The Sleeper Wakes",ar:"Ant Law",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"Burn",al:"Slipping",ar:"Joy Orbison",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"So Cool",al:"Slow Down EP",ar:"Reuben James",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"2 High",al:"Soft Spot",ar:"JMSN",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"ZIMBABDOGUE",al:"SOLAR",ar:"Vanessa Moreno",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-    {s:"Bip Bap",al:"Solid",ar:"Claude",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"Something About Us",al:"Interstella 5555 EP",ar:"Daft Punk",v:"Chill",r:"Electronic",t:"Melodic"},
-    {s:"Contusion",al:"Songs In The Key Of Life",ar:"Stevie Wonder",v:"Fire",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Sorceress (Photay Remix)",al:"Sorceress",ar:"Jordan Rakei",v:"Chill",r:"Soul & Funk",t:"Atmospheric"},
-    {s:"Incessant Desires",al:"Sorrows & Triumphs",ar:"Edward Simon",v:"Chill",r:"Latin",t:"Melodic"},
-    {s:"Sweet Power Your Embrace",al:"Soul of a Nation",ar:"James Mason",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"South",al:"South",ar:"Galimatias",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"Petite Planete",al:"Space",ar:"Emanative",v:"Chill",r:"Jazz",t:"Atmospheric"},
-    {s:"Low Motion",al:"Space",ar:"Emanative",v:"Groove",r:"Jazz",t:"Atmospheric"},
-    {s:"From Within",al:"Spain Again",ar:"Michel Camilo & Tomatito",v:"Fire",r:"Latin",t:"Rhythmic"},
-    {s:"Love Has No Time Or Place",al:"The Star Of A Story EP",ar:"Louie Vega",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"A Place Where We Can All Be Free",al:"The Star Of A Story EP",ar:"Louie Vega",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Blue Montreux",al:"Steppin Out",ar:"Steps Ahead",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"better",al:"still slipping vol. 1",ar:"Joy Orbison & Lea Sen",v:"Chill",r:"Electronic",t:"Melodic"},
-    {s:"bernard?",al:"still slipping vol. 1",ar:"Joy Orbison",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"froth sipping",al:"still slipping vol. 1",ar:"Joy Orbison",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Number One (Instrumental)",al:"Straight from the Heart",ar:"Patrice Rushen",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Keep Looking",al:"Stronger Than Pride",ar:"Sade",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"Blue Line To Monroe",al:"SUCKERPUNCH005",ar:"Luke Alessi",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"People Get Up And Drive Your Funky Soul",al:"Super Bad Funk Vol. 4",ar:"James Brown",v:"Fire",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Madan",al:"Sur La Terre",ar:"Martin Solveig",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Daydream",al:"Sweet Side",ar:"Raquel Rodriguez",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Yonaguni",al:"Symphonie Pacifique",ar:"Greg Foat",v:"Chill",r:"Jazz",t:"Atmospheric"},
-    {s:"Island Life",al:"Symphonie Pacifique",ar:"Greg Foat",v:"Chill",r:"Jazz",t:"Atmospheric"},
-    {s:"O Homem da Gravata Florida",al:"A Tabua de Esmeralda",ar:"Jorge Ben Jor",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-    {s:"Takes Me Back",al:"Takes Me Back",ar:"Aguava",v:"Chill",r:"Electronic",t:"Melodic"},
-    {s:"India",al:"Third",ar:"Jitwam",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"So Far",al:"Those Things",ar:"Miguel Migs",v:"Chill",r:"Electronic",t:"Melodic"},
-    {s:"New Life",al:"Time Warp",ar:"Chick Corea Quartet",v:"Fire",r:"Jazz",t:"Rhythmic"},
-    {s:"Timeless: Inner City Life / Pressure / Jah",al:"Timeless",ar:"Goldie",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"You Aint Gotta Lie (Momma Said)",al:"To Pimp a Butterfly",ar:"Kendrick Lamar",v:"Groove",r:"Hip Hop",t:"Melodic"},
-    {s:"Three Flowers",al:"Today and Tomorrow",ar:"McCoy Tyner",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Toma Bala",al:"Toma Bala",ar:"RonLy",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-    {s:"Boogie Nights",al:"Too Hot to Handle",ar:"Heatwave",v:"Fire",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Partido Alto",al:"Touching You Touching Me",ar:"Airto Moreira",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-    {s:"Sure Thing",al:"Tourist",ar:"St Germain",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"IDKILY",al:"True Value",ar:"Amtrac",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Kyoto",al:"Um Mar Pra Cada Um",ar:"Luedji Luna",v:"Chill",r:"Brazilian",t:"Melodic"},
-    {s:"Uthando",al:"Uthando",ar:"Henri Schappert",v:"Chill",r:"Electronic",t:"Melodic"},
-    {s:"Black Power",al:"Vers. 1.0",ar:"Per Vers",v:"Fire",r:"Hip Hop",t:"Rhythmic"},
-    {s:"Slap That Bass (Miguel Migs Remix)",al:"Verve Remixed 2",ar:"Ella Fitzgerald & Miguel Migs",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"Naimas Love Song (DJ Spinna Remix)",al:"Verve Remixed 2",ar:"Betty Carter & DJ Spinna",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"Naufrague de lindicible",al:"Vieux bougre",ar:"5 for Trio",v:"Chill",r:"Jazz",t:"Atmospheric"},
-    {s:"Trenzinho Imaginario",al:"Vila",ar:"Fabiano do Nascimento",v:"Chill",r:"Brazilian",t:"Melodic"},
-    {s:"G.R.E.S. Luxo Artezanal",al:"Violao",ar:"Nando Carneiro & Egberto Gismonti",v:"Chill",r:"Brazilian",t:"Melodic"},
-    {s:"Cascavel",al:"Viralata",ar:"Antonio Adolfo",v:"Groove",r:"Brazilian",t:"Rhythmic"},
-    {s:"The Wad",al:"The Wad",ar:"Vels Trio",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"Tinseltown in the Rain",al:"A Walk Across the Rooftops",ar:"The Blue Nile",v:"Chill",r:"Rock & Alt",t:"Atmospheric"},
-    {s:"Ti Mamzel",al:"Water of Life",ar:"Maajo",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Truth",al:"Waves of Calm",ar:"Jim Snidero",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"The New You",al:"We Are",ar:"Alina Engibaryan",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"The Weekend (Original 12 Inch Mix)",al:"The Weekend",ar:"Michael Gray",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Drone Follows Me Everywhere",al:"Welcome to Sideways",ar:"Simian Mobile Disco",v:"Groove",r:"Electronic",t:"Atmospheric"},
-    {s:"Step Up",al:"West",ar:"Ninjabeat",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"What You Wont Do for Love",al:"What You Wont Do for Love",ar:"Bobby Caldwell",v:"Chill",r:"Soul & Funk",t:"Melodic"},
-    {s:"with you where you are",al:"When Theres Love Around",ar:"Kiefer",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Who do u?",al:"Who do u?",ar:"Jack Marlow & Phantom Records",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Who Needs Love",al:"Who Needs Love",ar:"Incognito",v:"Groove",r:"Soul & Funk",t:"Melodic"},
-    {s:"DRUM THING",al:"WILL THIS MAKE ME GOOD",ar:"Nick Hakim",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Fourty Days",al:"Windows of the Mind",ar:"Billy Brooks",v:"Groove",r:"Jazz",t:"Rhythmic"},
-    {s:"Wont Let U Down",al:"Wont Let U Down",ar:"Folamour",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Drilling",al:"Working Nights",ar:"Trusme",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Recess",al:"World Music",ar:"Bokani Dyer",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Brother Father Mother Sister",al:"World Psychedelic Classics 4",ar:"Tim Maia",v:"Fire",r:"Brazilian",t:"Rhythmic"},
-    {s:"Summer Badness",al:"Worldwide Family Vol. 1",ar:"Chuck Maurice & Simbad",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Pain Tomorrow",al:"The Wrap Around",ar:"Dam Swindle",v:"Groove",r:"Electronic",t:"Melodic"},
-    {s:"Felix Leo",al:"Youll Never Know",ar:"Rodney Franklin",v:"Groove",r:"Jazz",t:"Melodic"},
-    {s:"Never Catch Me",al:"Youre Dead!",ar:"Flying Lotus",v:"Fire",r:"Electronic",t:"Rhythmic"},
-    {s:"Sea Snake",al:"Zoology for Martians",ar:"Carl Hudson",v:"Groove",r:"Jazz",t:"Atmospheric"},
-    {s:"Nereci",al:"2 Em 1",ar:"Djavan",v:"Chill",r:"Brazilian",t:"Melodic"},
-    {s:"Les Airelles",al:"6 Days in Leysin",ar:"Greg Foat",v:"Chill",r:"Jazz",t:"Atmospheric"},
-    {s:"Mountain Cat",al:"6 Days in Leysin",ar:"Greg Foat",v:"Chill",r:"Jazz",t:"Melodic"},
-    {s:"Tip Toe",al:"7",ar:"Sault",v:"Groove",r:"Soul & Funk",t:"Rhythmic"},
-    {s:"Desire",al:"13th Hour Vol. 4",ar:"Swales",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"Dusk",al:"21",ar:"Marcus Intalex",v:"Chill",r:"Electronic",t:"Atmospheric"},
-    {s:"Lelevation",al:"45 Scientific",ar:"Hi Fi",v:"Groove",r:"Hip Hop",t:"Rhythmic"},
-    {s:"50//50 (Edit)",al:"50//50",ar:"Vantage",v:"Groove",r:"Electronic",t:"Rhythmic"},
-    {s:"Return of the Crooklyn Dodgers",al:"90s Underground Hip Hop",ar:"Crooklyn Dodgers 95",v:"Fire",r:"Hip Hop",t:"Rhythmic"}
-  ];
+{s:"Pain (feat. Snoop Dogg)",al:"A nous Paris 2017",ar:"De La Soul",v:"Groove",r:"Hip Hop",t:"Rhythmic",yt:"nLDIs0GHP2k"},
+{s:"Brasilia Brasil",al:"Abre Alas",ar:"Rogerio Caetano",v:"Fire",r:"Brazilian",t:"Rhythmic",yt:"Dex17VGDOrA"},
+{s:"Talkin To Myself",al:"Abstractions",ar:"Zo! & Tall Black Guy",v:"Groove",r:"Soul & Funk",t:"Melodic",yt:"qYSH35JFQ_8"},
+{s:"Feel the Real",al:"Adrenalin",ar:"David Bendeth",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:"A5l4EdaeCsE"},
+{s:"Where You Belong",al:"Afternoon Delights",ar:"The Groovers",v:"Groove",r:"Electronic",t:"Melodic",yt:"mr0GkmLNrCw"},
+{s:"Sir Boastful",al:"Aldorande",ar:"Aldorande",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"Qfr93NdCQOk"},
+{s:"Abrahams New Gift",al:"Alive",ar:"Phronesis",v:"Fire",r:"Jazz",t:"Rhythmic",yt:"ly8KniNgkXo"},
+{s:"All 4 U",al:"All 4 U",ar:"30/70",v:"Groove",r:"Soul & Funk",t:"Melodic",yt:"mqsn5RJvxKs"},
+{s:"All I Hear (is a funky bassline)",al:"Single",ar:"The Sponges & Father Funk",v:"Fire",r:"Soul & Funk",t:"Rhythmic",yt:"aYeob33bFbc"},
+{s:"Sockem Bopem",al:"All In",ar:"Know Good",v:"Fire",r:"Jazz",t:"Rhythmic",yt:"2alRr1sGeoo"},
+{s:"ALL IN (feat. Rimarkable)",al:"Single",ar:"Jitwam & Rimarkable",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"rZ4Sw0AGxJU"},
+{s:"Wax Your Body",al:"All Night Vibes",ar:"Lee Webster",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"2lEm3xszG04"},
+{s:"All of My Love",al:"Single",ar:"Etta Bond & Chris Loco",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"QoAhLDIlhQo"},
+{s:"Beautiful People",al:"ALWAYS STRIVE AND PROSPER",ar:"A$AP Ferg",v:"Fire",r:"Hip Hop",t:"Rhythmic",yt:"v4pTRS5nEY0"},
+{s:"Forbidden Planet",al:"Amal",ar:"Vins Da Cuero",v:"Groove",r:"Electronic",t:"Atmospheric",yt:null},
+{s:"Dr. My - Ho",al:"Amazon to Lefrak",ar:"New Optimism",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"ankC5sF7Y_g"},
+{s:"Ancestral Rhythm",al:"EP",ar:"K-Alexi Shelby",v:"Fire",r:"Electronic",t:"Rhythmic",yt:"a69-EyIKKQs"},
+{s:"Bird Solo",al:"Ancient Lights",ar:"Uniting Of Opposites",v:"Chill",r:"Jazz",t:"Atmospheric",yt:"7-8IcOeQDxg"},
+{s:"Time Is On Our Side",al:"Another Taste",ar:"Mad Honey",v:"Groove",r:"Electronic",t:"Melodic",yt:"baQrLXhigOQ"},
+{s:"Perfect Night",al:"Another Taste",ar:"Another Taste",v:"Chill",r:"Electronic",t:"Melodic",yt:"E4anCjHfLvE"},
+{s:"Brian",al:"Antiphon",ar:"Alfa Mist",v:"Chill",r:"Jazz",t:"Melodic",yt:"DjYZ0enekbQ"},
+{s:"Drinking",al:"Any Day Now",ar:"The Brooks",v:"Groove",r:"Soul & Funk",t:"Melodic",yt:"eJgrtFiN40s"},
+{s:"Traicion",al:"Apollo Sound 6",ar:"Roberto Roena y Su Apollo Sound",v:"Fire",r:"Latin",t:"Rhythmic",yt:"I0HW5qW8V7A"},
+{s:"Lua de Garrafa",al:"AS PALAVRAS",ar:"Rubel & Milton Nascimento",v:"Chill",r:"Brazilian",t:"Melodic",yt:"gKiS4FKZ7QA"},
+{s:"Help Me",al:"The Asylum Albums",ar:"Joni Mitchell",v:"Chill",r:"Rock & Alt",t:"Melodic",yt:"otPQDEbVsc4"},
+{s:"Pick Up the Pieces",al:"Average White Band",ar:"Average White Band",v:"Fire",r:"Soul & Funk",t:"Rhythmic",yt:"MfAJLGFWxYo"},
+{s:"Little Sunflower",al:"Backlash",ar:"Freddie Hubbard",v:"Chill",r:"Jazz",t:"Melodic",yt:"OtB8dEuEmNM"},
+{s:"Weird Love",al:"Bar Lounge Classics",ar:"Moodorama",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"bf-VgeuIzdI"},
+{s:"Barbershop",al:"Single",ar:"Jason Moran",v:"Groove",r:"Jazz",t:"Rhythmic",yt:null},
+{s:"The Beat Inside",al:"EP",ar:"Soledrifter",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"41yVRNPXBWY"},
+{s:"flight fm",al:"Beats In Space 103",ar:"Joy Orbison",v:"Groove",r:"Electronic",t:"Atmospheric",yt:"rsFDOGwkSv8"},
+{s:"Beleza Destruida",al:"Single",ar:"Djavan & Milton Nascimento",v:"Chill",r:"Brazilian",t:"Melodic",yt:"swc_GMvmtG8"},
+{s:"Flickermood",al:"Belle et Fou OST",ar:"Forss",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"4DbxR0xOEHI"},
+{s:"Grey Luh",al:"Berhana",ar:"Berhana",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"IdYIVkVHDrU"},
+{s:"Poweride",al:"Best of Marcos Valle",ar:"Marcos Valle",v:"Groove",r:"Brazilian",t:"Rhythmic",yt:"zvydZjiDi0o"},
+{s:"Dont Go",al:"Best of Tania Maria",ar:"Tania Maria",v:"Fire",r:"Brazilian",t:"Rhythmic",yt:"qG1xu1hvIX4"},
+{s:"Betta Daze",al:"Single",ar:"Minus 8",v:"Chill",r:"Electronic",t:"Melodic",yt:"GvqwT9sbpPs"},
+{s:"Better (Love in Detail Remix)",al:"Single",ar:"aboveDat",v:"Groove",r:"Soul & Funk",t:"Melodic",yt:"NU2BVQsy_JA"},
+{s:"I Found Love (Operator S Remix)",al:"Big Fish Little Fish",ar:"Hardrive & Lives",v:"Groove",r:"Electronic",t:"Rhythmic",yt:null},
+{s:"Days Like This",al:"Big Fish Little Fish",ar:"Kenny Lattimore",v:"Groove",r:"Soul & Funk",t:"Melodic",yt:"GLARVFxrWZk"},
+{s:"The Big Sun",al:"Single",ar:"Jo Paciello",v:"Groove",r:"Electronic",t:"Melodic",yt:"2PNzdZVIjWM"},
+{s:"Slop Jar Blues",al:"Black Byrd",ar:"Donald Byrd",v:"Groove",r:"Jazz",t:"Melodic",yt:"XC2bM2p_JjM"},
+{s:"Remembrance",al:"Black Focus",ar:"Yussef Kamaal",v:"Chill",r:"Jazz",t:"Atmospheric",yt:"4D8YPDdsxYU"},
+{s:"Joint 17",al:"Black Focus",ar:"Yussef Kamaal",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"QXZVD1sCaUk"},
+{s:"Black Light",al:"EP",ar:"Brett Gould",v:"Groove",r:"Electronic",t:"Melodic",yt:"_LsDzmwugP0"},
+{s:"Blackjack",al:"Blackjack",ar:"Donald Byrd",v:"Groove",r:"Jazz",t:"Melodic",yt:"AulISvysXBU"},
+{s:"Blind (Frankie Knuckles Remix)",al:"Blind",ar:"Hercules & Love Affair",v:"Groove",r:"Electronic",t:"Melodic",yt:"ZWh4UuRVnxQ"},
+{s:"Blind Date (feat. ABRA)",al:"Single",ar:"Joy Orbison & Overmono",v:"Groove",r:"Electronic",t:"Atmospheric",yt:"AjR0_pPkPTY"},
+{s:"On The Nature Of Daylight",al:"The Blue Notebooks",ar:"Max Richter",v:"Chill",r:"Rock & Alt",t:"Atmospheric",yt:"rVN1B-tUpgs"},
+{s:"Puente",al:"Bocanada",ar:"Gustavo Cerati",v:"Chill",r:"Rock & Alt",t:"Atmospheric",yt:"I_VYv6fzRlc"},
+{s:"Flips and Flops Drips and Drops",al:"Braincase",ar:"Electric Mantis",v:"Groove",r:"Electronic",t:"Melodic",yt:"jHMvNmSZSvc"},
+{s:"Brasil Pandeiro (Atjazz Mix)",al:"Sonzeira",ar:"Sonzeira",v:"Groove",r:"Brazilian",t:"Rhythmic",yt:"Aqqg-EMarEc"},
+{s:"In Your Eyes",al:"Bridges",ar:"Dianne Reeves",v:"Chill",r:"Jazz",t:"Melodic",yt:"Y00LECzILAE"},
+{s:"Broken Harvest",al:"Single",ar:"Madison Cunningham",v:"Chill",r:"Rock & Alt",t:"Melodic",yt:"0URrLy9ztBo"},
+{s:"Calling Out (David Penn Remix)",al:"Single",ar:"Sophie Lloyd",v:"Groove",r:"Electronic",t:"Melodic",yt:"djztmKvrcd0"},
+{s:"Bakara",al:"Canopee",ar:"Polo & Pan",v:"Groove",r:"Electronic",t:"Atmospheric",yt:"HRhSIfH-Xhs"},
+{s:"Sky Islands",al:"Capitol Rare Vol 1",ar:"Caldera",v:"Groove",r:"Jazz",t:"Melodic",yt:"WpRBjXKuAfs"},
+{s:"Careless (Tiny Room Sessions)",al:"Single",ar:"Ronald Bruner Jr.",v:"Fire",r:"Jazz",t:"Rhythmic",yt:"2JKzFl2e8PU"},
+{s:"Modinha (feat. Maria Bethania)",al:"Carminho Canta Tom Jobim",ar:"Carminho",v:"Chill",r:"Brazilian",t:"Melodic",yt:"XVM80nH4v2E"},
+{s:"Carrie (Slowed)",al:"Single",ar:"Ugovhb & EF",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"8vsp53X4rTo"},
+{s:"From the Lonely Afternoon",al:"Carry On",ar:"Flora Purim",v:"Chill",r:"Brazilian",t:"Atmospheric",yt:"Y3QANKeaXSk"},
+{s:"Kate Song",al:"Casually Introducing",ar:"Walter Smith III",v:"Chill",r:"Jazz",t:"Melodic",yt:"BWyKwZCq--s"},
+{s:"Romance",al:"Cat",ar:"Hiroshi Suzuki",v:"Groove",r:"Jazz",t:"Melodic",yt:"jqvMGE9xzT8"},
+{s:"No Na Garganta",al:"Cheio De Dedos",ar:"Guinga",v:"Chill",r:"Brazilian",t:"Melodic",yt:"sGdgAfkTS1A"},
+{s:"Essa Moca Ta Diferente",al:"Chico Buarque No4",ar:"Chico Buarque",v:"Groove",r:"Brazilian",t:"Melodic",yt:"mLk4EH9FWwI"},
+{s:"Waiting On The Corner",al:"Cinnamon Flower",ar:"Charlie Rouse",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"IhIKALJL11o"},
+{s:"Lazy Afternoon",al:"Classic Blue Note Ballads",ar:"Pete La Roca",v:"Chill",r:"Jazz",t:"Atmospheric",yt:"KFFs9XsZKvw"},
+{s:"Midnight Mischief",al:"Cloak",ar:"Jordan Rakei",v:"Groove",r:"Soul & Funk",t:"Atmospheric",yt:"_AqbvR7-myE"},
+{s:"Tudo o Que Voce Podia Ser",al:"Clube da Esquina",ar:"Milton Nascimento",v:"Chill",r:"Brazilian",t:"Atmospheric",yt:"pu0y09oQuhA"},
+{s:"New World Spirit",al:"Colors of Latin Jazz",ar:"Ray Barretto",v:"Fire",r:"Latin",t:"Rhythmic",yt:"d5CWgEVPT8I"},
+{s:"Come I Leave",al:"Single",ar:"Paleman",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"uBItgF6Vlx0"},
+{s:"Come With Me",al:"Come With Me",ar:"Tania Maria",v:"Fire",r:"Brazilian",t:"Rhythmic",yt:"WRaiTuw9Z0A"},
+{s:"Short Skirt/Long Jacket",al:"Comfort Eagle",ar:"CAKE",v:"Fire",r:"Rock & Alt",t:"Rhythmic",yt:"X5KmB8Laemg"},
+{s:"Craving Comes Back",al:"Single",ar:"Demarkus Lewis",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"dZsj84zhaLA"},
+{s:"Crisis",al:"Single",ar:"Sondrio",v:"Groove",r:"Electronic",t:"Atmospheric",yt:"WcxRogJp1lk"},
+{s:"Cry Baby",al:"Single",ar:"Rooms",v:"Chill",r:"Electronic",t:"Atmospheric",yt:null},
+{s:"CARPINTERIA (feat. Freddie Gibbs)",al:"CRYBABY",ar:"Rae Khalil",v:"Groove",r:"Hip Hop",t:"Melodic",yt:"TKIBeJvCYt8"},
+{s:"All Night Long",al:"Cypress Grove",ar:"Jimmy Duck Holmes",v:"Groove",r:"Rock & Alt",t:"Rhythmic",yt:"FQOySANPuFQ"},
+{s:"College Welcomes Carl",al:"Daylight Savings",ar:"Surprise Chef",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:"t3FG7wBQ9Xo"},
+{s:"Good Boy (Decapo Edit)",al:"De Capo",ar:"De-Phazz",v:"Chill",r:"Jazz",t:"Melodic",yt:"heKXhIACCe4"},
+{s:"Devoted (Radio Edit)",al:"Single",ar:"Reverendos Of Soul",v:"Groove",r:"Soul & Funk",t:"Melodic",yt:"If0GK3_7phM"},
+{s:"Dance To This",al:"Diamante Records Vol 3",ar:"Daniel Klauser",v:"Groove",r:"Electronic",t:"Rhythmic",yt:null},
+{s:"Still Here",al:"Diamante Records 4",ar:"Dj Gab",v:"Groove",r:"Electronic",t:"Melodic",yt:"-mQvznLjWl0"},
+{s:"CASCADE",al:"DIEU SAUVE KIWIBUNNY",ar:"Nelick",v:"Groove",r:"Hip Hop",t:"Melodic",yt:"8rMleO2DiPM"},
+{s:"Butterfly",al:"Direct Step",ar:"Herbie Hancock",v:"Groove",r:"Jazz",t:"Melodic",yt:"knbmKDUYDXc"},
+{s:"Directions",al:"EP",ar:"Jab",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"qbIkqy3d2YM"},
+{s:"Disco Daze",al:"Single",ar:"Josh Butler & Manoova",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"8JBcDleZf1o"},
+{s:"Tanta Saudade",al:"Djavan Various",ar:"Djavan",v:"Chill",r:"Brazilian",t:"Melodic",yt:"BefKedqNFIs"},
+{s:"You Aint Fly",al:"Do You Want More",ar:"The Roots",v:"Groove",r:"Hip Hop",t:"Rhythmic",yt:"ydGbzXsOjfE"},
+{s:"Love Is In Control",al:"Donna Summer",ar:"Donna Summer",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:"iBbJ0KKQMxY"},
+{s:"The Infamous Grouse",al:"Dream Circus",ar:"Misha Mullov-Abbado",v:"Groove",r:"Jazz",t:"Melodic",yt:"rzz4ZNv2hiw"},
+{s:"Drink A Yak",al:"Single",ar:"Jidanofu",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"K_KYSvvDY8k"},
+{s:"Lonely",al:"Drive Slow",ar:"Mac Ayres",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"g1x2FoN1nkg"},
+{s:"Feel the Morning!",al:"E Minor String Quintet",ar:"Raffy Bushman",v:"Chill",r:"Jazz",t:"Melodic",yt:"t6WUrCQXHSw"},
+{s:"Fourteen (feat. Joshua Redman)",al:"Eclipse",ar:"Joey Alexander",v:"Groove",r:"Jazz",t:"Melodic",yt:"ktF7hRR3Www"},
+{s:"QUE NO SALGA LA LUNA",al:"EL MAL QUERER",ar:"ROSALIA",v:"Fire",r:"Latin",t:"Rhythmic",yt:"cENIOFk160c"},
+{s:"Silhouettes (I, II & III)",al:"Elaenia",ar:"Floating Points",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"4Ffux_s7LzY"},
+{s:"Endless (II)",al:"Endless",ar:"Leon Vynehall",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"2zpFsy6yweU"},
+{s:"Who Got Da Props",al:"Enta Da Stage",ar:"Black Moon",v:"Fire",r:"Hip Hop",t:"Rhythmic",yt:"58lZYDxHRV8"},
+{s:"Equinox",al:"Equinox",ar:"Project Karnak",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"iTu1vGsZRI4"},
+{s:"tough tough",al:"Esbjorn Svensson",ar:"Esbjorn Svensson",v:"Chill",r:"Jazz",t:"Atmospheric",yt:"0-IjOECvRQQ"},
+{s:"Fingertrip 1",al:"Esbjorn Svensson",ar:"Esbjorn Svensson Trio",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"jl8V_K-K4r0"},
+{s:"Jungle Waters",al:"Escapism III",ar:"Sam Gellaitry",v:"Groove",r:"Electronic",t:"Atmospheric",yt:"Hwwl_5stL1M"},
+{s:"Lookie",al:"Eternal Child",ar:"Avishai Cohen",v:"Groove",r:"Jazz",t:"Melodic",yt:"LjEE9Xwk-f0"},
+{s:"Nao Existe Amor em SP",al:"Existe Amor",ar:"Milton Nascimento & Criolo",v:"Groove",r:"Brazilian",t:"Rhythmic",yt:"5zlHCCTwv5Q"},
+{s:"Expansions",al:"Expansions",ar:"Lonnie Liston Smith",v:"Chill",r:"Jazz",t:"Atmospheric",yt:"T5R3_SbE7XQ"},
+{s:"Nabu Corfa",al:"Jazz Harp of Dorothy Ashby",ar:"Dorothy Ashby",v:"Chill",r:"Jazz",t:"Melodic",yt:"AKzKwjqxvio"},
+{s:"Far Away From A Distance",al:"Single",ar:"Simian Mobile Disco",v:"Groove",r:"Electronic",t:"Atmospheric",yt:"cyc1pt8Pxu4"},
+{s:"Feeling High (Lenzman Remix)",al:"Single",ar:"The Mouse Outfit",v:"Groove",r:"Hip Hop",t:"Melodic",yt:"ui4tgq0_Gqo"},
+{s:"Feminina",al:"Femeninas",ar:"Edward Simon",v:"Chill",r:"Latin",t:"Melodic",yt:null},
+{s:"Slow Breath",al:"Find Your Flame",ar:"Nubiyan Twist",v:"Chill",r:"Soul & Funk",t:"Atmospheric",yt:"B56maIBs6jQ"},
+{s:"Scene 5",al:"Fingers and Thumbs",ar:"Unforscene",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"neSsrB81A_8"},
+{s:"Future Children Future Hopes",al:"Flying Start",ar:"The Blackbyrds",v:"Groove",r:"Soul & Funk",t:"Melodic",yt:"WAYn0smZy4Y"},
+{s:"For Horace",al:"Single",ar:"Raffy Bushman",v:"Chill",r:"Jazz",t:"Melodic",yt:"SQlGs4jggNI"},
+{s:"Molecular (Ovatow Reclock)",al:"Single",ar:"Duplex",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"vom3wPqeoS8"},
+{s:"Imagine",al:"Franklins Room",ar:"Jordan Rakei",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"-lHjKgl1HwQ"},
+{s:"Eternal Light",al:"Free Nationals",ar:"Free Nationals & Chronixx",v:"Groove",r:"Soul & Funk",t:"Melodic",yt:"d11FF4fBJsQ"},
+{s:"Buckle Up (feat. Soweto Kinch)",al:"Freedom Fables",ar:"Nubiyan Twist",v:"Fire",r:"Soul & Funk",t:"Rhythmic",yt:"juuNU8yeYWk"},
+{s:"Veneno",al:"Friends from Rio 2014",ar:"Friends from Rio",v:"Groove",r:"Brazilian",t:"Melodic",yt:"j2RsC9X2ogA"},
+{s:"Sixty-Six",al:"From This Place",ar:"Pat Metheny",v:"Chill",r:"Jazz",t:"Atmospheric",yt:"lIJ_W0G9G3k"},
+{s:"Souly",al:"Funky Times",ar:"Funky Times",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:"4-10-M1XsCQ"},
+{s:"Alone Again",al:"Fusion",ar:"Fauna Flash",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"nc2_y16t6Jc"},
+{s:"Gaucho",al:"Gaucho",ar:"Steely Dan",v:"Groove",r:"Jazz",t:"Melodic",yt:"tEMnug2-VjM"},
+{s:"Soulsides",al:"Gentle Eyes",ar:"Art Farmer",v:"Chill",r:"Jazz",t:"Melodic",yt:"y6dU0wYsMDM"},
+{s:"Danger",al:"Get High",ar:"Frederic Soulard",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"KqmeOvtbBAY"},
+{s:"A Queda",al:"Giant Stops",ar:"Minus & MrDolly & Luca Argel",v:"Groove",r:"Brazilian",t:"Melodic",yt:null},
+{s:"Gnosis",al:"Gnosis",ar:"Taylor Haskins",v:"Chill",r:"Jazz",t:"Atmospheric",yt:"G4j8zmg5R7Q"},
+{s:"Slump",al:"The Godbanger",ar:"S3A",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"iwCdstr1gv8"},
+{s:"But I Tried",al:"Flow",ar:"Flwr Chyld & Sw!sh",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"2Tmn1P7hYaQ"},
+{s:"Good Together",al:"Good Together",ar:"Misha, Kaisha & cocabona",v:"Groove",r:"Soul & Funk",t:"Melodic",yt:"iEcD92p0iec"},
+{s:"A Tribe Called Government",al:"Groove Curse",ar:"Jordan Rakei",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:"jCJ1ic05S3A"},
+{s:"Alright",al:"Groove Curse",ar:"Jordan Rakei",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"9yqRtuzxUD8"},
+{s:"I.L.Y.T.",al:"The Groove Lab",ar:"Cyrus Chestnut & Roy Hargrove",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"qj7e32nJhQU"},
+{s:"Footprints",al:"Groove Travels",ar:"Danish Radio Big Band & Gerard Presencer",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"6bSBYFGLHXE"},
+{s:"In The Breaks",al:"Halfway Somewhere",ar:"Galliano",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"tA8yfmJd7OQ"},
+{s:"Afternoon",al:"Happiness Therapy 22",ar:"Marc Brauner & Steffen Heidemann",v:"Chill",r:"Electronic",t:"Melodic",yt:"RcueyNghzBk"},
+{s:"Old Man",al:"Harvest",ar:"Neil Young",v:"Chill",r:"Rock & Alt",t:"Melodic",yt:"OuVIJlSDOs0"},
+{s:"Muevelo Papi (Suonho Remix)",al:"The Havana Remixes",ar:"The Bahama Soul Club",v:"Groove",r:"Latin",t:"Rhythmic",yt:"iHmpVQr7x_8"},
+{s:"Follow",al:"Here I Am and There You Are",ar:"Jono McCleery",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"nfBMDEVQJB4"},
+{s:"Uncensored Love Transmission",al:"Hex",ar:"Toshio Matsuura presents HEX",v:"Groove",r:"Electronic",t:"Atmospheric",yt:"LRnwDXMrZA4"},
+{s:"Japan Air",al:"Himawari",ar:"Swayzak",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"xh2yrbFb6QM"},
+{s:"Pools",al:"Holding Together",ar:"Steps Ahead",v:"Groove",r:"Jazz",t:"Melodic",yt:"dLE_IBg9abk"},
+{s:"Purple Drank",al:"Holy Love",ar:"Axel Boman",v:"Groove",r:"Electronic",t:"Atmospheric",yt:"5WLH73LpuNg"},
+{s:"Honey",al:"Honey",ar:"Katy B & KAYTRANADA",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"nAoYYsxbMRs"},
+{s:"Like this",al:"How Can I",ar:"Park Hye Jin",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"XBkWNlVBvls"},
+{s:"Voyage",al:"How Long Is Now?",ar:"Iiro Rantala",v:"Chill",r:"Jazz",t:"Melodic",yt:"n84iW9-hXZo"},
+{s:"Dark Places",al:"Hyperspace",ar:"Beck",v:"Chill",r:"Rock & Alt",t:"Atmospheric",yt:"3rZCvABsx9Y"},
+{s:"Ill Move You No Mountain",al:"I Hear a Symphony",ar:"Hank Crawford",v:"Groove",r:"Jazz",t:"Melodic",yt:"4fmRnibFbSk"},
+{s:"I Thought It Was You (12in Mix)",al:"I Thought It Was You",ar:"Sex-O-Sonique",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"uI8PMw468aM"},
+{s:"Ill Still Call (Wowflower Remix)",al:"Single",ar:"Habe",v:"Chill",r:"Electronic",t:"Melodic",yt:"NVyV8qBCOA4"},
+{s:"Woo!",al:"Im Allergic To Dogs!",ar:"Remi Wolf",v:"Fire",r:"Rock & Alt",t:"Rhythmic",yt:"-Rb3bhX2VxA"},
+{s:"Your Scenery Story",al:"Imaginary Visions",ar:"Miho Hazama",v:"Chill",r:"Jazz",t:"Atmospheric",yt:"6EfJCRocnk8"},
+{s:"Tempo de Amor",al:"The Imagine Project",ar:"Herbie Hancock",v:"Groove",r:"Brazilian",t:"Melodic",yt:"-2QBmBYvVfE"},
+{s:"Give Up the Goods (Just Step)",al:"The Infamous",ar:"Mobb Deep",v:"Fire",r:"Hip Hop",t:"Rhythmic",yt:"QAmIJh1z-zw"},
+{s:"IS IT WORTH IT",al:"Single",ar:"Rae Khalil",v:"Groove",r:"Hip Hop",t:"Melodic",yt:"5wzkADAkElo"},
+{s:"Kuru / Speak Like a Child",al:"Jaco Pastorius",ar:"Jaco Pastorius",v:"Groove",r:"Jazz",t:"Melodic",yt:"1ih-Lsaf5oM"},
+{s:"Touch Me",al:"JAGUAR",ar:"Victoria Monet",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:"dj1UMY21Fp0"},
+{s:"Crawl",al:"Jardin",ar:"Gabriel Garzon-Montano",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"4QK2dYpyPQ4"},
+{s:"French Suite No 4 in E-Flat Major",al:"The French Suites",ar:"Murray Perahia",v:"Chill",r:"Rock & Alt",t:"Melodic",yt:"1_lVMjGrAH8"},
+{s:"Of Course Thats Happening",al:"Joy Techniques",ar:"Nate Mercereau",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"eGpbEcNUacI"},
+{s:"Concave 1",al:"Borderland Angles",ar:"Juan Atkins & Moritz von Oswald",v:"Groove",r:"Electronic",t:"Atmospheric",yt:"AegXfK7nM5w"},
+{s:"Mosaic",al:"Just Ride",ar:"Soledrifter",v:"Groove",r:"Electronic",t:"Melodic",yt:"YLZVJUgrHNU"},
+{s:"Descobrir",al:"Kamalas Danz",ar:"Okvsho",v:"Groove",r:"Brazilian",t:"Melodic",yt:"-qwtUMe2diE"},
+{s:"Pattern Klear",al:"Klouds",ar:"Knxwledge",v:"Chill",r:"Hip Hop",t:"Atmospheric",yt:"e382tNbOORY"},
+{s:"L.O.V.E. (DJ-Kicks)",al:"DJ-Kicks",ar:"Motor City Drum Ensemble",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"lUPMC3vgAA4"},
+{s:"Ole (Remix)",al:"Lagos Shake",ar:"Moritz von Oswald",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"k2FGH_3dSy8"},
+{s:"Laikas Groove",al:"Single",ar:"Wyatt Lewis",v:"Groove",r:"Electronic",t:"Melodic",yt:null},
+{s:"Gabriel (Live Garage Mix)",al:"Late Night Tales Django Django",ar:"Roy Davis Jr.",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"FwxpMIEZ9fg"},
+{s:"Lei Lo Lai",al:"The Latin Project",ar:"The Latin Project",v:"Groove",r:"Latin",t:"Melodic",yt:"zwubKSxpczg"},
+{s:"Wires (Lazarus Version)",al:"Lazarus OST",ar:"Floating Points",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"3ve_GrqyhR8"},
+{s:"Sageness",al:"Lazarus OST",ar:"Kamasi Washington",v:"Chill",r:"Jazz",t:"Atmospheric",yt:"Lv0FnTIL2Dg"},
+{s:"Mon peze",al:"Le cactus de Siberie",ar:"Oxmo Puccino",v:"Chill",r:"Hip Hop",t:"Melodic",yt:"5Ett9olbfNQ"},
+{s:"Track 03",al:"Les 12 Etudes",ar:"Chopin",v:"Chill",r:"Rock & Alt",t:"Melodic",yt:"T6ouZM6Kzgw"},
+{s:"Someone Like You",al:"Les jours paresseux",ar:"Fred Everything",v:"Chill",r:"Electronic",t:"Melodic",yt:"ha13zo_i5tU"},
+{s:"Hypnotize",al:"Life After Death",ar:"The Notorious B.I.G.",v:"Fire",r:"Hip Hop",t:"Rhythmic",yt:"3nCEpiFXajY"},
+{s:"Proto-Cosmos",al:"Lifetime The Collection",ar:"Tony Williams",v:"Fire",r:"Jazz",t:"Rhythmic",yt:"XpyoqNAJ-Fg"},
+{s:"More Pressure",al:"The Line Is A Curve",ar:"Kae Tempest",v:"Fire",r:"Hip Hop",t:"Rhythmic",yt:"BElvMwtoNA4"},
+{s:"Listen Love (Jazz Funk Renaissance Edit)",al:"Listen Love",ar:"The Sunburst Band & Dave Lee",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:"R7kJV6qVlhI"},
+{s:"Listen Love (Dave Lee Flute Reboot)",al:"Listen Love",ar:"The Sunburst Band",v:"Groove",r:"Soul & Funk",t:"Melodic",yt:"q-mhUSIWD0A"},
+{s:"Orangepeelskin",al:"Live as an Art",ar:"Turbojazz",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"FAtADGt18SQ"},
+{s:"Livin XL (Red Rackem Threemix)",al:"Livin XL",ar:"Turbojazz",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"H3q95fBT9WE"},
+{s:"Open Me Up",al:"London / Detroit",ar:"Dave Lee & Maurissa Rose",v:"Groove",r:"Electronic",t:"Melodic",yt:"tay5uYqRu3U"},
+{s:"Dumplings For Dinner",al:"Long Road",ar:"After Ours & OMAR",v:"Groove",r:"Soul & Funk",t:"Melodic",yt:null},
+{s:"Some Kind of Blockage",al:"Long Road",ar:"After Ours",v:"Groove",r:"Electronic",t:"Rhythmic",yt:null},
+{s:"Look Up",al:"Look Up",ar:"Nightmares On Wax",v:"Chill",r:"Electronic",t:"Melodic",yt:"tji_6niO3Xk"},
+{s:"San Lorenzo",al:"The Lore",ar:"Pat Metheny Group",v:"Groove",r:"Jazz",t:"Melodic",yt:"O9mEoXfN91I"},
+{s:"And Everything",al:"Love & Sound",ar:"Garrett Mason",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"QlKyJ_AJX2s"},
+{s:"L. M. II",al:"Loveplaydance",ar:"Toshio Matsuura Group",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"LHmW_tEwx6o"},
+{s:"I Am the Black Gold of the Sun",al:"Loveplaydance",ar:"Toshio Matsuura Group",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"-hjq_FRG2AE"},
+{s:"Van Allens Belt",al:"Luck Be a Weirdo Tonight",ar:"Fila Brazillia",v:"Chill",r:"Electronic",t:"Atmospheric",yt:null},
+{s:"Lenha Na Fogueira",al:"Luisa",ar:"Azimuth & Luisa",v:"Groove",r:"Brazilian",t:"Rhythmic",yt:"Bq2QSm75AHo"},
+{s:"Magical Shoes",al:"Magical Shoes",ar:"Compuphonic",v:"Groove",r:"Electronic",t:"Melodic",yt:"DcEuA0PRor8"},
+{s:"A Zed and Two Ls",al:"Maim That Tune",ar:"Fila Brazillia",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"y1eU-HuWJEE"},
+{s:"3rd and Spring",al:"Makin Moves",ar:"The Chronicle",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:null},
+{s:"White Sedan",al:"Mara",ar:"Fazer",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"PfZNsGG1Uhc"},
+{s:"Mr. Funky Samba",al:"Maria Fumaca",ar:"Banda Black Rio",v:"Fire",r:"Brazilian",t:"Rhythmic",yt:"yO6A291Wxc4"},
+{s:"Heaven Bound",al:"Masterjam",ar:"Rufus & Chaka Khan",v:"Fire",r:"Soul & Funk",t:"Rhythmic",yt:"6DGmrvQ2gH4"},
+{s:"Maybe Monday",al:"Maybe Monday",ar:"KAASI",v:"Chill",r:"Electronic",t:"Melodic",yt:"bSKo1b_r3L8"},
+{s:"Mantodea",al:"Meetings",ar:"Adrien Brandeis",v:"Chill",r:"Jazz",t:"Melodic",yt:"P9yo9wvP5-k"},
+{s:"Cha Cha Paris",al:"Meetings",ar:"Adrien Brandeis",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"g21r0BR9H18"},
+{s:"Baby Got Work",al:"Mellow Fantasy",ar:"Potatohead People & De La Soul",v:"Groove",r:"Hip Hop",t:"Melodic",yt:"S58kI_W8TV8"},
+{s:"Need Somebody To Love",al:"Memories",ar:"Ady Suleiman",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"uJ39Tr2y9Bo"},
+{s:"NOISE OF YOU",al:"Mercy",ar:"John Cale",v:"Chill",r:"Rock & Alt",t:"Atmospheric",yt:"U7lt-jmxZ54"},
+{s:"Astral Ascension",al:"Message From A New Dawn",ar:"Kyoto Jazz Massive",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"SERJtNa2q8Q"},
+{s:"Get Up",al:"Message From A New Dawn",ar:"Kyoto Jazz Massive",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:"rzc2kJZnONw"},
+{s:"Lets Get...",al:"Metro Area",ar:"Metro Area",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"sv0HwQTKCuE"},
+{s:"Bambro Koyo Ganda",al:"Migration",ar:"Bonobo",v:"Groove",r:"Electronic",t:"Atmospheric",yt:"ArWQWAUoiSU"},
+{s:"Do It the Way",al:"Minuit",ar:"Minus 8",v:"Chill",r:"Electronic",t:"Melodic",yt:"gn4cnOaF0mk"},
+{s:"Trust",al:"Mirrors",ar:"Zohar & Nymfo",v:"Groove",r:"Electronic",t:"Atmospheric",yt:"S3OhyVo-V7Y"},
+{s:"Tiro Cruzado",al:"Miucha & Tom Jobim Vol. 1",ar:"Antonio Carlos Jobim & Miucha",v:"Chill",r:"Brazilian",t:"Melodic",yt:"SFtm86PKYIg"},
+{s:"Jay Vee Go (Live in London)",al:"mixtape - Live in London",ar:"Ben Jones & Jake Edwards-Wood",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"AWbo-QW3zug"},
+{s:"Youre the Only One",al:"Modern Streets",ar:"Beat Spacek",v:"Groove",r:"Soul & Funk",t:"Melodic",yt:null},
+{s:"Deixa Eu Dizer",al:"Modo Livre",ar:"Ivan Lins",v:"Chill",r:"Brazilian",t:"Melodic",yt:"7aeijLTIFNA"},
+{s:"Abre Alas",al:"Modo Livre",ar:"Ivan Lins",v:"Chill",r:"Brazilian",t:"Melodic",yt:"qG1iPeNqURs"},
+{s:"Teenage Engineering",al:"Monday Brain",ar:"Roman Flugel",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"VLzhEvlnxLI"},
+{s:"The Mood",al:"The Mood",ar:"Maurice Brown",v:"Groove",r:"Jazz",t:"Melodic",yt:"f39Uqx6efek"},
+{s:"The Things We Do",al:"Moonlight",ar:"Zetbee",v:"Groove",r:"Electronic",t:"Melodic",yt:"lX3GvJNXi2g"},
+{s:"The Morning Side of Love",al:"The Morning Side of Love",ar:"Ego Ella May",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"WRXz2ckIcC0"},
+{s:"I Told Ya So",al:"Move with the Shadow",ar:"Soledrifter",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"p-FF-AMVQ8I"},
+{s:"Lost Translation",al:"Music Knights",ar:"Sunner Soul",v:"Groove",r:"Electronic",t:"Melodic",yt:null},
+{s:"Lush Life",al:"My Favorite Things",ar:"Joey Alexander",v:"Chill",r:"Jazz",t:"Melodic",yt:"Zk14RMrgesg"},
+{s:"From the Lonely Afternoons",al:"Native Dancer",ar:"Wayne Shorter",v:"Chill",r:"Jazz",t:"Atmospheric",yt:"36depo1-ji0"},
+{s:"Natural Forces",al:"Natural Forces",ar:"Lyle Lovett",v:"Chill",r:"Rock & Alt",t:"Melodic",yt:"_vwElzYX-FM"},
+{s:"Wititj (Lightning Snake) Pt. 1",al:"Needle Paw",ar:"Nai Palm",v:"Chill",r:"Rock & Alt",t:"Atmospheric",yt:"yGNVsGxmm2k"},
+{s:"Distant Lands",al:"The New Beginning",ar:"Byron the Aquarius",v:"Groove",r:"Electronic",t:"Atmospheric",yt:"xdEV3LeHqK8"},
+{s:"5am Shut Down",al:"New World Disorder",ar:"Unforscene",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"j6bWPuA2Y8Y"},
+{s:"Da Pa Virada",al:"Nosso",ar:"Dani Gurgel",v:"Groove",r:"Brazilian",t:"Rhythmic",yt:"VWN48KzdGxY"},
+{s:"Cosmic Underground",al:"Not of This World",ar:"Adam Nitti",v:"Groove",r:"Jazz",t:"Melodic",yt:"MeP70GR1wEs"},
+{s:"Garoa E Maresia",al:"Noturno Copacabana",ar:"Guinga",v:"Chill",r:"Brazilian",t:"Melodic",yt:"FyVo4Dzba5g"},
+{s:"So Mi Stay (Amapiano Version)",al:"Nt Soundsystem",ar:"Nubiyan Twist",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:"5nOPCwIuVKo"},
+{s:"CANT LET GO",al:"OASIS",ar:"Darius",v:"Chill",r:"Electronic",t:"Melodic",yt:"Ps3WKrrFyYA"},
+{s:"Keep the Fire Burning",al:"On My Way",ar:"Gwen McCrae",v:"Fire",r:"Soul & Funk",t:"Rhythmic",yt:"h5rMfLJKwIE"},
+{s:"Modaji",al:"One of a Kind",ar:"Dave Grusin",v:"Chill",r:"Jazz",t:"Melodic",yt:"7xFrIq4TNIg"},
+{s:"Optimistic (Michael Gray Remix)",al:"Optimistic",ar:"Brian Power",v:"Groove",r:"Soul & Funk",t:"Melodic",yt:"C1j6ZdRd0lE"},
+{s:"Organic Warfare",al:"Organic Warfare",ar:"Phronesis",v:"Fire",r:"Jazz",t:"Rhythmic",yt:"T16yn3maZ0A"},
+{s:"Cherry Funk",al:"The Other Day",ar:"Pomo",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"hK3dPZBiQ64"},
+{s:"Krumbsnatcha / Put Up Or Shut Up",al:"The Ownerz",ar:"Gang Starr",v:"Fire",r:"Hip Hop",t:"Rhythmic",yt:"VwaNIR93PIg"},
+{s:"Mas Que Nada / Oba La Vem Ela",al:"Pack de Verao Vol. 2",ar:"Syon Trio",v:"Groove",r:"Brazilian",t:"Rhythmic",yt:"IWs_X0-L0T8"},
+{s:"Brown Eyes",al:"Paper Cant Wrap Fire",ar:"Don Glori",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"BfXrHKlIKHo"},
+{s:"Julio & Sa Gogo Danseuse",al:"Paradis Damour",ar:"Krisy",v:"Groove",r:"Electronic",t:"Melodic",yt:"iSTXEPk_4kA"},
+{s:"Riesling Pour Robert",al:"Pardon My French",ar:"Jahari Massamba Unit",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"OEK8LED0NMU"},
+{s:"The Morning Side Of Love",al:"Peregrinations",ar:"Chico Hamilton",v:"Chill",r:"Jazz",t:"Melodic",yt:"l6dtQ1FRLr4"},
+{s:"The Sugar",al:"Perhaps",ar:"Sweatson Klank",v:"Groove",r:"Electronic",t:"Melodic",yt:null},
+{s:"Phasing the Shit",al:"Phasing the Shit",ar:"Felipe Gordon",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"bgvPVkLki9g"},
+{s:"Pick Hits (Live In Japan 1987)",al:"Pick Hits Live",ar:"John Scofield",v:"Fire",r:"Jazz",t:"Rhythmic",yt:"PX_JjPMw7MA"},
+{s:"Essa Confusao",al:"Pique",ar:"Dora Morelenbaum",v:"Groove",r:"Brazilian",t:"Melodic",yt:"Jy0vefnaBaY"},
+{s:"Satania Our Solar System",al:"Planetary Prince",ar:"Cameron Graves",v:"Fire",r:"Jazz",t:"Rhythmic",yt:"YnbJ7fc69ws"},
+{s:"Play",al:"Play",ar:"Electro Deluxe",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:"DaXD33hNEfE"},
+{s:"Talkin Loud",al:"Positivity",ar:"Incognito",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:"sBpXyedxI6U"},
+{s:"Piece of Mind",al:"Power of Soul",ar:"Idris Muhammad",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"COEp6gG50jk"},
+{s:"A New Day",al:"Prism",ar:"Dave Holland",v:"Chill",r:"Jazz",t:"Melodic",yt:"1uzxeTcIcDM"},
+{s:"Magnificent Mango",al:"Produced with Love II",ar:"The Sunburst Band & Dave Lee",v:"Groove",r:"Soul & Funk",t:"Melodic",yt:"nfXPhYUMX6M"},
+{s:"Push",al:"Push",ar:"No Wahala",v:"Groove",r:"Electronic",t:"Rhythmic",yt:null},
+{s:"Radio Joint",al:"The Quest",ar:"Andreas Varady",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"DwDUM-JPruw"},
+{s:"Her Dream",al:"The Quest",ar:"Andreas Varady",v:"Chill",r:"Jazz",t:"Melodic",yt:"DwDUM-JPruw"},
+{s:"Bailador (Live)",al:"Radar",ar:"Michel Portal & WDR Big Band",v:"Fire",r:"Jazz",t:"Rhythmic",yt:"FfgFw8mrlHA"},
+{s:"Stereoface",al:"Radio Silence",ar:"Neil Cowley Trio",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"iDwM4FVYu0Q"},
+{s:"Contact",al:"Raven",ar:"Kelela",v:"Groove",r:"Electronic",t:"Atmospheric",yt:"_GT9SmA1vlI"},
+{s:"Raw Cuts (Marcellus Pittman Remix)",al:"Raw Cuts Remixes",ar:"Danilo Plessow & MCDE",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"al6okI7qMRM"},
+{s:"Raw Cuts (Recloose Remix)",al:"Raw Cuts Remixes",ar:"Danilo Plessow & MCDE",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"dBJwEQAC3go"},
+{s:"Unbelievable",al:"Ready To Die",ar:"The Notorious B.I.G.",v:"Fire",r:"Hip Hop",t:"Rhythmic",yt:"1eNA0RBueoY"},
+{s:"Red Clay",al:"Red Clay",ar:"Freddie Hubbard",v:"Fire",r:"Jazz",t:"Rhythmic",yt:"wA1ZelIbUfI"},
+{s:"Electric Counterpoint: I. Fast",al:"Different Trains / Electric Counterpoint",ar:"Steve Reich",v:"Chill",r:"Rock & Alt",t:"Rhythmic",yt:"hiMCwvfqOgc"},
+{s:"Gloriole",al:"Release the Kraken",ar:"Fouk",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"XZtNQgfZf7A"},
+{s:"Rescue Me",al:"Rescue Me",ar:"Sunkids",v:"Groove",r:"Electronic",t:"Melodic",yt:"teEoAsucFss"},
+{s:"Nobodys Perfect",al:"The Reset",ar:"ANOTR & Willem Mulder",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"7xpkgAsib9o"},
+{s:"Tea Leaf Dancers",al:"Reset",ar:"Flying Lotus",v:"Groove",r:"Electronic",t:"Atmospheric",yt:"T-M680MCECs"},
+{s:"Fica Mal Com Deus",al:"Return Journey",ar:"IG Culture",v:"Groove",r:"Brazilian",t:"Rhythmic",yt:"RLqxqjJOX9I"},
+{s:"Trampa",al:"Ritmos Ilicitos",ar:"Dj Windows 7",v:"Groove",r:"Latin",t:"Rhythmic",yt:"Pc7sVZ9DRmQ"},
+{s:"Rocksteady",al:"Rocksteady",ar:"United Vibrations",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:"HGZYRt4iYo4"},
+{s:"Incapable",al:"Roisin Machine",ar:"Roisin Murphy",v:"Groove",r:"Electronic",t:"Melodic",yt:"H02BPY7vEms"},
+{s:"Now U Know Tha Deal 4 Real",al:"Room(s) Extended",ar:"Machinedrum",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"1ivGlry2Ato"},
+{s:"Little Monster",al:"Royal Blood",ar:"Royal Blood",v:"Fire",r:"Rock & Alt",t:"Rhythmic",yt:"ere2Mstl8ww"},
+{s:"Toccata",al:"Ruthenia",ar:"Marko Churnchetz",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"N8KoQSm45iU"},
+{s:"S.O.L. (Alan Braxe Edit)",al:"S.O.L. Ep",ar:"Bibio",v:"Groove",r:"Electronic",t:"Melodic",yt:"ygyeVGYv420"},
+{s:"Engano",al:"Samba a Distancia",ar:"Marcelo Kimura",v:"Chill",r:"Brazilian",t:"Melodic",yt:"bOlhxiFgdzo"},
+{s:"Treze Trinta e Nove",al:"Samba Is Our Gift",ar:"The Ipanemas",v:"Groove",r:"Brazilian",t:"Rhythmic",yt:null},
+{s:"Ladeira Da Preguica",al:"Samba Jazz & Bossa",ar:"Elis Regina",v:"Chill",r:"Brazilian",t:"Melodic",yt:"Yf_U1Qkx1sk"},
+{s:"SAN ANDREAS",al:"SAN ANDREAS",ar:"Tommy Richman",v:"Fire",r:"Hip Hop",t:"Rhythmic",yt:"wUkd78IkqF4"},
+{s:"Metro",al:"Sao Paulo - Brasil",ar:"Cesar Camargo Mariano",v:"Groove",r:"Brazilian",t:"Rhythmic",yt:"2YgPmummj6A"},
+{s:"Sensazioni Hi-Fi (Edit)",al:"Sensazioni Hi-Fi",ar:"Chromatic Filters & Alex Puddu",v:"Groove",r:"Electronic",t:"Melodic",yt:null},
+{s:"Boiling",al:"Settle",ar:"Disclosure",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"8CRYdu6SFgo"},
+{s:"Nine Point Five",al:"The Seven",ar:"Talib Kweli & Styles P",v:"Fire",r:"Hip Hop",t:"Rhythmic",yt:"2hpHsxgAyfI"},
+{s:"After the Fall",al:"Shadows EP",ar:"Zero 7",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"XXs45u9ajoU"},
+{s:"Shea",al:"Shango",ar:"Sango",v:"Groove",r:"Electronic",t:"Melodic",yt:"PVC1ea7t-To"},
+{s:"Leila (Poolside Remix)",al:"The Shapes",ar:"Miami Horror",v:"Groove",r:"Electronic",t:"Melodic",yt:"0BB91p4cNOU"},
+{s:"Before I Go",al:"Shaping Visions",ar:"Miguel Migs",v:"Chill",r:"Electronic",t:"Melodic",yt:"us-_bEjx6X0"},
+{s:"She",al:"She",ar:"El Train",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"mEqKQXLgEQQ"},
+{s:"Celadon",al:"Shed Beets",ar:"Phairo",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"l0yjGkYcBrE"},
+{s:"Shores of Easy (Lost Tapes)",al:"Shores of Easy",ar:"Royksopp",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"9iye7cJhSRk"},
+{s:"Grappa",al:"Six Aces",ar:"Corey King",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"VP1i8otje_8"},
+{s:"2 Bridges",al:"The Sleeper Wakes",ar:"Ant Law",v:"Groove",r:"Jazz",t:"Melodic",yt:"-keTOOZ1mIU"},
+{s:"Burn",al:"Slipping",ar:"Joy Orbison",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"dMRMZLqlVaw"},
+{s:"So Cool",al:"Slow Down EP",ar:"Reuben James",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"eAjTKtYMF3A"},
+{s:"2 High",al:"Soft Spot",ar:"JMSN",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"XWrI8oXOK-M"},
+{s:"ZIMBABDOGUE",al:"SOLAR",ar:"Vanessa Moreno",v:"Groove",r:"Brazilian",t:"Rhythmic",yt:"-z5KPuJOdbw"},
+{s:"Bip Bap",al:"Solid",ar:"Claude",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"CU7Vw434G70"},
+{s:"Something About Us",al:"Interstella 5555 EP",ar:"Daft Punk",v:"Chill",r:"Electronic",t:"Melodic",yt:"sOS9aOIXPEk"},
+{s:"Contusion",al:"Songs In The Key Of Life",ar:"Stevie Wonder",v:"Fire",r:"Soul & Funk",t:"Rhythmic",yt:"bVJUi48Cubk"},
+{s:"Sorceress (Photay Remix)",al:"Sorceress",ar:"Jordan Rakei",v:"Chill",r:"Soul & Funk",t:"Atmospheric",yt:"iC9vPf8hR7c"},
+{s:"Incessant Desires",al:"Sorrows & Triumphs",ar:"Edward Simon",v:"Chill",r:"Latin",t:"Melodic",yt:"Uoy05kTxW64"},
+{s:"Sweet Power Your Embrace",al:"Soul of a Nation",ar:"James Mason",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:"dE9__9pzr4Q"},
+{s:"South",al:"South",ar:"Galimatias",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"hKVX1YmVfXc"},
+{s:"Petite Planete",al:"Space",ar:"Emanative",v:"Chill",r:"Jazz",t:"Atmospheric",yt:"ln2lZhmrbjQ"},
+{s:"Low Motion",al:"Space",ar:"Emanative",v:"Groove",r:"Jazz",t:"Atmospheric",yt:"ln2lZhmrbjQ"},
+{s:"From Within",al:"Spain Again",ar:"Michel Camilo & Tomatito",v:"Fire",r:"Latin",t:"Rhythmic",yt:"J3ti9Td18TI"},
+{s:"Love Has No Time Or Place",al:"The Star Of A Story EP",ar:"Louie Vega",v:"Groove",r:"Electronic",t:"Melodic",yt:"CC196QBXnoc"},
+{s:"A Place Where We Can All Be Free",al:"The Star Of A Story EP",ar:"Louie Vega",v:"Groove",r:"Electronic",t:"Melodic",yt:"I759B-rP5yM"},
+{s:"Blue Montreux",al:"Steppin Out",ar:"Steps Ahead",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"dSAeC5sLAE0"},
+{s:"better",al:"still slipping vol. 1",ar:"Joy Orbison & Lea Sen",v:"Chill",r:"Electronic",t:"Melodic",yt:"K6kEQrog0RQ"},
+{s:"bernard?",al:"still slipping vol. 1",ar:"Joy Orbison",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"-ulf10JD75k"},
+{s:"froth sipping",al:"still slipping vol. 1",ar:"Joy Orbison",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"CzLjxv3gB-Q"},
+{s:"Number One (Instrumental)",al:"Straight from the Heart",ar:"Patrice Rushen",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:"x4ExjD-bW6E"},
+{s:"Keep Looking",al:"Stronger Than Pride",ar:"Sade",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"68U-A8hS8XE"},
+{s:"Blue Line To Monroe",al:"SUCKERPUNCH005",ar:"Luke Alessi",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"7LOu4H4CnkI"},
+{s:"People Get Up And Drive Your Funky Soul",al:"Super Bad Funk Vol. 4",ar:"James Brown",v:"Fire",r:"Soul & Funk",t:"Rhythmic",yt:"Nl-RVIdTUVI"},
+{s:"Madan",al:"Sur La Terre",ar:"Martin Solveig",v:"Groove",r:"Electronic",t:"Melodic",yt:"MelyDrP8WEw"},
+{s:"Daydream",al:"Sweet Side",ar:"Raquel Rodriguez",v:"Chill",r:"Jazz",t:"Melodic",yt:"Msts5NhIPKA"},
+{s:"Yonaguni",al:"Symphonie Pacifique",ar:"Greg Foat",v:"Chill",r:"Jazz",t:"Atmospheric",yt:"KcZ1gvFCtfo"},
+{s:"Island Life",al:"Symphonie Pacifique",ar:"Greg Foat",v:"Chill",r:"Jazz",t:"Atmospheric",yt:"tXu4Wt2vixI"},
+{s:"O Homem da Gravata Florida",al:"A Tabua de Esmeralda",ar:"Jorge Ben Jor",v:"Groove",r:"Brazilian",t:"Rhythmic",yt:"P9ahLCUyVjA"},
+{s:"Takes Me Back",al:"Takes Me Back",ar:"Aguava",v:"Chill",r:"Electronic",t:"Melodic",yt:"Y7z0stFhgg8"},
+{s:"India",al:"Third",ar:"Jitwam",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"_6jImp8CsEA"},
+{s:"So Far",al:"Those Things",ar:"Miguel Migs",v:"Chill",r:"Electronic",t:"Melodic",yt:"RgjX94mrfd8"},
+{s:"New Life",al:"Time Warp",ar:"Chick Corea Quartet",v:"Fire",r:"Jazz",t:"Rhythmic",yt:"yl8FI9kLgyA"},
+{s:"Timeless: Inner City Life / Pressure / Jah",al:"Timeless",ar:"Goldie",v:"Groove",r:"Electronic",t:"Atmospheric",yt:"NoV85P4L8kI"},
+{s:"You Aint Gotta Lie (Momma Said)",al:"To Pimp a Butterfly",ar:"Kendrick Lamar",v:"Groove",r:"Hip Hop",t:"Melodic",yt:"78bSAKX_4vs"},
+{s:"Three Flowers",al:"Today and Tomorrow",ar:"McCoy Tyner",v:"Chill",r:"Jazz",t:"Melodic",yt:"vzMXNNBRiTs"},
+{s:"Toma Bala",al:"Toma Bala",ar:"RonLy",v:"Groove",r:"Brazilian",t:"Rhythmic",yt:"npfVMteIciA"},
+{s:"Boogie Nights",al:"Too Hot to Handle",ar:"Heatwave",v:"Fire",r:"Soul & Funk",t:"Rhythmic",yt:"eZ2KWllZYTY"},
+{s:"Partido Alto",al:"Touching You Touching Me",ar:"Airto Moreira",v:"Groove",r:"Brazilian",t:"Rhythmic",yt:"IauWsWycvtg"},
+{s:"Sure Thing",al:"Tourist",ar:"St Germain",v:"Groove",r:"Electronic",t:"Melodic",yt:"NnzSkIjrtQ0"},
+{s:"IDKILY",al:"True Value",ar:"Amtrac",v:"Groove",r:"Electronic",t:"Melodic",yt:"bJqzdLX84Jg"},
+{s:"Kyoto",al:"Um Mar Pra Cada Um",ar:"Luedji Luna",v:"Chill",r:"Brazilian",t:"Melodic",yt:"5q0KHAwsn-o"},
+{s:"Uthando",al:"Uthando",ar:"Henri Schappert",v:"Chill",r:"Electronic",t:"Melodic",yt:"iqI3GwbLAS8"},
+{s:"Black Power",al:"Vers. 1.0",ar:"Per Vers",v:"Fire",r:"Hip Hop",t:"Rhythmic",yt:"V-PZ2eCCsbw"},
+{s:"Slap That Bass (Miguel Migs Remix)",al:"Verve Remixed 2",ar:"Ella Fitzgerald & Miguel Migs",v:"Groove",r:"Jazz",t:"Melodic",yt:"S_-8DAwOCPQ"},
+{s:"Naimas Love Song (DJ Spinna Remix)",al:"Verve Remixed 2",ar:"Betty Carter & DJ Spinna",v:"Groove",r:"Jazz",t:"Melodic",yt:"zuuPpLKVgj0"},
+{s:"Naufrague de lindicible",al:"Vieux bougre",ar:"5 for Trio",v:"Chill",r:"Jazz",t:"Atmospheric",yt:"xxmWalzQiok"},
+{s:"Trenzinho Imaginario",al:"Vila",ar:"Fabiano do Nascimento",v:"Chill",r:"Brazilian",t:"Melodic",yt:"Y75TT9XMMtE"},
+{s:"G.R.E.S. Luxo Artezanal",al:"Violao",ar:"Nando Carneiro & Egberto Gismonti",v:"Chill",r:"Brazilian",t:"Melodic",yt:"1x8mjO3MWfw"},
+{s:"Cascavel",al:"Viralata",ar:"Antonio Adolfo",v:"Groove",r:"Brazilian",t:"Rhythmic",yt:"8V4I1hNkKeU"},
+{s:"The Wad",al:"The Wad",ar:"Vels Trio",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"FQmgO8KPf7s"},
+{s:"Tinseltown in the Rain",al:"A Walk Across the Rooftops",ar:"The Blue Nile",v:"Chill",r:"Rock & Alt",t:"Atmospheric",yt:"2q5CGLHJ-54"},
+{s:"Ti Mamzel",al:"Water of Life",ar:"Maajo",v:"Groove",r:"Electronic",t:"Melodic",yt:"LRbCXMc9ye0"},
+{s:"Truth",al:"Waves of Calm",ar:"Jim Snidero",v:"Chill",r:"Jazz",t:"Melodic",yt:"KC2DmgGSACo"},
+{s:"The New You",al:"We Are",ar:"Alina Engibaryan",v:"Chill",r:"Jazz",t:"Melodic",yt:"BrPcWi6mVYo"},
+{s:"The Weekend (Original 12 Inch Mix)",al:"The Weekend",ar:"Michael Gray",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"LCUHKCtNAUg"},
+{s:"Drone Follows Me Everywhere",al:"Welcome to Sideways",ar:"Simian Mobile Disco",v:"Groove",r:"Electronic",t:"Atmospheric",yt:null},
+{s:"Step Up",al:"West",ar:"Ninjabeat",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"mwWcv-1jVrU"},
+{s:"What You Wont Do for Love",al:"What You Wont Do for Love",ar:"Bobby Caldwell",v:"Chill",r:"Soul & Funk",t:"Melodic",yt:"C8Y0SZrPdX0"},
+{s:"with you where you are",al:"When Theres Love Around",ar:"Kiefer",v:"Chill",r:"Jazz",t:"Melodic",yt:"y8LUi9uxeLQ"},
+{s:"Who do u?",al:"Who do u?",ar:"Jack Marlow & Phantom Records",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"nevgls4Cqks"},
+{s:"Who Needs Love",al:"Who Needs Love",ar:"Incognito",v:"Groove",r:"Soul & Funk",t:"Melodic",yt:"QT7Bsmo0vIE"},
+{s:"DRUM THING",al:"WILL THIS MAKE ME GOOD",ar:"Nick Hakim",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:"FHzDJ9SpkEg"},
+{s:"Fourty Days",al:"Windows of the Mind",ar:"Billy Brooks",v:"Groove",r:"Jazz",t:"Rhythmic",yt:"F-N6z_4STgs"},
+{s:"Wont Let U Down",al:"Wont Let U Down",ar:"Folamour",v:"Groove",r:"Electronic",t:"Melodic",yt:"HjpyB_ss530"},
+{s:"Drilling",al:"Working Nights",ar:"Trusme",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"zdR86QZlV0c"},
+{s:"Recess",al:"World Music",ar:"Bokani Dyer",v:"Chill",r:"Jazz",t:"Melodic",yt:"YhxOrWZtFYs"},
+{s:"Brother Father Mother Sister",al:"World Psychedelic Classics 4",ar:"Tim Maia",v:"Fire",r:"Brazilian",t:"Rhythmic",yt:"SSk_LiXuAOo"},
+{s:"Summer Badness",al:"Worldwide Family Vol. 1",ar:"Chuck Maurice & Simbad",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"EmPtpQ18V-s"},
+{s:"Pain Tomorrow",al:"The Wrap Around",ar:"Dam Swindle",v:"Groove",r:"Electronic",t:"Melodic",yt:"fKe4p1Np02o"},
+{s:"Felix Leo",al:"Youll Never Know",ar:"Rodney Franklin",v:"Groove",r:"Jazz",t:"Melodic",yt:"3nDHo6bQRSk"},
+{s:"Never Catch Me",al:"Youre Dead!",ar:"Flying Lotus",v:"Fire",r:"Electronic",t:"Rhythmic",yt:"2lXD0vv-ds8"},
+{s:"Sea Snake",al:"Zoology for Martians",ar:"Carl Hudson",v:"Groove",r:"Jazz",t:"Atmospheric",yt:"MfvP3lZtT1A"},
+{s:"Nereci",al:"2 Em 1",ar:"Djavan",v:"Chill",r:"Brazilian",t:"Melodic",yt:"9szuEwsU9ks"},
+{s:"Les Airelles",al:"6 Days in Leysin",ar:"Greg Foat",v:"Chill",r:"Jazz",t:"Atmospheric",yt:"s2nBRLLi0OE"},
+{s:"Mountain Cat",al:"6 Days in Leysin",ar:"Greg Foat",v:"Chill",r:"Jazz",t:"Melodic",yt:"s2nBRLLi0OE"},
+{s:"Tip Toe",al:"7",ar:"Sault",v:"Groove",r:"Soul & Funk",t:"Rhythmic",yt:"QXGE86HgTdk"},
+{s:"Desire",al:"13th Hour Vol. 4",ar:"Swales",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"lQuOWdapp6M"},
+{s:"Dusk",al:"21",ar:"Marcus Intalex",v:"Chill",r:"Electronic",t:"Atmospheric",yt:"edWy3e426JQ"},
+{s:"Lelevation",al:"45 Scientific",ar:"Hi Fi",v:"Groove",r:"Hip Hop",t:"Rhythmic",yt:"mjFjMjxL_gc"},
+{s:"50//50 (Edit)",al:"50//50",ar:"Vantage",v:"Groove",r:"Electronic",t:"Rhythmic",yt:"XXK_upgRrYE"},
+{s:"Return of the Crooklyn Dodgers",al:"90s Underground Hip Hop",ar:"Crooklyn Dodgers 95",v:"Fire",r:"Hip Hop",t:"Rhythmic",yt:"UtfBFG1hgps"}
+];
 
   var V=["Chill","Groove","Fire"];
   var R=["Jazz","Brazilian","Electronic","Soul & Funk","Hip Hop","Latin","Rock & Alt"];
   var T=["Melodic","Rhythmic","Atmospheric"];
+
+  /* Visual icon per category */
+  var VI={"Chill":"🌙","Groove":"🪩","Fire":"🔥"};
+  var RI={"Jazz":"🎺","Brazilian":"🌴","Electronic":"🛸","Soul & Funk":"🪩","Hip Hop":"🎤","Latin":"💃","Rock & Alt":"🎸"};
+  var TI={"Melodic":"🎶","Rhythmic":"🥁","Atmospheric":"☁️"};
+
+  /* Gradient palette per genre */
   var GC={
-    "Jazz":"#0a2040,#061530,#00e5ff",
-    "Brazilian":"#2a1e00,#1a1200,#ffea00",
-    "Electronic":"#1a0040,#0a0020,#e040fb",
-    "Soul & Funk":"#301000,#200a00,#ff9100",
-    "Hip Hop":"#200020,#100010,#ff1744",
-    "Latin":"#2a1500,#1a0800,#ff6d00",
-    "Rock & Alt":"#0a0a20,#050515,#7c4dff"
+    "Jazz":["#0a2040","#061530","#00d9c7"],
+    "Brazilian":["#3a2000","#1a0c00","#ffc93c"],
+    "Electronic":["#2a0040","#0d0322","#7b2cbf"],
+    "Soul & Funk":["#3d1200","#1d0600","#ff6a00"],
+    "Hip Hop":["#2a0014","#100008","#ff1b6b"],
+    "Latin":["#3d1500","#1d0700","#ff6a00"],
+    "Rock & Alt":["#10102d","#08081a","#b6ff3c"]
   };
 
   var lever=document.getElementById("lever");
-  var r1=document.getElementById("r1");
-  var r2=document.getElementById("r2");
-  var r3=document.getElementById("r3");
+  var r1=document.getElementById("r1"),r2=document.getElementById("r2"),r3=document.getElementById("r3");
+  var i1=document.getElementById("i1"),i2=document.getElementById("i2"),i3=document.getElementById("i3");
   var result=document.getElementById("result");
   var again=document.getElementById("again");
   var spinBtn=document.getElementById("spinBtn");
   var ctog=document.getElementById("ctog");
   var cbody=document.getElementById("cbody");
   var spinsEl=document.getElementById("spins");
+  var jackpotsEl=document.getElementById("jackpots");
+  var title=document.getElementById("title");
+  var jackpotOverlay=document.getElementById("jackpot");
+
   var busy=false;
   var spinCount=0;
+  var jackpotCount=0;
+
+  /* Current song state */
+  var currentSong=null;
 
   function spin(){
     if(busy)return;
     busy=true;
+    spinBtn.classList.add("busy");
     spinCount++;
     spinsEl.textContent=spinCount;
     result.classList.remove("show");
 
+    /* tear down any playing iframe */
+    var ytf=document.getElementById("ytf");
+    var existing=ytf.querySelector("iframe");
+    if(existing) existing.remove();
+
     lever.classList.remove("released");
     lever.classList.add("pulled");
 
-    r1.classList.add("spin");r1.classList.remove("land");
-    r2.classList.add("spin");r2.classList.remove("land");
-    r3.classList.add("spin");r3.classList.remove("land");
+    [r1,r2,r3].forEach(function(r){r.classList.add("spin");r.classList.remove("land")});
 
-    var i1=setInterval(function(){r1.querySelector(".reel-val").textContent=V[Math.floor(Math.random()*V.length)]},80);
-    var i2=setInterval(function(){r2.querySelector(".reel-val").textContent=R[Math.floor(Math.random()*R.length)]},90);
-    var i3=setInterval(function(){r3.querySelector(".reel-val").textContent=T[Math.floor(Math.random()*T.length)]},100);
+    var sv=setInterval(function(){var v=V[Math.floor(Math.random()*V.length)];r1.querySelector(".reel-val").textContent=v;i1.textContent=VI[v]},80);
+    var sr=setInterval(function(){var rr=R[Math.floor(Math.random()*R.length)];r2.querySelector(".reel-val").textContent=rr;i2.textContent=RI[rr]},90);
+    var st=setInterval(function(){var tt=T[Math.floor(Math.random()*T.length)];r3.querySelector(".reel-val").textContent=tt;i3.textContent=TI[tt]},100);
 
     var fv=V[Math.floor(Math.random()*V.length)];
     var fr=R[Math.floor(Math.random()*R.length)];
     var ft=T[Math.floor(Math.random()*T.length)];
 
     setTimeout(function(){lever.classList.remove("pulled");lever.classList.add("released")},600);
-    setTimeout(function(){clearInterval(i1);r1.classList.remove("spin");r1.classList.add("land");r1.querySelector(".reel-val").textContent=fv},1400);
-    setTimeout(function(){clearInterval(i2);r2.classList.remove("spin");r2.classList.add("land");r2.querySelector(".reel-val").textContent=fr},2000);
-    setTimeout(function(){clearInterval(i3);r3.classList.remove("spin");r3.classList.add("land");r3.querySelector(".reel-val").textContent=ft},2600);
-    setTimeout(function(){var song=find(fv,fr,ft);showSong(song);busy=false},3000);
+    setTimeout(function(){clearInterval(sv);r1.classList.remove("spin");r1.classList.add("land");r1.querySelector(".reel-val").textContent=fv;i1.textContent=VI[fv]},1500);
+    setTimeout(function(){clearInterval(sr);r2.classList.remove("spin");r2.classList.add("land");r2.querySelector(".reel-val").textContent=fr;i2.textContent=RI[fr]},2100);
+    setTimeout(function(){clearInterval(st);r3.classList.remove("spin");r3.classList.add("land");r3.querySelector(".reel-val").textContent=ft;i3.textContent=TI[ft]},2700);
+    setTimeout(function(){
+      var song=find(fv,fr,ft);
+      showSong(song,fv,fr,ft);
+      /* Jackpot check: "Fire / Brazilian / Rhythmic" = samba-on-fire jackpot */
+      if(fv==="Fire" && fr==="Brazilian" && ft==="Rhythmic"){
+        triggerJackpot();
+      }
+      busy=false;
+      spinBtn.classList.remove("busy");
+    },3100);
   }
 
   function find(v,r,t){
@@ -1030,30 +1703,115 @@ nav.side-nav .nav-link-active{color:#ff69b4}
     return S[Math.floor(Math.random()*S.length)];
   }
 
-  function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+  function esc(s){var d=document.createElement("div");d.textContent=s||"";return d.innerHTML}
   function enc(s){return encodeURIComponent(s)}
 
-  function showSong(song){
+  function showSong(song,v,r,t){
+    currentSong=song;
     document.getElementById("rs").textContent=song.s;
     document.getElementById("ra").textContent=song.ar;
     document.getElementById("ral").textContent=song.al;
+    document.getElementById("combo").textContent=v+" · "+r+" · "+t;
 
-    var gc=(GC[song.r]||"#0a0a20,#050515,#888").split(",");
-    var ang=Math.floor(Math.random()*360);
-    document.getElementById("art").style.background="linear-gradient("+ang+"deg,"+gc[0]+","+gc[1]+")";
+    /* tags */
+    var rtags=document.getElementById("rtags");
+    rtags.innerHTML='<span class="result-tag t-v">'+esc(v)+'</span><span class="result-tag t-r">'+esc(r)+'</span><span class="result-tag t-t">'+esc(t)+'</span>';
+
+    /* YouTube thumbnail */
+    var ytf=document.getElementById("ytf");
+    var thumb=document.getElementById("ytThumb");
+    var fallback=document.getElementById("ytFallback");
+    /* reset thumb */
+    var old=ytf.querySelector("iframe");if(old)old.remove();
+    thumb.style.display="flex";thumb.style.opacity="1";
+    if(song.yt){
+      thumb.style.backgroundImage="url('https://i.ytimg.com/vi/"+song.yt+"/hqdefault.jpg')";
+      fallback.style.display="none";
+    }else{
+      thumb.style.backgroundImage="";
+      fallback.style.display="flex";
+    }
 
     var q=enc(song.ar+" "+song.s);
     var rl=document.getElementById("rl");
-    rl.innerHTML='<a href="https://open.spotify.com/search/'+q+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg> Spotify</a>'
-    +'<a href="https://www.youtube.com/results?search_query='+q+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> YouTube</a>'
-    +'<a href="https://music.apple.com/us/search?term='+q+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M23.994 18.066a8.4 8.4 0 01-.925 2.03c-.56.82-1.02 1.39-1.37 1.71-.55.52-1.14.79-1.77.8-.45 0-1-.13-1.64-.39-.64-.26-1.22-.39-1.76-.39-.56 0-1.16.13-1.8.39-.64.26-1.16.4-1.56.4-.6.02-1.2-.16-1.8-.55a12.3 12.3 0 01-1.95-2.16 14 14 0 01-1.3-2.22 12.7 12.7 0 01-.86-3.09c0-1.14.25-2.12.74-2.95a4.3 4.3 0 013.64-2.17c.48 0 1.11.15 1.9.45.78.3 1.28.45 1.5.45.16 0 .72-.18 1.67-.52.9-.32 1.65-.46 2.27-.4 1.68.13 2.94.8 3.78 1.99-1.5.91-2.24 2.19-2.23 3.82.01 1.27.47 2.33 1.38 3.17.41.39.87.69 1.38.9-.11.32-.23.63-.35.93zM18.09.3c0 1-.36 1.93-1.09 2.78-.87 1.02-1.93 1.61-3.07 1.52a3 3 0 01-.02-.38c0-.96.42-1.98 1.16-2.82A4.5 4.5 0 0118.07 0c.01.1.02.2.02.3z"/></svg> Apple</a>';
+    var ytHref=song.yt?'https://www.youtube.com/watch?v='+song.yt:'https://www.youtube.com/results?search_query='+q;
+    rl.innerHTML='<a href="https://open.spotify.com/search/'+q+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>Spotify</a>'
+    +'<a href="'+ytHref+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>YouTube</a>'
+    +'<a href="https://music.apple.com/us/search?term='+q+'" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M23.994 18.066a8.4 8.4 0 01-.925 2.03c-.56.82-1.02 1.39-1.37 1.71-.55.52-1.14.79-1.77.8-.45 0-1-.13-1.64-.39-.64-.26-1.22-.39-1.76-.39-.56 0-1.16.13-1.8.39-.64.26-1.16.4-1.56.4-.6.02-1.2-.16-1.8-.55a12.3 12.3 0 01-1.95-2.16 14 14 0 01-1.3-2.22 12.7 12.7 0 01-.86-3.09c0-1.14.25-2.12.74-2.95a4.3 4.3 0 013.64-2.17c.48 0 1.11.15 1.9.45.78.3 1.28.45 1.5.45.16 0 .72-.18 1.67-.52.9-.32 1.65-.46 2.27-.4 1.68.13 2.94.8 3.78 1.99-1.5.91-2.24 2.19-2.23 3.82.01 1.27.47 2.33 1.38 3.17.41.39.87.69 1.38.9-.11.32-.23.63-.35.93zM18.09.3c0 1-.36 1.93-1.09 2.78-.87 1.02-1.93 1.61-3.07 1.52a3 3 0 01-.02-.38c0-.96.42-1.98 1.16-2.82A4.5 4.5 0 0118.07 0c.01.1.02.2.02.3z"/></svg>Apple</a>';
 
     result.classList.add("show");
+
+    /* auto-scroll to result on mobile */
+    if(window.innerWidth<720){
+      setTimeout(function(){result.scrollIntoView({behavior:"smooth",block:"start"})},200);
+    }
+
+    /* If song has YT id and user has spun before, autoplay the embed muted on tap.
+       Behavior: clicking the thumb embeds and plays. */
   }
 
-  // Events
+  /* embed iframe on thumb click */
+  document.getElementById("ytThumb").addEventListener("click",function(){
+    if(!currentSong)return;
+    var ytf=document.getElementById("ytf");
+    var thumb=document.getElementById("ytThumb");
+    /* if no yt id, open YouTube search in new tab */
+    if(!currentSong.yt){
+      window.open("https://www.youtube.com/results?search_query="+enc(currentSong.ar+" "+currentSong.s),"_blank","noopener");
+      return;
+    }
+    /* swap to iframe */
+    var iframe=document.createElement("iframe");
+    iframe.src="https://www.youtube.com/embed/"+currentSong.yt+"?autoplay=1&rel=0&modestbranding=1";
+    iframe.title=currentSong.s+" — "+currentSong.ar;
+    iframe.allow="autoplay; encrypted-media; picture-in-picture";
+    iframe.referrerPolicy="strict-origin-when-cross-origin";
+    iframe.allowFullscreen=true;
+    ytf.appendChild(iframe);
+    thumb.style.opacity="0";
+    setTimeout(function(){thumb.style.display="none"},300);
+  });
+
+  /* JACKPOT */
+  function triggerJackpot(){
+    jackpotCount++;
+    jackpotsEl.textContent=jackpotCount;
+    jackpotOverlay.classList.add("show");
+    setTimeout(function(){jackpotOverlay.classList.remove("show")},3200);
+    /* confetti */
+    fireConfetti(120);
+  }
+
+  function fireConfetti(n){
+    var colors=["#ff1b6b","#ff6a00","#ffc93c","#b6ff3c","#00d9c7","#7b2cbf","#fff5b3"];
+    for(var k=0;k<n;k++){
+      (function(){
+        var c=document.createElement("div");
+        c.className="confetti";
+        c.style.left=(Math.random()*100)+"vw";
+        c.style.background=colors[Math.floor(Math.random()*colors.length)];
+        c.style.transform="rotate("+(Math.random()*360)+"deg)";
+        document.body.appendChild(c);
+        var dur=2000+Math.random()*2000;
+        var horiz=(Math.random()*200-100);
+        var rot=Math.random()*720;
+        c.animate([
+          {transform:"translate(0,0) rotate(0)",opacity:1},
+          {transform:"translate("+horiz+"px,110vh) rotate("+rot+"deg)",opacity:0.2}
+        ],{duration:dur,easing:"cubic-bezier(.2,.7,.4,1)"});
+        setTimeout(function(){c.remove()},dur+50);
+      })();
+    }
+  }
+
+  /* TITLE glitch on hover */
+  title.addEventListener("mouseenter",function(){title.classList.add("glitch");setTimeout(function(){title.classList.remove("glitch")},700)});
+  title.addEventListener("click",function(){title.classList.add("glitch");setTimeout(function(){title.classList.remove("glitch")},700);if(Math.random()<0.15)fireConfetti(40)});
+
+  /* Events */
   var leverZone=document.getElementById("leverZone");
-  leverZone.addEventListener("click",function(e){e.preventDefault();spin()});
+  leverZone.addEventListener("click",function(e){if(e.target===lever)return;e.preventDefault();spin()});
+  lever.addEventListener("click",function(e){e.stopPropagation();spin()});
   spinBtn.addEventListener("click",spin);
 
   var dragging=false;var dragStartY=0;
@@ -1066,11 +1824,20 @@ nav.side-nav .nav-link-active{color:#ff69b4}
 
   again.addEventListener("click",spin);
 
-  var built=false;
+  /* Keyboard: SPACE = spin */
+  document.addEventListener("keydown",function(e){
+    if(e.code==="Space" && !["INPUT","TEXTAREA"].includes(document.activeElement.tagName)){e.preventDefault();spin();}
+  });
+
+  /* COLLECTION */
+  var collBuilt=false;
+  var collFilter=null;
+  var collQuery="";
+
   ctog.addEventListener("click",function(){
     var open=cbody.classList.contains("open");
     if(open){cbody.classList.remove("open");ctog.classList.remove("open")}
-    else{cbody.classList.add("open");ctog.classList.add("open");if(!built){buildColl();built=true}}
+    else{cbody.classList.add("open");ctog.classList.add("open");if(!collBuilt){buildColl();collBuilt=true}}
   });
 
   function buildColl(){
@@ -1084,25 +1851,85 @@ nav.side-nav .nav-link-active{color:#ff69b4}
         var ps=pills.querySelectorAll(".pill");
         for(var i=0;i<ps.length;i++)ps[i].classList.remove("on");
         b.classList.add("on");
-        renderColl(g==="All"?null:g);
+        collFilter=g==="All"?null:g;
+        renderColl();
       });
       pills.appendChild(b);
     });
-    renderColl(null);
+    document.getElementById("csearch").addEventListener("input",function(e){
+      collQuery=e.target.value.toLowerCase().trim();
+      renderColl();
+    });
+    renderColl();
   }
 
-  function renderColl(filter){
+  function renderColl(){
     var list=document.getElementById("clist");
     list.innerHTML="";
     var sorted=S.slice().sort(function(a,b){return a.ar.localeCompare(b.ar)});
-    if(filter)sorted=sorted.filter(function(x){return x.r===filter});
+    if(collFilter)sorted=sorted.filter(function(x){return x.r===collFilter});
+    if(collQuery){
+      sorted=sorted.filter(function(x){
+        return (x.s||"").toLowerCase().includes(collQuery) ||
+               (x.ar||"").toLowerCase().includes(collQuery) ||
+               (x.al||"").toLowerCase().includes(collQuery);
+      });
+    }
+    document.getElementById("collCount").textContent=sorted.length+" / "+S.length;
+    if(!sorted.length){
+      list.innerHTML='<div class="coll-empty">No matches. Try a different filter or search.</div>';
+      return;
+    }
+    var frag=document.createDocumentFragment();
     sorted.forEach(function(x){
-      var d=document.createElement("div");
-      d.className="coll-item";
-      d.innerHTML='<span class="coll-item-song">'+esc(x.s)+'</span><span class="coll-item-artist">'+esc(x.ar)+'</span>';
-      list.appendChild(d);
+      var a=document.createElement("a");
+      a.className="coll-item";
+      a.target="_blank";
+      a.rel="noopener";
+      a.href=x.yt?"https://www.youtube.com/watch?v="+x.yt:"https://www.youtube.com/results?search_query="+enc(x.ar+" "+x.s);
+      a.innerHTML='<span class="coll-item-left"><span class="coll-item-play"></span><span class="coll-item-song">'+esc(x.s)+'</span></span><span class="coll-item-artist">'+esc(x.ar)+'</span>';
+      frag.appendChild(a);
     });
+    list.appendChild(frag);
   }
+
+  /* POLAROID ARTIST WALL */
+  (function buildPolaroid(){
+    var palettes=[
+      ["#ff1b6b","#ff6a00"],
+      ["#7b2cbf","#ff1b6b"],
+      ["#00d9c7","#7b2cbf"],
+      ["#ffc93c","#ff6a00"],
+      ["#b6ff3c","#00d9c7"],
+      ["#ff6a00","#ffc93c"],
+      ["#ff1b6b","#7b2cbf"]
+    ];
+    /* Pick top artists by frequency */
+    var counts={};
+    S.forEach(function(x){counts[x.ar]=(counts[x.ar]||0)+1});
+    var ranked=Object.keys(counts).map(function(k){return [k,counts[k]]}).sort(function(a,b){return b[1]-a[1]}).slice(0,14);
+    var grid=document.getElementById("polGrid");
+    ranked.forEach(function(pair,idx){
+      var name=pair[0];
+      var p=palettes[idx%palettes.length];
+      var initials=name.split(/\s+/).filter(Boolean).map(function(w){return w[0]||""}).join("").slice(0,3).toUpperCase();
+      var d=document.createElement("div");
+      d.className="polaroid";
+      d.innerHTML='<div class="polaroid-art" style="background:linear-gradient(135deg,'+p[0]+','+p[1]+')">'+initials+'</div><div class="polaroid-name">'+esc(name)+'</div>';
+      d.addEventListener("click",function(){
+        /* Pick a random song from this artist and play it */
+        var songs=S.filter(function(s){return s.ar===name});
+        if(!songs.length)return;
+        var pick=songs[Math.floor(Math.random()*songs.length)];
+        showSong(pick,pick.v,pick.r,pick.t);
+        result.scrollIntoView({behavior:"smooth",block:"center"});
+      });
+      grid.appendChild(d);
+    });
+  })();
+
+  /* set song count */
+  document.getElementById("songCount").textContent=S.length;
 })();
 </script>
 </body>
