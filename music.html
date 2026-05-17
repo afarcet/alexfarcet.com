@@ -901,11 +901,26 @@ nav.side-nav .nav-link-active{color:var(--gold);text-shadow:0 0 12px rgba(255,20
   .tagline{font-size:1.4rem}
   .tag-stamp{font-size:0.75rem;letter-spacing:0.18em}
   .cabinet{max-width:100%}
-  .lever-arm{right:-58px;width:54px;top:78px;height:260px}
-  .lever-ball{width:50px;height:50px}
-  .lever-ball.pulled{top:calc(100% - 50px)}
-  .lever-plate{width:36px}
-  .lever-rod{width:14px;margin-top:18px;margin-bottom:24px}
+
+  /* Mobile lever: dock it INSIDE the cabinet as a compact element
+     overlapping the right side of the controls row, no horizontal overflow. */
+  .lever-arm{
+    right:6px;
+    top:auto;
+    bottom:46px;
+    width:46px;
+    height:130px;
+    z-index:25;
+  }
+  .lever-plate{width:30px}
+  .lever-rod{width:10px;margin-top:14px;margin-bottom:18px}
+  .lever-ball{
+    width:38px;height:38px;
+    border-width:2px;
+  }
+  .lever-ball.pulled{top:calc(100% - 38px)}
+  .lever-hint{font-size:0.55rem;bottom:-12px;letter-spacing:0.15em}
+
   .marquee-title{font-size:1.8rem;letter-spacing:0.04em}
   .marquee-sub{font-size:0.6rem;letter-spacing:0.18em}
   .reel-area{padding:22px 18px 14px}
@@ -913,8 +928,13 @@ nav.side-nav .nav-link-active{color:var(--gold);text-shadow:0 0 12px rgba(255,20
   .reel-val{font-size:0.85rem}
   .reel-icon{font-size:1.2rem}
   .reel-label{font-size:0.72rem}
-  .controls{gap:14px;flex-wrap:wrap}
-  .spin-btn{padding:14px 36px;font-size:0.95rem}
+
+  /* Controls: leave room on the right for the docked lever */
+  .controls{gap:10px;flex-wrap:wrap;padding-right:58px}
+  .spin-btn{padding:14px 32px;font-size:0.95rem}
+  .counter{font-size:0.75rem}
+  .counter span{font-size:1rem}
+
   .result-song{font-size:1.25rem}
   .result-artist{font-size:0.9rem}
   .result-links a{font-size:0.7rem;padding:6px 10px}
@@ -927,17 +947,24 @@ nav.side-nav .nav-link-active{color:var(--gold);text-shadow:0 0 12px rgba(255,20
   .polaroid-art{font-size:1.2rem}
 }
 @media(max-width:460px){
-  .lever-arm{right:-42px;width:42px;height:200px;top:64px}
-  .lever-ball{width:38px;height:38px}
-  .lever-ball.pulled{top:calc(100% - 38px)}
-  .lever-plate{width:28px}
-  .lever-rod{width:11px}
+  .lever-arm{
+    right:4px;
+    bottom:42px;
+    width:40px;
+    height:118px;
+  }
+  .lever-plate{width:24px}
+  .lever-rod{width:9px;margin-top:10px;margin-bottom:14px}
+  .lever-ball{width:34px;height:34px}
+  .lever-ball.pulled{top:calc(100% - 34px)}
+  .controls{padding-right:52px;gap:8px}
   .marquee-title{font-size:1.4rem;letter-spacing:0.02em}
   .chasers{gap:10px}
   .chaser{width:8px;height:8px}
-  .spin-btn{padding:12px 26px;font-size:0.82rem;letter-spacing:0.1em}
+  .spin-btn{padding:12px 22px;font-size:0.82rem;letter-spacing:0.08em}
   .reel-window{height:78px}
   .reel-icon{font-size:1rem;height:20px}
+  .counter{font-size:0.7rem}
 }
 
 /* Reduced motion */
@@ -1811,15 +1838,16 @@ nav.side-nav .nav-link-active{color:var(--gold);text-shadow:0 0 12px rgba(255,20
   /* Events */
   var leverZone=document.getElementById("leverZone");
   leverZone.addEventListener("click",function(e){if(e.target===lever)return;e.preventDefault();spin()});
-  lever.addEventListener("click",function(e){e.stopPropagation();spin()});
+  lever.addEventListener("click",function(e){e.stopPropagation();if(dragMoved){dragMoved=false;return}spin()});
   spinBtn.addEventListener("click",spin);
 
-  var dragging=false;var dragStartY=0;
-  lever.addEventListener("mousedown",function(e){if(busy)return;dragging=true;dragStartY=e.clientY;e.preventDefault()});
-  document.addEventListener("mousemove",function(e){if(!dragging)return;if(e.clientY-dragStartY>30){dragging=false;spin()}});
+  var dragging=false;var dragStartY=0;var dragMoved=false;
+  lever.addEventListener("mousedown",function(e){if(busy)return;dragging=true;dragMoved=false;dragStartY=e.clientY;e.preventDefault()});
+  document.addEventListener("mousemove",function(e){if(!dragging)return;if(e.clientY-dragStartY>30){dragging=false;dragMoved=true;spin()}});
   document.addEventListener("mouseup",function(){dragging=false});
-  lever.addEventListener("touchstart",function(e){if(busy)return;dragging=true;dragStartY=e.touches[0].clientY;e.preventDefault()},{passive:false});
-  document.addEventListener("touchmove",function(e){if(!dragging)return;if(e.touches[0].clientY-dragStartY>30){dragging=false;spin()}});
+  /* Touch: passive listener so the synthetic click still fires on tap. */
+  lever.addEventListener("touchstart",function(e){if(busy)return;dragging=true;dragMoved=false;dragStartY=e.touches[0].clientY},{passive:true});
+  document.addEventListener("touchmove",function(e){if(!dragging)return;if(e.touches[0].clientY-dragStartY>30){dragging=false;dragMoved=true;spin()}},{passive:true});
   document.addEventListener("touchend",function(){dragging=false});
 
   again.addEventListener("click",spin);
