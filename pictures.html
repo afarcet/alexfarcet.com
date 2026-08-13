@@ -361,30 +361,78 @@ body.lb-open{overflow:hidden}
     <script>
     (function(){
         /* ============================================================
-           PHOTO DATABASE
-           - featured: shows in top scroller
-           - location: shown as filter chip in library
-           - caption: shown in lightbox and (for featured) as overlay
-           TO ADD PHOTOS: drop the file in /photos/, then add an entry here.
-           TO RE-TAG a photo, just change its location value.
+           PHOTO MANIFEST
+           Photos live on disk in /photos/<folder>/ — one folder per location.
+           This manifest just tells the page which files are in each folder
+           and (optionally) captions the ones worth captioning.
+
+           TO ADD photos:
+              1. Drop the file into /photos/featured/ or /photos/<location>/
+              2. Add one line here in the matching section.
+              3. Push. Done.
+           TO MOVE a photo to a new location: move the file on disk AND move
+              its entry to the other location's array here.
+           TO CREATE a new location: add a "photos/newlocation/" folder,
+              then add a "NewLocation": [ ... ] entry to LIBRARY below.
            ============================================================ */
-        var PHOTOS = [
-            { src:"photos/featured-1.jpeg", caption:"Roots run deep",         location:"Brazil",    featured:true },
-            { src:"photos/featured-2.jpeg", caption:"Moss and stone, Kyoto",  location:"Japan",     featured:true },
-            { src:"photos/featured-3.jpeg", caption:"Floralis, Buenos Aires", location:"Argentina", featured:true },
-            { src:"photos/thumb-1.jpg",    caption:"", location:"Untagged" },
-            { src:"photos/thumb-2.jpeg",   caption:"", location:"Untagged" },
-            { src:"photos/thumb-3.jpeg",   caption:"", location:"Untagged" },
-            { src:"photos/thumb-4.jpeg",   caption:"", location:"Untagged" },
-            { src:"photos/thumb-5.jpeg",   caption:"", location:"Untagged" },
-            { src:"photos/thumb-6.jpeg",   caption:"", location:"Untagged" },
-            { src:"photos/thumb-7.jpeg",   caption:"", location:"Untagged" },
-            { src:"photos/thumb-8.jpeg",   caption:"", location:"Untagged" },
-            { src:"photos/thumb-9.jpeg",   caption:"", location:"Untagged" }
+
+        var FEATURED = [
+            { file:"roots-run-deep.jpeg",         caption:"Roots run deep",         location:"Brazil" },
+            { file:"moss-and-stone-kyoto.jpeg",   caption:"Moss and stone, Kyoto",  location:"Japan"  },
+            { file:"floralis-buenos-aires.jpeg",  caption:"Floralis, Buenos Aires", location:"Argentina" }
         ];
 
-        /* Preferred order — locations not listed here fall to the end alphabetically */
+        var LIBRARY = {
+            "Portugal":  [
+                /* files in /photos/portugal/ */
+            ],
+            "Brazil":    [
+                /* files in /photos/brazil/ */
+            ],
+            "Japan":     [
+                /* files in /photos/japan/ */
+            ],
+            "Argentina": [
+                /* files in /photos/argentina/ */
+            ],
+            "Untagged":  [
+                { file:"thumb-1.jpg"   },
+                { file:"thumb-2.jpeg"  },
+                { file:"thumb-3.jpeg"  },
+                { file:"thumb-4.jpeg"  },
+                { file:"thumb-5.jpeg"  },
+                { file:"thumb-6.jpeg"  },
+                { file:"thumb-7.jpeg"  },
+                { file:"thumb-8.jpeg"  },
+                { file:"thumb-9.jpeg"  }
+            ]
+        };
+
+        /* Preferred display order of the location chips.
+           Locations not listed here fall to the end alphabetically. */
         var LOCATION_ORDER = ["Portugal","Brazil","Japan","Argentina","France","Denmark","Untagged"];
+
+        /* ---------- Build a flat PHOTOS array from the manifest ---------- */
+        var PHOTOS = [];
+        FEATURED.forEach(function(p){
+            PHOTOS.push({
+                src: "photos/featured/" + p.file,
+                caption: p.caption || "",
+                location: p.location || "",
+                featured: true
+            });
+        });
+        Object.keys(LIBRARY).forEach(function(loc){
+            var folder = "photos/" + loc.toLowerCase() + "/";
+            LIBRARY[loc].forEach(function(p){
+                PHOTOS.push({
+                    src: folder + p.file,
+                    caption: p.caption || "",
+                    location: loc,
+                    featured: false
+                });
+            });
+        });
 
         /* ---------- Featured scroller ---------- */
         var featured = PHOTOS.filter(function(p){return p.featured});
