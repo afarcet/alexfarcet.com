@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pictures — Alex Farcet</title>
-    <meta name="description" content="Photography by Alex Farcet. Scenes from Kyoto, Buenos Aires, and beyond.">
+    <meta name="description" content="Photography by Alex Farcet. Scenes from Brazil, Japan, Argentina, and beyond.">
     <link rel="canonical" href="https://alexfarcet.com/pictures">
     <meta property="og:title" content="Pictures — Alex Farcet">
-    <meta property="og:description" content="Photography by Alex Farcet. Scenes from Kyoto, Buenos Aires, and beyond.">
+    <meta property="og:description" content="Photography by Alex Farcet. Scenes from Brazil, Japan, Argentina, and beyond.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://alexfarcet.com/pictures">
     <meta property="og:image" content="https://alexfarcet.com/photos/featured-1.jpeg">
@@ -18,6 +18,284 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <style>
+/* ============================================================
+   PICTURES — v2
+   ============================================================ */
+.pictures2-page{max-width:900px;margin:0 auto;animation:fadeIn 0.8s ease-out}
+
+.pictures2-title{
+    font-family:'Cormorant',serif;
+    font-size:2.2rem;font-weight:400;line-height:1.3;
+    margin-bottom:16px;letter-spacing:-0.02em;
+}
+.pictures2-intro{
+    color:var(--text-light);
+    margin-bottom:48px;
+    max-width:480px;
+}
+
+/* ---------- Featured scroller ---------- */
+.featured-section{
+    position:relative;
+    margin-bottom:64px;
+    /* bleed slightly wider than the column so photos can peek off-edge */
+    margin-left:-8px;margin-right:-8px;
+}
+.featured-scroller{
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;
+    padding:0 8px 12px;
+    /* Hide scrollbar */
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+    cursor:grab;
+    -webkit-user-select:none;user-select:none;
+}
+.featured-scroller.dragging{cursor:grabbing;scroll-behavior:auto}
+.featured-scroller::-webkit-scrollbar{display:none}
+
+.featured-item{
+    flex:0 0 auto;
+    width:340px;height:460px;
+    scroll-snap-align:center;
+    position:relative;
+    border-radius:4px;
+    overflow:hidden;
+    cursor:zoom-in;
+    background:#e0dbcf;
+    transition:transform 0.3s ease;
+}
+.featured-item:hover{transform:translateY(-2px)}
+.featured-item img{
+    width:100%;height:100%;
+    object-fit:cover;
+    display:block;
+    pointer-events:none;
+    filter:saturate(0.98);
+}
+.featured-item .featured-caption{
+    position:absolute;
+    left:0;right:0;bottom:0;
+    padding:44px 20px 18px;
+    background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.25) 60%,transparent 100%);
+    color:#fff;
+    font-family:'Cormorant',serif;font-style:italic;
+    font-size:1.15rem;
+    line-height:1.3;
+    letter-spacing:0.01em;
+    pointer-events:none;
+}
+.featured-item .featured-caption em{
+    display:block;
+    font-family:'DM Sans',sans-serif;font-style:normal;
+    font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;
+    opacity:0.75;margin-bottom:4px;
+}
+
+/* Edge fade hints */
+.featured-section::after{
+    content:'';position:absolute;
+    top:0;right:-1px;bottom:12px;width:60px;
+    pointer-events:none;
+    background:linear-gradient(to left,var(--bg) 0%,transparent 100%);
+    opacity:0;
+    transition:opacity 0.3s;
+}
+.featured-section.has-right::after{opacity:1}
+.featured-section::before{
+    content:'';position:absolute;
+    top:0;left:-1px;bottom:12px;width:60px;
+    pointer-events:none;
+    background:linear-gradient(to right,var(--bg) 0%,transparent 100%);
+    opacity:0;
+    z-index:2;
+    transition:opacity 0.3s;
+}
+.featured-section.has-left::before{opacity:1}
+
+/* Optional scroll hint dots below */
+.featured-progress{
+    display:flex;gap:6px;
+    justify-content:center;
+    padding-top:8px;
+}
+.featured-progress .p-dot{
+    width:5px;height:5px;border-radius:50%;
+    background:var(--border);
+    transition:background 0.3s,transform 0.3s;
+}
+.featured-progress .p-dot.active{
+    background:var(--text-light);
+    transform:scale(1.2);
+}
+
+/* ---------- Library ---------- */
+.library{margin-bottom:64px}
+.library-head{
+    display:flex;justify-content:space-between;align-items:baseline;
+    margin-bottom:20px;flex-wrap:wrap;gap:12px;
+}
+.library-title{
+    font-family:'Cormorant',serif;
+    font-size:1.6rem;font-weight:400;letter-spacing:-0.01em;
+}
+.library-count{
+    font-family:'DM Sans',sans-serif;
+    font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--text-light);
+}
+
+.location-menu{
+    display:flex;flex-wrap:wrap;gap:8px;
+    margin-bottom:32px;
+}
+.loc-chip{
+    background:none;
+    border:1px solid var(--border);
+    color:var(--text-light);
+    font-family:'DM Sans',sans-serif;
+    font-size:0.78rem;letter-spacing:0.03em;
+    padding:6px 14px;border-radius:16px;
+    cursor:pointer;transition:all 0.25s;
+}
+.loc-chip:hover{color:var(--text);border-color:var(--text)}
+.loc-chip.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.loc-chip .loc-count{
+    opacity:0.55;margin-left:6px;font-size:0.7rem;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    animation:fadeIn 0.5s ease-out;
+}
+.grid-item{
+    aspect-ratio:1;
+    background:#e0dbcf;
+    border-radius:3px;
+    overflow:hidden;
+    cursor:zoom-in;
+    position:relative;
+    transition:transform 0.3s;
+}
+.grid-item:hover{transform:translateY(-2px)}
+.grid-item img{
+    width:100%;height:100%;
+    object-fit:cover;
+    display:block;
+    filter:grayscale(12%);
+    transition:filter 0.4s;
+    pointer-events:none;
+}
+.grid-item:hover img{filter:grayscale(0)}
+
+.empty-msg{
+    padding:40px 0;
+    text-align:center;
+    color:var(--text-light);
+    font-family:'Cormorant',serif;font-style:italic;
+    font-size:1.1rem;
+}
+
+/* ---------- Lightbox ---------- */
+.lightbox{
+    position:fixed;inset:0;
+    background:rgba(15,14,12,0.94);
+    z-index:1000;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.3s;
+    padding:32px;
+}
+.lightbox.open{opacity:1;pointer-events:auto}
+.lightbox-img-wrap{
+    max-width:100%;max-height:78vh;
+    display:flex;align-items:center;justify-content:center;
+    animation:lbFadeIn 0.35s ease-out;
+}
+.lightbox-img{
+    max-width:100%;max-height:78vh;
+    object-fit:contain;
+    border-radius:2px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5);
+}
+@keyframes lbFadeIn{from{opacity:0;transform:scale(0.98)}to{opacity:1;transform:scale(1)}}
+
+.lightbox-meta{
+    margin-top:20px;
+    text-align:center;
+    color:#f5f2ea;
+    max-width:640px;
+}
+.lightbox-caption{
+    font-family:'Cormorant',serif;font-style:italic;
+    font-size:1.25rem;
+    line-height:1.4;
+    margin-bottom:6px;
+}
+.lightbox-loc{
+    font-family:'DM Sans',sans-serif;
+    font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;
+    color:rgba(245,242,234,0.55);
+}
+
+.lightbox-close{
+    position:absolute;top:20px;right:24px;
+    background:none;border:none;
+    color:rgba(245,242,234,0.7);
+    font-size:1.4rem;font-family:'DM Sans',sans-serif;
+    cursor:pointer;padding:8px;
+    line-height:1;
+    transition:color 0.2s;
+}
+.lightbox-close:hover{color:#fff}
+
+.lightbox-nav{
+    position:absolute;top:50%;
+    background:none;border:none;
+    color:rgba(245,242,234,0.5);
+    font-family:'Cormorant',serif;font-size:2rem;font-weight:300;
+    cursor:pointer;
+    padding:16px 20px;
+    transition:color 0.2s,transform 0.2s;
+    transform:translateY(-50%);
+    line-height:1;
+}
+.lightbox-nav:hover{color:#fff;transform:translateY(-50%) scale(1.05)}
+.lightbox-nav.prev{left:16px}
+.lightbox-nav.next{right:16px}
+.lightbox-counter{
+    position:absolute;bottom:24px;left:0;right:0;
+    text-align:center;
+    color:rgba(245,242,234,0.4);
+    font-family:'DM Sans',sans-serif;
+    font-size:0.7rem;letter-spacing:0.2em;
+}
+
+body.lb-open{overflow:hidden}
+
+/* ---------- Mobile ---------- */
+@media (max-width:800px){
+    .featured-item{width:260px;height:360px}
+    .featured-item .featured-caption{font-size:1rem;padding:36px 16px 14px}
+    .grid{grid-template-columns:repeat(2,1fr);gap:8px}
+    .library-title{font-size:1.35rem}
+    .lightbox{padding:16px}
+    .lightbox-img-wrap,.lightbox-img{max-height:70vh}
+    .lightbox-caption{font-size:1.05rem}
+    .lightbox-nav{font-size:1.5rem;padding:12px 14px}
+    .lightbox-nav.prev{left:4px}
+    .lightbox-nav.next{right:4px}
+}
+    </style>
 </head>
 <body>
     <nav class="side-nav">
@@ -34,48 +312,260 @@
             </a>
         </header>
 
-        <main class="pictures-page">
-            <h2 class="pictures-title">Pictures</h2>
+        <main class="pictures2-page">
+            <h2 class="pictures2-title">Pictures</h2>
+            <p class="pictures2-intro">A running collection. Featured shots on top; everything else below, sorted by where I took them.</p>
 
-            <div class="featured-photos">
-                <div class="featured-photo">
-                    <img src="photos/featured-1.jpeg" alt="" loading="lazy">
-                    <span class="photo-caption">Roots run deep</span>
+            <!-- Featured horizontal scroller -->
+            <section class="featured-section" id="featuredSection">
+                <div class="featured-scroller" id="featuredScroller">
+                    <!-- populated by JS -->
                 </div>
-                <div class="featured-photo">
-                    <img src="photos/featured-2.jpeg" alt="" loading="lazy">
-                    <span class="photo-caption">Moss and stone, Kyoto</span>
-                </div>
-                <div class="featured-photo">
-                    <img src="photos/featured-3.jpeg" alt="" loading="lazy">
-                    <span class="photo-caption">Floralis, Buenos Aires</span>
-                </div>
-            </div>
+                <div class="featured-progress" id="featuredProgress"></div>
+            </section>
 
             <div class="divider"></div>
 
-            <div class="thumbnail-section">
-                <div class="thumbnail-grid">
-                    <div class="thumbnail"><img src="photos/thumb-1.jpg" alt="" loading="lazy"></div>
-                    <div class="thumbnail"><img src="photos/thumb-2.jpeg" alt="" loading="lazy"></div>
-                    <div class="thumbnail"><img src="photos/thumb-3.jpeg" alt="" loading="lazy"></div>
-                    <div class="thumbnail"><img src="photos/thumb-4.jpeg" alt="" loading="lazy"></div>
-                    <div class="thumbnail"><img src="photos/thumb-5.jpeg" alt="" loading="lazy"></div>
-                    <div class="thumbnail"><img src="photos/thumb-6.jpeg" alt="" loading="lazy"></div>
-                    <div class="thumbnail"><img src="photos/thumb-7.jpeg" alt="" loading="lazy"></div>
-                    <div class="thumbnail"><img src="photos/thumb-8.jpeg" alt="" loading="lazy"></div>
-                    <div class="thumbnail"><img src="photos/thumb-9.jpeg" alt="" loading="lazy"></div>
+            <!-- Library by location -->
+            <section class="library">
+                <div class="library-head">
+                    <div class="library-title" id="libraryTitle">Library</div>
+                    <div class="library-count" id="libraryCount"></div>
                 </div>
-                <div class="thumbnail-fade"></div>
-                <p class="more-coming">More to come.</p>
-            </div>
+                <div class="location-menu" id="locMenu"></div>
+                <div class="grid" id="grid"></div>
+            </section>
         </main>
 
         <footer>
             <p class="footer-text">Through the lens</p>
-            <p class="footer-updated">Updated: July 2026</p>
-            <p class="footer-colophon">Built with Claude Opus 4.5</p>
+            <p class="footer-updated">Updated: August 2026</p>
         </footer>
     </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+        <button class="lightbox-close" id="lbClose" aria-label="Close">×</button>
+        <button class="lightbox-nav prev" id="lbPrev" aria-label="Previous photo">‹</button>
+        <div class="lightbox-img-wrap">
+            <img class="lightbox-img" id="lbImg" alt="">
+        </div>
+        <div class="lightbox-meta">
+            <div class="lightbox-caption" id="lbCaption"></div>
+            <div class="lightbox-loc" id="lbLoc"></div>
+        </div>
+        <button class="lightbox-nav next" id="lbNext" aria-label="Next photo">›</button>
+        <div class="lightbox-counter" id="lbCounter"></div>
+    </div>
+
+    <script>
+    (function(){
+        /* ============================================================
+           PHOTO DATABASE
+           - featured: shows in top scroller
+           - location: shown as filter chip in library
+           - caption: shown in lightbox and (for featured) as overlay
+           TO ADD PHOTOS: drop the file in /photos/, then add an entry here.
+           TO RE-TAG a photo, just change its location value.
+           ============================================================ */
+        var PHOTOS = [
+            { src:"photos/featured-1.jpeg", caption:"Roots run deep",         location:"Brazil",    featured:true },
+            { src:"photos/featured-2.jpeg", caption:"Moss and stone, Kyoto",  location:"Japan",     featured:true },
+            { src:"photos/featured-3.jpeg", caption:"Floralis, Buenos Aires", location:"Argentina", featured:true },
+            { src:"photos/thumb-1.jpg",    caption:"", location:"Untagged" },
+            { src:"photos/thumb-2.jpeg",   caption:"", location:"Untagged" },
+            { src:"photos/thumb-3.jpeg",   caption:"", location:"Untagged" },
+            { src:"photos/thumb-4.jpeg",   caption:"", location:"Untagged" },
+            { src:"photos/thumb-5.jpeg",   caption:"", location:"Untagged" },
+            { src:"photos/thumb-6.jpeg",   caption:"", location:"Untagged" },
+            { src:"photos/thumb-7.jpeg",   caption:"", location:"Untagged" },
+            { src:"photos/thumb-8.jpeg",   caption:"", location:"Untagged" },
+            { src:"photos/thumb-9.jpeg",   caption:"", location:"Untagged" }
+        ];
+
+        /* Preferred order — locations not listed here fall to the end alphabetically */
+        var LOCATION_ORDER = ["Portugal","Brazil","Japan","Argentina","France","Denmark","Untagged"];
+
+        /* ---------- Featured scroller ---------- */
+        var featured = PHOTOS.filter(function(p){return p.featured});
+        var scroller = document.getElementById("featuredScroller");
+        var progress = document.getElementById("featuredProgress");
+        var section  = document.getElementById("featuredSection");
+
+        featured.forEach(function(p, idx){
+            var el = document.createElement("div");
+            el.className = "featured-item";
+            el.setAttribute("data-idx", idx);
+            el.innerHTML = '<img src="'+p.src+'" alt="'+esc(p.caption)+'" loading="lazy">' +
+                           '<div class="featured-caption">'+
+                             (p.location ? '<em>'+esc(p.location)+'</em>' : '') +
+                             esc(p.caption) +
+                           '</div>';
+            el.addEventListener("click", function(){ openLightbox("featured", idx); });
+            scroller.appendChild(el);
+            var d = document.createElement("span");
+            d.className = "p-dot"+(idx===0?" active":"");
+            progress.appendChild(d);
+        });
+
+        /* Edge fade + progress dots respond to scroll position */
+        function updateScrollState(){
+            var maxScroll = scroller.scrollWidth - scroller.clientWidth;
+            var s = scroller.scrollLeft;
+            section.classList.toggle("has-left",  s > 8);
+            section.classList.toggle("has-right", s < maxScroll - 8);
+            /* Active dot = item closest to viewport center */
+            var items = scroller.querySelectorAll(".featured-item");
+            var center = s + scroller.clientWidth / 2;
+            var closestIdx = 0, closestDist = Infinity;
+            items.forEach(function(it, i){
+                var mid = it.offsetLeft + it.offsetWidth / 2;
+                var d = Math.abs(mid - center);
+                if (d < closestDist) { closestDist = d; closestIdx = i; }
+            });
+            progress.querySelectorAll(".p-dot").forEach(function(dot, i){
+                dot.classList.toggle("active", i === closestIdx);
+            });
+        }
+        scroller.addEventListener("scroll", updateScrollState);
+        window.addEventListener("resize", updateScrollState);
+        setTimeout(updateScrollState, 100);
+
+        /* Click-and-drag scrolling on desktop */
+        var isDown=false, startX=0, startScroll=0, moved=false;
+        scroller.addEventListener("mousedown", function(e){
+            isDown=true; moved=false;
+            startX = e.pageX - scroller.offsetLeft;
+            startScroll = scroller.scrollLeft;
+            scroller.classList.add("dragging");
+        });
+        scroller.addEventListener("mouseleave", function(){ isDown=false; scroller.classList.remove("dragging"); });
+        scroller.addEventListener("mouseup", function(){ isDown=false; scroller.classList.remove("dragging"); });
+        scroller.addEventListener("mousemove", function(e){
+            if (!isDown) return;
+            var x = e.pageX - scroller.offsetLeft;
+            var walk = (x - startX);
+            if (Math.abs(walk) > 5) moved = true;
+            scroller.scrollLeft = startScroll - walk;
+        });
+        /* Suppress click if it was actually a drag */
+        scroller.addEventListener("click", function(e){
+            if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; }
+        }, true);
+
+        /* ---------- Library ---------- */
+        var library = PHOTOS.filter(function(p){ return !p.featured; });
+        var locations = [];
+        library.forEach(function(p){
+            var loc = p.location || "Untagged";
+            if (locations.indexOf(loc) === -1) locations.push(loc);
+        });
+        /* sort by preferred order */
+        locations.sort(function(a,b){
+            var ai = LOCATION_ORDER.indexOf(a), bi = LOCATION_ORDER.indexOf(b);
+            if (ai === -1 && bi === -1) return a.localeCompare(b);
+            if (ai === -1) return 1;
+            if (bi === -1) return -1;
+            return ai - bi;
+        });
+
+        var currentLoc = locations[0] || "Untagged";
+        var libraryContext = [];  // photos in current filter, in order shown
+
+        var locMenu = document.getElementById("locMenu");
+        var grid = document.getElementById("grid");
+        var libTitle = document.getElementById("libraryTitle");
+        var libCount = document.getElementById("libraryCount");
+
+        /* "All" chip */
+        var allChip = document.createElement("button");
+        allChip.className = "loc-chip";
+        allChip.innerHTML = 'All <span class="loc-count">'+library.length+'</span>';
+        allChip.addEventListener("click", function(){ selectLocation("All"); });
+        locMenu.appendChild(allChip);
+        /* Per-location chips */
+        locations.forEach(function(loc){
+            var count = library.filter(function(p){return p.location === loc}).length;
+            var c = document.createElement("button");
+            c.className = "loc-chip";
+            c.innerHTML = esc(loc) + ' <span class="loc-count">'+count+'</span>';
+            c.addEventListener("click", function(){ selectLocation(loc); });
+            locMenu.appendChild(c);
+        });
+
+        function selectLocation(loc){
+            currentLoc = loc;
+            locMenu.querySelectorAll(".loc-chip").forEach(function(c){
+                var label = c.textContent.trim().replace(/\s+\d+$/,'').trim();
+                c.classList.toggle("on", label === loc);
+            });
+            libraryContext = (loc === "All")
+                ? library.slice()
+                : library.filter(function(p){ return p.location === loc; });
+            libTitle.textContent = loc === "All" ? "Library" : loc;
+            libCount.textContent = libraryContext.length + (libraryContext.length === 1 ? " photo" : " photos");
+            grid.innerHTML = "";
+            if (!libraryContext.length){
+                var empty = document.createElement("div");
+                empty.className = "empty-msg";
+                empty.textContent = "No photos yet.";
+                grid.appendChild(empty);
+                return;
+            }
+            libraryContext.forEach(function(p, i){
+                var el = document.createElement("div");
+                el.className = "grid-item";
+                el.innerHTML = '<img src="'+p.src+'" alt="'+esc(p.caption)+'" loading="lazy">';
+                el.addEventListener("click", function(){ openLightbox("library", i); });
+                grid.appendChild(el);
+            });
+        }
+        selectLocation(currentLoc);
+
+        /* ---------- Lightbox ---------- */
+        var lb = document.getElementById("lightbox");
+        var lbImg = document.getElementById("lbImg");
+        var lbCaption = document.getElementById("lbCaption");
+        var lbLoc = document.getElementById("lbLoc");
+        var lbCounter = document.getElementById("lbCounter");
+        var lbContext = [];
+        var lbIndex = 0;
+
+        function openLightbox(source, idx){
+            lbContext = (source === "featured") ? featured.slice() : libraryContext.slice();
+            lbIndex = idx;
+            showLb();
+            lb.classList.add("open");
+            document.body.classList.add("lb-open");
+        }
+        function showLb(){
+            if (!lbContext.length) return;
+            if (lbIndex < 0) lbIndex = lbContext.length - 1;
+            if (lbIndex >= lbContext.length) lbIndex = 0;
+            var p = lbContext[lbIndex];
+            lbImg.src = p.src;
+            lbImg.alt = p.caption || "";
+            lbCaption.textContent = p.caption || "";
+            lbLoc.textContent = p.location || "";
+            lbCounter.textContent = (lbIndex+1) + " / " + lbContext.length;
+        }
+        function closeLightbox(){
+            lb.classList.remove("open");
+            document.body.classList.remove("lb-open");
+        }
+        document.getElementById("lbClose").addEventListener("click", closeLightbox);
+        document.getElementById("lbPrev").addEventListener("click", function(){ lbIndex--; showLb(); });
+        document.getElementById("lbNext").addEventListener("click", function(){ lbIndex++; showLb(); });
+        lb.addEventListener("click", function(e){ if (e.target === lb) closeLightbox(); });
+        document.addEventListener("keydown", function(e){
+            if (!lb.classList.contains("open")) return;
+            if (e.key === "Escape") closeLightbox();
+            else if (e.key === "ArrowLeft") { lbIndex--; showLb(); }
+            else if (e.key === "ArrowRight") { lbIndex++; showLb(); }
+        });
+
+        function esc(s){ var d=document.createElement("div"); d.textContent=s||""; return d.innerHTML; }
+    })();
+    </script>
 </body>
 </html>
