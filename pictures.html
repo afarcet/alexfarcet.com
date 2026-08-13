@@ -35,12 +35,10 @@
     max-width:480px;
 }
 
-/* ---------- Featured scroller ---------- */
+/* ---------- Featured row ---------- */
 .featured-section{
     position:relative;
     margin-bottom:64px;
-    /* bleed slightly wider than the column so photos can peek off-edge */
-    margin-left:-8px;margin-right:-8px;
 }
 .featured-scroller{
     display:flex;
@@ -49,7 +47,7 @@
     overflow-y:hidden;
     scroll-snap-type:x mandatory;
     scroll-behavior:smooth;
-    padding:0 8px 12px;
+    padding-bottom:12px;
     /* Hide scrollbar */
     scrollbar-width:none;
     -ms-overflow-style:none;
@@ -60,9 +58,10 @@
 .featured-scroller::-webkit-scrollbar{display:none}
 
 .featured-item{
-    flex:0 0 auto;
-    width:340px;height:460px;
-    scroll-snap-align:center;
+    /* Exactly 3 items fit the container width (2 * 12px gaps between them) */
+    flex:0 0 calc((100% - 24px) / 3);
+    aspect-ratio:3/4;
+    scroll-snap-align:start;
     position:relative;
     border-radius:4px;
     overflow:hidden;
@@ -81,11 +80,11 @@
 .featured-item .featured-caption{
     position:absolute;
     left:0;right:0;bottom:0;
-    padding:44px 20px 18px;
+    padding:40px 16px 14px;
     background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.25) 60%,transparent 100%);
     color:#fff;
     font-family:'Cormorant',serif;font-style:italic;
-    font-size:1.15rem;
+    font-size:1.05rem;
     line-height:1.3;
     letter-spacing:0.01em;
     pointer-events:none;
@@ -93,36 +92,51 @@
 .featured-item .featured-caption em{
     display:block;
     font-family:'DM Sans',sans-serif;font-style:normal;
-    font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;
-    opacity:0.75;margin-bottom:4px;
+    font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;
+    opacity:0.75;margin-bottom:3px;
 }
 
-/* Edge fade hints */
-.featured-section::after{
-    content:'';position:absolute;
-    top:0;right:-1px;bottom:12px;width:60px;
-    pointer-events:none;
-    background:linear-gradient(to left,var(--bg) 0%,transparent 100%);
-    opacity:0;
-    transition:opacity 0.3s;
+/* iPhoto-style navigation arrows */
+.featured-arrow{
+    position:absolute;
+    top:50%;transform:translateY(-50%);
+    width:38px;height:38px;
+    border-radius:50%;
+    background:rgba(26,26,26,0.55);
+    border:none;
+    color:#fff;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    z-index:5;
+    padding:0;
+    transition:opacity 0.25s, background 0.2s, transform 0.2s;
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    box-shadow:0 2px 8px rgba(0,0,0,0.15);
+    font-family:'DM Sans',sans-serif;
+    font-size:1.1rem;line-height:1;
+    opacity:0;pointer-events:none;
 }
-.featured-section.has-right::after{opacity:1}
-.featured-section::before{
-    content:'';position:absolute;
-    top:0;left:-1px;bottom:12px;width:60px;
-    pointer-events:none;
-    background:linear-gradient(to right,var(--bg) 0%,transparent 100%);
-    opacity:0;
-    z-index:2;
-    transition:opacity 0.3s;
+.featured-section.has-left .featured-arrow.prev,
+.featured-section.has-right .featured-arrow.next{
+    opacity:1;
+    pointer-events:auto;
 }
-.featured-section.has-left::before{opacity:1}
+.featured-arrow:hover{
+    background:rgba(26,26,26,0.85);
+    transform:translateY(-50%) scale(1.05);
+}
+.featured-arrow:active{transform:translateY(-50%) scale(0.95)}
+.featured-arrow.prev{left:-8px}
+.featured-arrow.next{right:-8px}
+.featured-arrow svg{width:14px;height:14px;fill:currentColor}
 
-/* Optional scroll hint dots below */
+/* Scroll progress dots */
 .featured-progress{
     display:flex;gap:6px;
     justify-content:center;
     padding-top:8px;
+    min-height:5px;
 }
 .featured-progress .p-dot{
     width:5px;height:5px;border-radius:50%;
@@ -133,6 +147,8 @@
     background:var(--text-light);
     transform:scale(1.2);
 }
+/* Hide progress dots when there's nothing to scroll to */
+.featured-section:not(.has-left):not(.has-right) .featured-progress{visibility:hidden}
 
 /* ---------- Library ---------- */
 .library{margin-bottom:64px}
@@ -284,8 +300,11 @@ body.lb-open{overflow:hidden}
 
 /* ---------- Mobile ---------- */
 @media (max-width:800px){
-    .featured-item{width:260px;height:360px}
-    .featured-item .featured-caption{font-size:1rem;padding:36px 16px 14px}
+    /* Show ~2 items at once with a peek of the third */
+    .featured-item{flex:0 0 calc((100% - 12px) / 2)}
+    .featured-item .featured-caption{font-size:1rem;padding:36px 14px 12px}
+    .featured-arrow{width:32px;height:32px}
+    .featured-arrow svg{width:12px;height:12px}
     .grid{grid-template-columns:repeat(2,1fr);gap:8px}
     .library-title{font-size:1.35rem}
     .lightbox{padding:16px}
@@ -294,6 +313,11 @@ body.lb-open{overflow:hidden}
     .lightbox-nav{font-size:1.5rem;padding:12px 14px}
     .lightbox-nav.prev{left:4px}
     .lightbox-nav.next{right:4px}
+}
+@media (max-width:500px){
+    /* Show 1 item at full width */
+    .featured-item{flex:0 0 100%}
+    .featured-item .featured-caption{font-size:1.1rem}
 }
     </style>
 </head>
@@ -318,9 +342,15 @@ body.lb-open{overflow:hidden}
 
             <!-- Featured horizontal scroller -->
             <section class="featured-section" id="featuredSection">
+                <button class="featured-arrow prev" id="featuredPrev" aria-label="Previous photos">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 4.6 8 12l7.4 7.4 1.4-1.4L10.8 12l6-6z"/></svg>
+                </button>
                 <div class="featured-scroller" id="featuredScroller">
                     <!-- populated by JS -->
                 </div>
+                <button class="featured-arrow next" id="featuredNext" aria-label="More photos">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.6 4.6 7.2 6l6 6-6 6 1.4 1.4L16 12z"/></svg>
+                </button>
                 <div class="featured-progress" id="featuredProgress"></div>
             </section>
 
@@ -478,6 +508,20 @@ body.lb-open{overflow:hidden}
         scroller.addEventListener("scroll", updateScrollState);
         window.addEventListener("resize", updateScrollState);
         setTimeout(updateScrollState, 100);
+
+        /* Arrow buttons: scroll by ~ one item + gap */
+        function itemStep(){
+            var first = scroller.querySelector(".featured-item");
+            if (!first) return 300;
+            var gap = 12;
+            return first.offsetWidth + gap;
+        }
+        document.getElementById("featuredPrev").addEventListener("click", function(){
+            scroller.scrollBy({ left: -itemStep(), behavior: "smooth" });
+        });
+        document.getElementById("featuredNext").addEventListener("click", function(){
+            scroller.scrollBy({ left:  itemStep(), behavior: "smooth" });
+        });
 
         /* Click-and-drag scrolling on desktop */
         var isDown=false, startX=0, startScroll=0, moved=false;
