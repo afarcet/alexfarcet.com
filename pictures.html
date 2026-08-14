@@ -533,11 +533,7 @@ body.lb-open{overflow:hidden}
             var el = document.createElement("div");
             el.className = "featured-item";
             el.setAttribute("data-idx", idx);
-            el.innerHTML = '<img src="'+p.src+'" alt="'+esc(p.caption)+'" loading="lazy">' +
-                           '<div class="featured-caption">'+
-                             (p.location ? '<em>'+esc(p.location)+'</em>' : '') +
-                             esc(p.caption) +
-                           '</div>';
+            el.innerHTML = '<img src="'+p.src+'" alt="'+esc(p.caption)+'" loading="lazy">';
             el.addEventListener("click", function(){ openLightbox("featured", idx); });
             scroller.appendChild(el);
             var d = document.createElement("span");
