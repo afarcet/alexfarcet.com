@@ -219,6 +219,24 @@
     font-size:1.1rem;
 }
 
+.show-more-btn{
+    display:block;
+    margin:32px auto 0;
+    background:none;
+    border:1px solid var(--border);
+    color:var(--text-light);
+    font-family:'DM Sans',sans-serif;
+    font-size:0.78rem;letter-spacing:0.08em;
+    padding:10px 24px;border-radius:22px;
+    cursor:pointer;
+    transition:all 0.25s;
+}
+.show-more-btn:hover{
+    color:var(--text);
+    border-color:var(--text);
+    background:rgba(0,0,0,0.02);
+}
+
 /* ---------- Lightbox ---------- */
 .lightbox{
     position:fixed;inset:0;
@@ -640,6 +658,41 @@ body.lb-open{overflow:hidden}
             locMenu.appendChild(c);
         });
 
+        /* Paginated grid: show PAGE_SIZE at a time, "Show more" reveals the next batch. */
+        var PAGE_SIZE = 15;   /* 5 rows on desktop (3 col) or ~7-8 rows on mobile (2 col) */
+        var shown = 0;
+
+        function renderNextBatch(){
+            var frag = document.createDocumentFragment();
+            var end = Math.min(shown + PAGE_SIZE, libraryContext.length);
+            for (var i = shown; i < end; i++){
+                (function(p, idx){
+                    var el = document.createElement("div");
+                    el.className = "grid-item";
+                    el.innerHTML = '<img src="'+p.src+'" alt="'+esc(p.caption)+'" loading="lazy">';
+                    el.addEventListener("click", function(){ openLightbox("library", idx); });
+                    frag.appendChild(el);
+                })(libraryContext[i], i);
+            }
+            grid.appendChild(frag);
+            shown = end;
+            updateMoreButton();
+        }
+
+        function updateMoreButton(){
+            var existing = document.getElementById("showMore");
+            if (existing) existing.remove();
+            if (shown >= libraryContext.length) return;
+            var remaining = libraryContext.length - shown;
+            var nextBatch = Math.min(PAGE_SIZE, remaining);
+            var btn = document.createElement("button");
+            btn.id = "showMore";
+            btn.className = "show-more-btn";
+            btn.textContent = "Show " + nextBatch + " more · " + remaining + " remaining";
+            btn.addEventListener("click", renderNextBatch);
+            grid.parentNode.insertBefore(btn, grid.nextSibling);
+        }
+
         function selectLocation(loc){
             currentLoc = loc;
             locMenu.querySelectorAll(".loc-chip").forEach(function(c){
@@ -652,6 +705,10 @@ body.lb-open{overflow:hidden}
             libTitle.textContent = loc === "All" ? "Library" : loc;
             libCount.textContent = libraryContext.length + (libraryContext.length === 1 ? " photo" : " photos");
             grid.innerHTML = "";
+            shown = 0;
+            /* Remove any previous show-more button */
+            var oldBtn = document.getElementById("showMore");
+            if (oldBtn) oldBtn.remove();
             if (!libraryContext.length){
                 var empty = document.createElement("div");
                 empty.className = "empty-msg";
@@ -659,13 +716,7 @@ body.lb-open{overflow:hidden}
                 grid.appendChild(empty);
                 return;
             }
-            libraryContext.forEach(function(p, i){
-                var el = document.createElement("div");
-                el.className = "grid-item";
-                el.innerHTML = '<img src="'+p.src+'" alt="'+esc(p.caption)+'" loading="lazy">';
-                el.addEventListener("click", function(){ openLightbox("library", i); });
-                grid.appendChild(el);
-            });
+            renderNextBatch();
         }
         selectLocation(currentLoc);
 
