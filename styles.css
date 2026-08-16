@@ -118,17 +118,17 @@ body {
 }
 
 .home-intro {
-    max-width: 540px;
+    max-width: 560px;
     text-align: left;
-    font-family: 'Cormorant', serif;
-    font-size: 1.15rem;
-    line-height: 1.55;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
     color: var(--text);
     margin-bottom: 56px;
 }
 
 .home-intro p + p {
-    margin-top: 14px;
+    margin-top: 18px;
 }
 
 /* Currently section */
