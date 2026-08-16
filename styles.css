@@ -782,6 +782,22 @@ footer {
    MOBILE
    ======================== */
 
+/* Nav layout — switch to a horizontal top-row on any viewport where the
+   fixed left nav would overlap the centered content column (860 max +
+   40 padding * 2 + nav-width ~160 * 2 ≈ 1100). Keep this rule separate
+   from the phone-only shrinks below. */
+@media (max-width: 1120px) {
+    .side-nav {
+        position: static;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        padding: 24px 24px 0;
+        margin-bottom: -36px;
+    }
+}
+
 @media (max-width: 800px) {
     html {
         font-size: 16px;
@@ -806,16 +822,6 @@ footer {
 
     header {
         margin-bottom: 48px;
-    }
-
-    .side-nav {
-        position: static;
-        flex-direction: row;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 16px;
-        padding: 24px 24px 0;
-        margin-bottom: -36px;
     }
 
     .page-content {
