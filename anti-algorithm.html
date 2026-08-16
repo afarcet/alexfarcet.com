@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anti-algorithm — Alex Farcet</title>
-    <meta name="description" content="Fighting the algorithm, one account at a time. A human-curated selection of YouTube and Instagram accounts worth following.">
+    <meta name="description" content="A curated collection of the Instagram and YouTube accounts I actually want to see, organised by theme.">
     <link rel="canonical" href="https://alexfarcet.com/anti-algorithm">
     <meta property="og:title" content="Anti-algorithm — Alex Farcet">
-    <meta property="og:description" content="Fighting the algorithm, one account at a time. A human-curated selection of YouTube and Instagram accounts worth following.">
+    <meta property="og:description" content="A curated collection of the Instagram and YouTube accounts I actually want to see, organised by theme.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://alexfarcet.com/anti-algorithm">
     <meta property="og:image" content="https://alexfarcet.com/alex-photo.jpg">
@@ -18,6 +18,72 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <style>
+/* ============================================================
+   ANTI-ALGORITHM — category-organised
+   ============================================================ */
+.algo-cat{margin-bottom:52px}
+.algo-cat-title{
+    font-family:'Cormorant',serif;
+    font-size:1.5rem;font-weight:400;
+    letter-spacing:-0.01em;
+    color:var(--text);
+    margin-bottom:14px;
+}
+.algo-cat-count{
+    font-family:'DM Sans',sans-serif;
+    font-size:0.7rem;letter-spacing:0.15em;
+    color:var(--text-light);
+    margin-left:8px;text-transform:uppercase;
+}
+.algo-cat-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:8px;
+}
+.algo-item{
+    display:flex;align-items:center;gap:10px;
+    padding:9px 14px;
+    border:1px solid var(--border);border-radius:4px;
+    text-decoration:none;color:var(--text);
+    font-family:'DM Sans',sans-serif;font-size:0.85rem;
+    transition:all 0.2s ease;
+    overflow:hidden;
+    background:transparent;
+}
+.algo-item:hover{
+    border-color:var(--text);
+    background:rgba(0,0,0,0.02);
+    transform:translateY(-1px);
+}
+.algo-plat{
+    font-size:0.62rem;letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--text-light);
+    flex-shrink:0;
+    font-weight:500;
+    padding:2px 6px;
+    border-radius:3px;
+    background:rgba(0,0,0,0.04);
+    transition:all 0.2s;
+}
+.algo-plat.ig{color:#c13584;background:rgba(193,53,132,0.08)}
+.algo-plat.yt{color:#ff0000;background:rgba(255,0,0,0.06)}
+.algo-plat.web{color:var(--text-light);background:rgba(0,0,0,0.04)}
+.algo-item:hover .algo-plat{filter:brightness(0.9)}
+.algo-name{
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    flex:1;color:var(--text);
+    transition:color 0.2s;
+}
+.algo-item:hover .algo-name{color:var(--accent)}
+
+@media (max-width:800px){
+    .algo-cat-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px}
+    .algo-cat-title{font-size:1.3rem}
+    .algo-item{font-size:0.8rem;padding:8px 12px}
+}
+    </style>
 </head>
 <body>
     <nav class="side-nav">
@@ -38,48 +104,206 @@
             <h2 class="algo-title">Anti-algorithm</h2>
             <p class="algo-intro">I use this page to fight the algorithm by going straight to the content I actually want to see (some of my favorites).</p>
 
-            <div class="algo-section">
-                <p class="section-label">YouTube</p>
-                <div class="account-grid">
-                    <a href="https://www.youtube.com/@restispolitics" target="_blank" class="account-card">
-                        <img src="accounts/yt-restispolitics.png" alt="The Rest is Politics" class="account-thumb">
-                        <span class="account-name">The Rest is Politics</span>
-                    </a>
-                    <a href="https://www.youtube.com/@RickBeato" target="_blank" class="account-card">
-                        <img src="accounts/yt-rickbeato.png" alt="Rick Beato" class="account-thumb">
-                        <span class="account-name">Rick Beato</span>
-                    </a>
-                    <a href="https://www.youtube.com/@arte" target="_blank" class="account-card">
-                        <img src="accounts/yt-arte.png" alt="Arte" class="account-thumb">
-                        <span class="account-name">Arte</span>
-                    </a>
-                </div>
-            </div>
-
-            <div class="algo-section">
-                <p class="section-label">Instagram</p>
-                <div class="account-grid">
-                    <a href="https://www.instagram.com/sopedradamusical/" target="_blank" class="account-card">
-                        <img src="accounts/ig-sopedradamusical.png" alt="Só Pedrada Musical" class="account-thumb">
-                        <span class="account-name">Só Pedrada Musical</span>
-                    </a>
-                    <a href="https://www.instagram.com/tommy_rivs/" target="_blank" class="account-card">
-                        <img src="accounts/ig-tommyrivs.png" alt="Tommy Rivs" class="account-thumb">
-                        <span class="account-name">Tommy Rivs</span>
-                    </a>
-                    <a href="https://www.instagram.com/historiasdafotografia/" target="_blank" class="account-card">
-                        <img src="accounts/ig-historiasdafotografia.png" alt="Histórias da Fotografia" class="account-thumb">
-                        <span class="account-name">Histórias da Fotografia</span>
-                    </a>
-                </div>
-            </div>
+            <div id="algoRoot"></div>
         </main>
 
         <footer>
             <p class="footer-text">Curated by a human</p>
-            <p class="footer-updated">Updated: July 2026</p>
-            <p class="footer-colophon">Built with Claude Opus 4.5</p>
+            <p class="footer-updated">Updated: August 2026</p>
         </footer>
     </div>
+
+    <script>
+    (function(){
+        /* ============================================================
+           CURATED LIST — grouped by category, rendered in this order.
+           Empty categories are automatically hidden.
+           Each item: { plat: "IG"|"YT"|"Web", handle: "handle-or-slug", name: "Display name (optional)" }
+           TO ADD: drop new entries in the right category array.
+           TO ADD A CATEGORY: add a new key to LIST and add its name to ORDER.
+           ============================================================ */
+        var ORDER = [
+            "Favorites","News","Wellbeing","Music","Philosophy","Politics",
+            "Tech","World","Performance","Architecture","Padel",
+            "Business","Photography","Family & Friends","Food",
+            "Science","Art","Film","Books","Humour"
+        ];
+
+        var LIST = {
+            "Favorites": [
+                { plat:"IG", handle:"_sismique" },
+                { plat:"IG", handle:"acidjazzrecords" },
+                { plat:"IG", handle:"dusttodigital" },
+                { plat:"IG", handle:"gavinbottger" },
+                { plat:"IG", handle:"kieranwoolley_" },
+                { plat:"IG", handle:"laradionova" },
+                { plat:"IG", handle:"michaelpipoquinha" },
+                { plat:"IG", handle:"n8zine" },
+                { plat:"IG", handle:"sopedradamusical" },
+                { plat:"IG", handle:"tommy_rivs" }
+            ],
+            "News": [
+                { plat:"IG", handle:"28minutes_arte" },
+                { plat:"IG", handle:"culturalperspectivenews" },
+                { plat:"IG", handle:"theatlantic" },
+                { plat:"IG", handle:"washingtonpost" },
+                { plat:"YT", handle:"arte", name:"Arte" }
+            ],
+            "Wellbeing": [
+                { plat:"IG", handle:"briannawiest" },
+                { plat:"IG", handle:"coacheugeneteo" },
+                { plat:"IG", handle:"dr.jacob.harden" },
+                { plat:"IG", handle:"ptvitals" },
+                { plat:"IG", handle:"restoremovement.ie" }
+            ],
+            "Music": [
+                { plat:"IG", handle:"aaronthiago" },
+                { plat:"IG", handle:"actmusic_official" },
+                { plat:"IG", handle:"cphjazz" },
+                { plat:"IG", handle:"danielpenidooficial" },
+                { plat:"IG", handle:"frenchysaysrelax" },
+                { plat:"IG", handle:"gillespeterson" },
+                { plat:"IG", handle:"juninhopaiva_" },
+                { plat:"IG", handle:"pino_palladino_official_" },
+                { plat:"IG", handle:"raphagimenes" },
+                { plat:"YT", handle:"RickBeato", name:"Rick Beato" }
+            ],
+            "Philosophy": [
+                { plat:"IG", handle:"ergo_org" },
+                { plat:"IG", handle:"freethink" },
+                { plat:"IG", handle:"nexusinstituut" }
+            ],
+            "Politics": [
+                { plat:"IG", handle:"bennjordan" },
+                { plat:"IG", handle:"dominique_devillepin" },
+                { plat:"IG", handle:"elucid" },
+                { plat:"IG", handle:"jamesnaylorgreen" },
+                { plat:"IG", handle:"jmjancovici" },
+                { plat:"IG", handle:"laminutegeographie" },
+                { plat:"IG", handle:"matthieupigasse" },
+                { plat:"IG", handle:"theshiftproject__" },
+                { plat:"YT", handle:"restispolitics", name:"The Rest is Politics" }
+            ],
+            "Tech": [
+                { plat:"IG", handle:"20vchq" }
+            ],
+            "World": [
+                { plat:"IG", handle:"cultura.brasileira" },
+                { plat:"IG", handle:"hida.media" },
+                { plat:"IG", handle:"takashiifromjapan" }
+            ],
+            "Performance": [
+                { plat:"IG", handle:"fredtaylor" },
+                { plat:"IG", handle:"jefferson_fisher" },
+                { plat:"IG", handle:"theinnergame" },
+                { plat:"IG", handle:"valuethe.mind" }
+            ],
+            "Architecture": [
+                { plat:"IG", handle:"big_builds" },
+                { plat:"IG", handle:"quotidien_d_architecture" }
+            ],
+            "Padel": [
+                { plat:"IG", handle:"fitness4padel__" },
+                { plat:"IG", handle:"padelreview.es" },
+                { plat:"IG", handle:"peakpdl" },
+                { plat:"IG", handle:"soyvictoriglesias" }
+            ],
+            "Business": [
+                { plat:"IG", handle:"the.salesscientist" },
+                { plat:"IG", handle:"yupyork" }
+            ],
+            "Photography": [
+                { plat:"IG", handle:"__nitch" },
+                { plat:"IG", handle:"kim_praiise" },
+                { plat:"IG", handle:"shootfilmmag" },
+                { plat:"IG", handle:"street.classics" },
+                { plat:"IG", handle:"teapotgr" },
+                { plat:"IG", handle:"thiswildidea" }
+            ],
+            "Family & Friends": [
+                { plat:"IG", handle:"dreayoga" },
+                { plat:"IG", handle:"karlusus" },
+                { plat:"IG", handle:"oliviafarcet" },
+                { plat:"IG", handle:"pmv40" },
+                { plat:"IG", handle:"poli_ttt" },
+                { plat:"IG", handle:"yeschefsrychef" },
+                { plat:"IG", handle:"zhcaubrey" }
+            ],
+            "Food": [
+                { plat:"IG", handle:"betterfoodguru" },
+                { plat:"IG", handle:"pari_beyrouth" }
+            ],
+            "Science": [
+                { plat:"IG", handle:"briangreeneofficial" },
+                { plat:"IG", handle:"la_physique_autrement" }
+            ],
+            "Art": [
+                { plat:"IG", handle:"davidexplains" }
+            ],
+            "Film": [
+                { plat:"IG", handle:"mubibrasil" },
+                { plat:"IG", handle:"gossipgoblin" },
+                { plat:"IG", handle:"pulpkitchenpodcast" }
+            ],
+            "Books": [
+                { plat:"IG", handle:"hors.texte" },
+                { plat:"IG", handle:"literaryhub" },
+                { plat:"IG", handle:"lagrandelibrairie" },
+                { plat:"IG", handle:"margot.et.ses.livres" }
+            ],
+            "Humour": [
+                { plat:"IG", handle:"philhanley" }
+            ]
+        };
+
+        function urlFor(item){
+            if(item.plat === "IG") return "https://www.instagram.com/" + item.handle + "/";
+            if(item.plat === "YT") return "https://www.youtube.com/@" + item.handle;
+            return item.handle;  // Web = full URL in handle
+        }
+        function labelFor(item){
+            if(item.name) return item.name;
+            if(item.plat === "IG") return "@" + item.handle;
+            if(item.plat === "YT") return "@" + item.handle;
+            return item.handle;
+        }
+        function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+
+        var root = document.getElementById("algoRoot");
+        ORDER.forEach(function(cat){
+            var items = LIST[cat] || [];
+            if(!items.length) return;
+            /* sort alphabetically by display label, case-insensitive */
+            items = items.slice().sort(function(a,b){
+                return labelFor(a).toLowerCase().replace(/^@/,'').localeCompare(labelFor(b).toLowerCase().replace(/^@/,''));
+            });
+            var section = document.createElement("section");
+            section.className = "algo-cat";
+            var title = document.createElement("h3");
+            title.className = "algo-cat-title";
+            title.textContent = cat;
+            var count = document.createElement("span");
+            count.className = "algo-cat-count";
+            count.textContent = items.length;
+            title.appendChild(count);
+            section.appendChild(title);
+
+            var grid = document.createElement("div");
+            grid.className = "algo-cat-grid";
+            items.forEach(function(item){
+                var a = document.createElement("a");
+                a.className = "algo-item";
+                a.href = urlFor(item);
+                a.target = "_blank";
+                a.rel = "noopener";
+                a.innerHTML = '<span class="algo-plat ' + item.plat.toLowerCase() + '">' + esc(item.plat) + '</span>' +
+                              '<span class="algo-name">' + esc(labelFor(item)) + '</span>';
+                grid.appendChild(a);
+            });
+            section.appendChild(grid);
+            root.appendChild(section);
+        });
+    })();
+    </script>
 </body>
 </html>
