@@ -14,7 +14,6 @@
     <meta property="og:locale" content="en_US">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unavatar.io" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -76,20 +75,21 @@
 .acct-fallback{
     position:absolute;inset:0;z-index:1;
     display:flex;align-items:center;justify-content:center;
-    color:rgba(255,255,255,0.94);
+    color:rgba(255,255,255,0.96);
     font-family:'Cormorant',serif;font-weight:500;
-    font-size:1.4rem;
-    letter-spacing:0.01em;
+    font-size:1.7rem;
+    letter-spacing:0.02em;
     text-transform:uppercase;
+    text-shadow:0 1px 2px rgba(0,0,0,0.15);
 }
-/* Palette-derived fallback backgrounds — warm neutrals + gentle accents */
-.acct-avatar.bg-0{background:linear-gradient(135deg,#d4c8b3,#a89880)}
-.acct-avatar.bg-1{background:linear-gradient(135deg,#c9b8a0,#8f7a5c)}
-.acct-avatar.bg-2{background:linear-gradient(135deg,#b5a58a,#7d6a4c)}
-.acct-avatar.bg-3{background:linear-gradient(135deg,#e0d5c0,#b5a58a)}
-.acct-avatar.bg-4{background:linear-gradient(135deg,#c5b8a5,#8a7860)}
-.acct-avatar.bg-5{background:linear-gradient(135deg,#d5c9b6,#a09079)}
-.acct-avatar.bg-6{background:linear-gradient(135deg,#c8bea8,#96866c)}
+/* Warm curated palette — feels intentional, not like placeholders */
+.acct-avatar.bg-0{background:linear-gradient(135deg,#cbb890,#9a805a)}
+.acct-avatar.bg-1{background:linear-gradient(135deg,#b8a687,#8a745a)}
+.acct-avatar.bg-2{background:linear-gradient(135deg,#c2a68a,#8f6f52)}
+.acct-avatar.bg-3{background:linear-gradient(135deg,#a89a80,#6f6045)}
+.acct-avatar.bg-4{background:linear-gradient(135deg,#d5c2a0,#a08560)}
+.acct-avatar.bg-5{background:linear-gradient(135deg,#b8a998,#7a6a55)}
+.acct-avatar.bg-6{background:linear-gradient(135deg,#c8b092,#94785a)}
 
 .acct:hover .acct-avatar{
     transform:translateY(-3px);
@@ -342,12 +342,16 @@
             if(item.name) return item.name;
             return "@" + item.handle;
         }
+        function slug(h){ return h.toLowerCase().replace(/[^a-z0-9]/g, ''); }
         function avatarSrc(item){
-            if(item.plat === "YT"){
-                return "accounts/yt-" + item.handle.toLowerCase() + ".png";
-            }
-            /* Instagram — proxy via unavatar.io */
-            return "https://unavatar.io/instagram/" + encodeURIComponent(item.handle);
+            /* Local files only — /accounts/ig-<slug>.png or /accounts/yt-<slug>.png.
+               If a file exists, it renders; if not, img.onerror hides it and the
+               warm letter fallback beneath becomes the design. Drop a PNG in
+               /accounts/ following this naming convention to upgrade any account
+               from letter avatar to real logo. */
+            if(item.plat === "YT") return "accounts/yt-" + slug(item.handle) + ".png";
+            if(item.plat === "IG") return "accounts/ig-" + slug(item.handle) + ".png";
+            return null;
         }
         /* Deterministic warm-neutral bg from handle */
         function bgIndex(handle){
