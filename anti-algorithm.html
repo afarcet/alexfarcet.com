@@ -14,74 +14,148 @@
     <meta property="og:locale" content="en_US">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unavatar.io" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <style>
 /* ============================================================
-   ANTI-ALGORITHM — category-organised
+   ANTI-ALGORITHM — editorial, avatar-driven
    ============================================================ */
-.algo-cat{margin-bottom:52px}
-.algo-cat-title{
+.algo-page{max-width:720px;margin:0 auto;animation:fadeIn 0.8s ease-out}
+
+.cat{margin-bottom:56px}
+.cat:last-child{margin-bottom:0}
+
+.cat-head{
+    display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+    margin-bottom:24px;padding-bottom:10px;
+    border-bottom:1px solid var(--border);
+}
+.cat-name{
     font-family:'Cormorant',serif;
-    font-size:1.5rem;font-weight:400;
+    font-size:1.55rem;font-weight:400;
     letter-spacing:-0.01em;
     color:var(--text);
-    margin-bottom:14px;
 }
-.algo-cat-count{
+.cat-meta{
     font-family:'DM Sans',sans-serif;
-    font-size:0.7rem;letter-spacing:0.15em;
-    color:var(--text-light);
-    margin-left:8px;text-transform:uppercase;
-}
-.algo-cat-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-    gap:8px;
-}
-.algo-item{
-    display:flex;align-items:center;gap:10px;
-    padding:9px 14px;
-    border:1px solid var(--border);border-radius:4px;
-    text-decoration:none;color:var(--text);
-    font-family:'DM Sans',sans-serif;font-size:0.85rem;
-    transition:all 0.2s ease;
-    overflow:hidden;
-    background:transparent;
-}
-.algo-item:hover{
-    border-color:var(--text);
-    background:rgba(0,0,0,0.02);
-    transform:translateY(-1px);
-}
-.algo-plat{
-    font-size:0.62rem;letter-spacing:0.12em;
+    font-size:0.68rem;letter-spacing:0.16em;
     text-transform:uppercase;
     color:var(--text-light);
-    flex-shrink:0;
-    font-weight:500;
-    padding:2px 6px;
-    border-radius:3px;
-    background:rgba(0,0,0,0.04);
-    transition:all 0.2s;
+    white-space:nowrap;
 }
-.algo-plat.ig{color:#c13584;background:rgba(193,53,132,0.08)}
-.algo-plat.yt{color:#ff0000;background:rgba(255,0,0,0.06)}
-.algo-plat.web{color:var(--text-light);background:rgba(0,0,0,0.04)}
-.algo-item:hover .algo-plat{filter:brightness(0.9)}
-.algo-name{
+
+.cat-row{
+    display:flex;gap:26px;flex-wrap:wrap;
+    align-items:flex-start;
+}
+
+.acct{
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    text-decoration:none;color:var(--text);
+    width:84px;
+    animation:fadeIn 0.4s ease-out both;
+}
+.acct-avatar{
+    width:72px;height:72px;border-radius:50%;
+    overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    box-shadow:0 2px 8px rgba(0,0,0,0.06);
+    transition:transform 0.35s ease, box-shadow 0.35s ease;
+}
+.acct-avatar img{
+    width:100%;height:100%;object-fit:cover;
+    filter:grayscale(65%) contrast(0.95);
+    transition:filter 0.4s ease;
+    display:block;
+    position:relative;z-index:2;
+}
+.acct-fallback{
+    position:absolute;inset:0;z-index:1;
+    display:flex;align-items:center;justify-content:center;
+    color:rgba(255,255,255,0.94);
+    font-family:'Cormorant',serif;font-weight:500;
+    font-size:1.4rem;
+    letter-spacing:0.01em;
+    text-transform:uppercase;
+}
+/* Palette-derived fallback backgrounds — warm neutrals + gentle accents */
+.acct-avatar.bg-0{background:linear-gradient(135deg,#d4c8b3,#a89880)}
+.acct-avatar.bg-1{background:linear-gradient(135deg,#c9b8a0,#8f7a5c)}
+.acct-avatar.bg-2{background:linear-gradient(135deg,#b5a58a,#7d6a4c)}
+.acct-avatar.bg-3{background:linear-gradient(135deg,#e0d5c0,#b5a58a)}
+.acct-avatar.bg-4{background:linear-gradient(135deg,#c5b8a5,#8a7860)}
+.acct-avatar.bg-5{background:linear-gradient(135deg,#d5c9b6,#a09079)}
+.acct-avatar.bg-6{background:linear-gradient(135deg,#c8bea8,#96866c)}
+
+.acct:hover .acct-avatar{
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px rgba(0,0,0,0.14);
+}
+.acct:hover .acct-avatar img{filter:grayscale(0) contrast(1)}
+
+.acct-handle{
+    font-family:'DM Sans',sans-serif;
+    font-size:0.7rem;letter-spacing:0.02em;
+    color:var(--text-light);
+    text-align:center;
+    max-width:100%;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-    flex:1;color:var(--text);
-    transition:color 0.2s;
+    transition:color 0.3s;
 }
-.algo-item:hover .algo-name{color:var(--accent)}
+.acct:hover .acct-handle{color:var(--text)}
+
+/* Small platform mark bottom-right of avatar (only YT for now) */
+.acct-plat{
+    position:absolute;bottom:-1px;right:-1px;
+    width:16px;height:16px;border-radius:50%;
+    background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 1px 3px rgba(0,0,0,0.2);
+    z-index:3;
+}
+.acct-plat.yt::before{
+    content:'';width:0;height:0;
+    border-top:3.5px solid transparent;
+    border-bottom:3.5px solid transparent;
+    border-left:6px solid #ff0000;
+    margin-left:1px;
+}
+
+/* Expand / collapse button — matches avatar shape */
+.cat-more{
+    width:72px;height:72px;border-radius:50%;
+    border:1px dashed var(--border);
+    background:transparent;
+    color:var(--text-light);
+    font-family:'Cormorant',serif;font-style:italic;
+    font-size:0.95rem;
+    cursor:pointer;
+    transition:all 0.25s ease;
+    display:flex;align-items:center;justify-content:center;
+    padding:0;margin-top:0;  /* aligns with avatars */
+    flex-shrink:0;
+}
+.cat-more:hover{
+    border-color:var(--text);border-style:solid;
+    color:var(--text);
+    transform:translateY(-2px);
+}
+.cat-more.less{
+    border-style:solid;border-color:var(--text-light);
+    font-size:0.85rem;
+}
 
 @media (max-width:800px){
-    .algo-cat-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px}
-    .algo-cat-title{font-size:1.3rem}
-    .algo-item{font-size:0.8rem;padding:8px 12px}
+    .cat-name{font-size:1.35rem}
+    .cat-row{gap:18px}
+    .acct{width:70px}
+    .acct-avatar,.cat-more{width:60px;height:60px}
+    .acct-fallback{font-size:1.2rem}
+    .acct-handle{font-size:0.66rem}
 }
     </style>
 </head>
@@ -116,11 +190,10 @@
     <script>
     (function(){
         /* ============================================================
-           CURATED LIST — grouped by category, rendered in this order.
-           Empty categories are automatically hidden.
-           Each item: { plat: "IG"|"YT"|"Web", handle: "handle-or-slug", name: "Display name (optional)" }
-           TO ADD: drop new entries in the right category array.
-           TO ADD A CATEGORY: add a new key to LIST and add its name to ORDER.
+           CURATED LIST
+           Each item: { plat: "IG"|"YT"|"Web", handle, name? }
+           Order within a category is preserved — the first 3 are shown
+           by default; the rest reveal on "+ N more".
            ============================================================ */
         var ORDER = [
             "Favorites","News","Wellbeing","Music","Philosophy","Politics",
@@ -143,11 +216,11 @@
                 { plat:"IG", handle:"tommy_rivs" }
             ],
             "News": [
-                { plat:"IG", handle:"28minutes_arte" },
-                { plat:"IG", handle:"culturalperspectivenews" },
                 { plat:"IG", handle:"theatlantic" },
+                { plat:"YT", handle:"arte", name:"Arte" },
                 { plat:"IG", handle:"washingtonpost" },
-                { plat:"YT", handle:"arte", name:"Arte" }
+                { plat:"IG", handle:"28minutes_arte" },
+                { plat:"IG", handle:"culturalperspectivenews" }
             ],
             "Wellbeing": [
                 { plat:"IG", handle:"briannawiest" },
@@ -157,81 +230,81 @@
                 { plat:"IG", handle:"restoremovement.ie" }
             ],
             "Music": [
+                { plat:"IG", handle:"gillespeterson" },
+                { plat:"IG", handle:"pino_palladino_official_" },
+                { plat:"YT", handle:"RickBeato", name:"Rick Beato" },
                 { plat:"IG", handle:"aaronthiago" },
                 { plat:"IG", handle:"actmusic_official" },
                 { plat:"IG", handle:"cphjazz" },
                 { plat:"IG", handle:"danielpenidooficial" },
                 { plat:"IG", handle:"frenchysaysrelax" },
-                { plat:"IG", handle:"gillespeterson" },
                 { plat:"IG", handle:"juninhopaiva_" },
-                { plat:"IG", handle:"pino_palladino_official_" },
-                { plat:"IG", handle:"raphagimenes" },
-                { plat:"YT", handle:"RickBeato", name:"Rick Beato" }
+                { plat:"IG", handle:"raphagimenes" }
             ],
             "Philosophy": [
-                { plat:"IG", handle:"ergo_org" },
+                { plat:"IG", handle:"nexusinstituut" },
                 { plat:"IG", handle:"freethink" },
-                { plat:"IG", handle:"nexusinstituut" }
+                { plat:"IG", handle:"ergo_org" }
             ],
             "Politics": [
-                { plat:"IG", handle:"bennjordan" },
+                { plat:"YT", handle:"restispolitics", name:"The Rest is Politics" },
+                { plat:"IG", handle:"jmjancovici" },
                 { plat:"IG", handle:"dominique_devillepin" },
+                { plat:"IG", handle:"bennjordan" },
                 { plat:"IG", handle:"elucid" },
                 { plat:"IG", handle:"jamesnaylorgreen" },
-                { plat:"IG", handle:"jmjancovici" },
                 { plat:"IG", handle:"laminutegeographie" },
                 { plat:"IG", handle:"matthieupigasse" },
-                { plat:"IG", handle:"theshiftproject__" },
-                { plat:"YT", handle:"restispolitics", name:"The Rest is Politics" }
+                { plat:"IG", handle:"theshiftproject__" }
             ],
             "Tech": [
                 { plat:"IG", handle:"20vchq" }
             ],
             "World": [
                 { plat:"IG", handle:"cultura.brasileira" },
-                { plat:"IG", handle:"hida.media" },
-                { plat:"IG", handle:"takashiifromjapan" }
+                { plat:"IG", handle:"takashiifromjapan" },
+                { plat:"IG", handle:"hida.media" }
             ],
             "Performance": [
-                { plat:"IG", handle:"fredtaylor" },
-                { plat:"IG", handle:"jefferson_fisher" },
                 { plat:"IG", handle:"theinnergame" },
+                { plat:"IG", handle:"jefferson_fisher" },
+                { plat:"IG", handle:"fredtaylor" },
                 { plat:"IG", handle:"valuethe.mind" }
             ],
             "Architecture": [
-                { plat:"IG", handle:"big_builds" },
-                { plat:"IG", handle:"quotidien_d_architecture" }
+                { plat:"IG", handle:"quotidien_d_architecture" },
+                { plat:"IG", handle:"big_builds" }
             ],
             "Padel": [
-                { plat:"IG", handle:"fitness4padel__" },
                 { plat:"IG", handle:"padelreview.es" },
                 { plat:"IG", handle:"peakpdl" },
-                { plat:"IG", handle:"soyvictoriglesias" }
+                { plat:"IG", handle:"soyvictoriglesias" },
+                { plat:"IG", handle:"fitness4padel__" }
             ],
             "Business": [
-                { plat:"IG", handle:"the.salesscientist" },
-                { plat:"IG", handle:"yupyork" }
+                { plat:"IG", handle:"yupyork" },
+                { plat:"IG", handle:"the.salesscientist" }
             ],
             "Photography": [
+                { plat:"IG", handle:"thiswildidea" },
+                { plat:"IG", handle:"street.classics" },
                 { plat:"IG", handle:"__nitch" },
                 { plat:"IG", handle:"kim_praiise" },
                 { plat:"IG", handle:"shootfilmmag" },
-                { plat:"IG", handle:"street.classics" },
-                { plat:"IG", handle:"teapotgr" },
-                { plat:"IG", handle:"thiswildidea" }
+                { plat:"IG", handle:"teapotgr" }
             ],
             "Family & Friends": [
-                { plat:"IG", handle:"dreayoga" },
-                { plat:"IG", handle:"karlusus" },
                 { plat:"IG", handle:"oliviafarcet" },
+                { plat:"IG", handle:"karlusus" },
+                { plat:"IG", handle:"dreayoga" },
                 { plat:"IG", handle:"pmv40" },
                 { plat:"IG", handle:"poli_ttt" },
                 { plat:"IG", handle:"yeschefsrychef" },
                 { plat:"IG", handle:"zhcaubrey" }
             ],
             "Food": [
-                { plat:"IG", handle:"betterfoodguru" },
-                { plat:"IG", handle:"pari_beyrouth" }
+                { plat:"IG", handle:"pari_beyrouth" },
+                { plat:"IG", handle:"betterfoodguru" }
             ],
             "Science": [
                 { plat:"IG", handle:"briangreeneofficial" },
@@ -246,9 +319,9 @@
                 { plat:"IG", handle:"pulpkitchenpodcast" }
             ],
             "Books": [
-                { plat:"IG", handle:"hors.texte" },
-                { plat:"IG", handle:"literaryhub" },
                 { plat:"IG", handle:"lagrandelibrairie" },
+                { plat:"IG", handle:"literaryhub" },
+                { plat:"IG", handle:"hors.texte" },
                 { plat:"IG", handle:"margot.et.ses.livres" }
             ],
             "Humour": [
@@ -256,51 +329,131 @@
             ]
         };
 
+        var PREVIEW_COUNT = 3;
+
+        function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+
         function urlFor(item){
             if(item.plat === "IG") return "https://www.instagram.com/" + item.handle + "/";
             if(item.plat === "YT") return "https://www.youtube.com/@" + item.handle;
-            return item.handle;  // Web = full URL in handle
-        }
-        function labelFor(item){
-            if(item.name) return item.name;
-            if(item.plat === "IG") return "@" + item.handle;
-            if(item.plat === "YT") return "@" + item.handle;
             return item.handle;
         }
-        function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+        function displayHandle(item){
+            if(item.name) return item.name;
+            return "@" + item.handle;
+        }
+        function avatarSrc(item){
+            if(item.plat === "YT"){
+                return "accounts/yt-" + item.handle.toLowerCase() + ".png";
+            }
+            /* Instagram — proxy via unavatar.io */
+            return "https://unavatar.io/instagram/" + encodeURIComponent(item.handle);
+        }
+        /* Deterministic warm-neutral bg from handle */
+        function bgIndex(handle){
+            var h = 0;
+            for(var i=0;i<handle.length;i++) h = (h * 31 + handle.charCodeAt(i)) >>> 0;
+            return h % 7;
+        }
+        function initial(handle){
+            var s = handle.replace(/^[^A-Za-z0-9]+/, '');
+            var c = (s.charAt(0) || handle.charAt(0) || '?').toUpperCase();
+            return c;
+        }
+
+        function makeAcct(item){
+            var a = document.createElement("a");
+            a.className = "acct";
+            a.href = urlFor(item);
+            a.target = "_blank";
+            a.rel = "noopener";
+            a.title = displayHandle(item);
+
+            var av = document.createElement("div");
+            av.className = "acct-avatar bg-" + bgIndex(item.handle);
+            var fb = document.createElement("div");
+            fb.className = "acct-fallback";
+            fb.textContent = initial(item.handle);
+            av.appendChild(fb);
+
+            var img = document.createElement("img");
+            img.alt = "";
+            img.loading = "lazy";
+            img.src = avatarSrc(item);
+            img.addEventListener("error", function(){ img.style.display = "none"; });
+            av.appendChild(img);
+
+            if(item.plat === "YT"){
+                var plat = document.createElement("span");
+                plat.className = "acct-plat yt";
+                plat.title = "YouTube";
+                av.appendChild(plat);
+            }
+
+            a.appendChild(av);
+
+            var h = document.createElement("span");
+            h.className = "acct-handle";
+            h.textContent = displayHandle(item);
+            a.appendChild(h);
+
+            return a;
+        }
 
         var root = document.getElementById("algoRoot");
+
         ORDER.forEach(function(cat){
             var items = LIST[cat] || [];
             if(!items.length) return;
-            /* sort alphabetically by display label, case-insensitive */
-            items = items.slice().sort(function(a,b){
-                return labelFor(a).toLowerCase().replace(/^@/,'').localeCompare(labelFor(b).toLowerCase().replace(/^@/,''));
-            });
-            var section = document.createElement("section");
-            section.className = "algo-cat";
-            var title = document.createElement("h3");
-            title.className = "algo-cat-title";
-            title.textContent = cat;
-            var count = document.createElement("span");
-            count.className = "algo-cat-count";
-            count.textContent = items.length;
-            title.appendChild(count);
-            section.appendChild(title);
 
-            var grid = document.createElement("div");
-            grid.className = "algo-cat-grid";
-            items.forEach(function(item){
-                var a = document.createElement("a");
-                a.className = "algo-item";
-                a.href = urlFor(item);
-                a.target = "_blank";
-                a.rel = "noopener";
-                a.innerHTML = '<span class="algo-plat ' + item.plat.toLowerCase() + '">' + esc(item.plat) + '</span>' +
-                              '<span class="algo-name">' + esc(labelFor(item)) + '</span>';
-                grid.appendChild(a);
-            });
-            section.appendChild(grid);
+            var section = document.createElement("section");
+            section.className = "cat";
+            section.dataset.cat = cat;
+
+            var head = document.createElement("div");
+            head.className = "cat-head";
+            var name = document.createElement("h3");
+            name.className = "cat-name";
+            name.textContent = cat;
+            head.appendChild(name);
+            var meta = document.createElement("span");
+            meta.className = "cat-meta";
+            meta.textContent = items.length + (items.length === 1 ? " account" : " accounts");
+            head.appendChild(meta);
+            section.appendChild(head);
+
+            var row = document.createElement("div");
+            row.className = "cat-row";
+            var initial = items.slice(0, PREVIEW_COUNT);
+            var rest = items.slice(PREVIEW_COUNT);
+            initial.forEach(function(item){ row.appendChild(makeAcct(item)); });
+
+            if(rest.length > 0){
+                var more = document.createElement("button");
+                more.className = "cat-more";
+                more.type = "button";
+                more.textContent = "+ " + rest.length;
+                var expanded = false;
+                more.addEventListener("click", function(){
+                    if(!expanded){
+                        rest.forEach(function(item){
+                            row.insertBefore(makeAcct(item), more);
+                        });
+                        more.textContent = "less";
+                        more.classList.add("less");
+                        expanded = true;
+                    } else {
+                        var accts = row.querySelectorAll(".acct");
+                        for(var i = accts.length - 1; i >= PREVIEW_COUNT; i--){ accts[i].remove(); }
+                        more.textContent = "+ " + rest.length;
+                        more.classList.remove("less");
+                        expanded = false;
+                    }
+                });
+                row.appendChild(more);
+            }
+
+            section.appendChild(row);
             root.appendChild(section);
         });
     })();
